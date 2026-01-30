@@ -1,14 +1,46 @@
 "use client";
-import { Send, User, MessageCircle } from "lucide-react";
-import { motion, useInView } from "motion/react";
+import { Send, User } from "lucide-react";
+import {
+  motion,
+  useInView,
+  useScroll,
+  useTransform,
+  MotionValue,
+} from "motion/react";
 import { useRef } from "react";
 import { Button } from "../Button";
 import FixedQuoteButton from "../FixedQuoteButton";
 
+// Wrapper component for scroll-based exit animation
+function ScrollFadeOut({
+  children,
+  scrollYProgress,
+  startExit,
+  endExit,
+}: {
+  children: React.ReactNode;
+  scrollYProgress: MotionValue<number>;
+  startExit: number;
+  endExit: number;
+}) {
+  const y = useTransform(scrollYProgress, [startExit, endExit], ["0%", "-30%"]);
+  const opacity = useTransform(scrollYProgress, [startExit, endExit], [1, 0]);
+
+  return <motion.div style={{ y, opacity }}>{children}</motion.div>;
+}
+
 // Animated text component that reveals words with a staggered wave effect
-function AnimatedHeading() {
+function AnimatedHeading({
+  scrollYProgress,
+}: {
+  scrollYProgress: MotionValue<number>;
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
+
+  // Scroll-based exit
+  const y = useTransform(scrollYProgress, [0.1, 0.4], ["0%", "-40%"]);
+  const opacity = useTransform(scrollYProgress, [0.1, 0.4], [1, 0]);
 
   // Word animation variants
   const wordVariants = {
@@ -24,7 +56,7 @@ function AnimatedHeading() {
       transition: {
         duration: 0.8,
         delay: i * 0.08,
-        ease: [0.215, 0.61, 0.355, 1],
+        ease: [0.215, 0.61, 0.355, 1] as const,
       },
     }),
   };
@@ -41,7 +73,7 @@ function AnimatedHeading() {
       transition: {
         duration: 1,
         delay: 0.6 + i * 0.12,
-        ease: [0.19, 1, 0.22, 1],
+        ease: [0.19, 1, 0.22, 1] as const,
       },
     }),
   };
@@ -71,10 +103,10 @@ function AnimatedHeading() {
   };
 
   return (
-    <h1
+    <motion.h1
       ref={ref}
+      style={{ perspective: "1000px", y, opacity }}
       className="text-4xl md:text-[78px] font-aller text-neutral-50 leading-[1.1]"
-      style={{ perspective: "1000px" }}
     >
       {/* Line 1: Transform your gaming floor */}
       <span className="block">{renderWords(line1Words, 0)}</span>
@@ -121,7 +153,7 @@ function AnimatedHeading() {
           </span>
         </b>
       </span>
-    </h1>
+    </motion.h1>
   );
 }
 
@@ -150,42 +182,18 @@ function AnimatedNav() {
   );
 }
 
-// Fixed quote button component
-function FixedQuoteButtonOld() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, y: 20 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{
-        duration: 0.6,
-        delay: 1.8,
-        ease: [0.19, 1, 0.22, 1],
-      }}
-      className="fixed -bottom-[28px] right-24 z-50"
-    >
-      <svg width="400" height="120" viewBox="0 0 400 120">
-        <path
-          d="M 10 100 
-         Q 0 100, 8 85 
-         L 58 10 
-         Q 65 0, 80 0 
-         L 370 0 
-         Q 380 0, 380 10 
-         L 380 90 
-         Q 380 100, 370 100 
-         Z"
-          fill="#2f343a"
-          stroke="#2f343a"
-          stroke-width="0"
-        />
-      </svg>
-    </motion.div>
-  );
-}
-
 export default function HomeSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
   return (
-    <section className="relative w-full h-screen overflow-hidden flex items-center justify-center">
+    <section
+      ref={sectionRef}
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center"
+    >
       <video
         className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover -z-10"
         autoPlay={true}
@@ -201,60 +209,72 @@ export default function HomeSection() {
       <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/70 to-neutral-900"></div>
       <div className="relative z-10 text-white px-24 max-w-[2000px]! w-full h-full">
         <div className="flex flex-col justify-between h-full">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
-            className="flex flex-row items-center justify-between py-400"
+          {/* Header - exits first (0 to 0.25) */}
+          <ScrollFadeOut
+            scrollYProgress={scrollYProgress}
+            startExit={0}
+            endExit={0.25}
           >
-            <motion.img
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              src="https://precisionsigns.com.au/wp-content/uploads/2018/11/logo.png"
-              alt="Precision Signs Logo"
-            />
-            <AnimatedNav />
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="flex flex-row gap-400"
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
+              className="flex flex-row items-center justify-between py-400"
             >
-              <Button
-                text="Contact Us"
-                icon={<Send className="h-4 w-4" />}
-                iconPosition="left"
+              <motion.img
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                src="https://precisionsigns.com.au/wp-content/uploads/2018/11/logo.png"
+                alt="Precision Signs Logo"
               />
-              <Button
-                text=""
-                icon={<User className="h-4 w-4" />}
-                className="bg-neutral-600"
-                iconPosition="left"
-              />
+              <AnimatedNav />
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                className="flex flex-row gap-400"
+              >
+                <Button
+                  text="Contact Us"
+                  icon={<Send className="h-4 w-4" />}
+                  iconPosition="left"
+                />
+                <Button
+                  text=""
+                  icon={<User className="h-4 w-4" />}
+                  className="bg-neutral-600"
+                  iconPosition="left"
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </ScrollFadeOut>
 
-          {/* Hero H1 - Centered */}
-          <AnimatedHeading />
+          {/* Hero H1 - exits second (0.1 to 0.4) */}
+          <AnimatedHeading scrollYProgress={scrollYProgress} />
 
-          {/* Bottom paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1,
-              delay: 1.4,
-              ease: [0.19, 1, 0.22, 1],
-            }}
-            className=" leading-relaxed mb-400 text-body text-neutral-300"
+          {/* Bottom paragraph - exits last (0.2 to 0.5) */}
+          <ScrollFadeOut
+            scrollYProgress={scrollYProgress}
+            startExit={0.2}
+            endExit={0.5}
           >
-            Premium Australian-made LED signage and digital displays for
-            casinos, clubs, and hotels.
-            <br />
-            Designed and manufactured locally with precision.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1,
+                delay: 1.4,
+                ease: [0.19, 1, 0.22, 1],
+              }}
+              className=" leading-relaxed mb-400 text-body text-neutral-300"
+            >
+              Premium Australian-made LED signage and digital displays for
+              casinos, clubs, and hotels.
+              <br />
+              Designed and manufactured locally with precision.
+            </motion.p>
+          </ScrollFadeOut>
         </div>
       </div>
 
