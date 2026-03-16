@@ -45,6 +45,8 @@ export function Button({
       outline:
         "border border-neutral-300 hover:bg-neutral-200 hover:border-none active:bg-neutral-300 text-neutral-700",
       tertiary: "hover:underline text-neutral-700",
+      destructive:
+        "bg-red-600 hover:bg-red-700 active:bg-red-800 text-neutral-0",
     },
     dark: {
       primary:
@@ -54,6 +56,8 @@ export function Button({
       outline:
         "border border-neutral-400 hover:bg-neutral-500 hover:border-none active:bg-neutral-400 text-neutral-0",
       tertiary: "hover:underline text-neutral-700",
+      destructive:
+        "bg-red-600 hover:bg-red-700 active:bg-red-800 text-neutral-0",
     },
   };
 
