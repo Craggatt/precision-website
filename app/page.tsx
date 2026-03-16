@@ -3,6 +3,7 @@ import StatsSection from "@/components/sections/StatsSection";
 import FeaturesSection from "@/components/sections/FeaturesSection";
 import VenueSection from "@/components/sections/VenueSection";
 import ProductsSection from "@/components/sections/ProductsSection";
+import ProjectsSection from "@/components/sections/ProjectsSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/Footer";
@@ -15,6 +16,7 @@ export default function Home() {
       <FeaturesSection />
       <VenueSection />
       <ProductsSection />
+      <ProjectsSection />
       <TestimonialsSection />
       <CTASection />
       <Footer />
