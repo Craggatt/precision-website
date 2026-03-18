@@ -7,11 +7,12 @@ import ProjectsSection from "@/components/sections/ProjectsSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/Footer";
+import NewHomeSection from "@/components/sections/NewHomeSection";
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <HomeSection />
+      <NewHomeSection />
       <StatsSection />
       <FeaturesSection />
       <VenueSection />

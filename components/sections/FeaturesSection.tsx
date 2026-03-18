@@ -68,7 +68,7 @@ function FeatureCell({
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.4, delay: index * 0.07, ease: "easeOut" }}
-      className="relative p-10 border-r border-b border-[#e5e5e5] nth-3:border-r-0 last:border-b-0 nth-4:border-b-0 nth-5:border-b-0 nth-6:border-b-0"
+      className="relative p-5 md:p-10 border-r border-b border-[#e5e5e5] even:border-r-0 md:even:border-r-0 lg:even:border-r lg:nth-3:border-r-0 last:border-b-0 md:nth-5:border-b-0 md:nth-6:border-b-0 lg:nth-4:border-b-0 lg:nth-5:border-b-0 lg:nth-6:border-b-0 last:border-r-0"
     >
       <CornerSquares />
       {/* Icon chip — brand-tinted border on hover */}
@@ -92,15 +92,15 @@ export default function FeaturesSection() {
   });
 
   return (
-    <section className="border-t border-[#e5e5e5]">
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5]">
+    <section className="border-t border-[#e5e5e5] bg-linear-to-b from-brand-primary via-white to white">
+      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] bg-white">
         {/* Section header */}
         <motion.div
           ref={headingRef}
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative px-10 py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           <CornerSquares />
           <div>
