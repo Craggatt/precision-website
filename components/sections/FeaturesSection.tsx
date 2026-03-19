@@ -68,16 +68,16 @@ function FeatureCell({
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.4, delay: index * 0.07, ease: "easeOut" }}
-      className="relative p-5 md:p-10 border-r border-b border-[#e5e5e5] even:border-r-0 md:even:border-r-0 lg:even:border-r lg:nth-3:border-r-0 last:border-b-0 md:nth-5:border-b-0 md:nth-6:border-b-0 lg:nth-4:border-b-0 lg:nth-5:border-b-0 lg:nth-6:border-b-0 last:border-r-0"
+      className="relative p-5 md:p-10 border-r border-b border-[#2a2a2a] even:border-r-0 md:even:border-r-0 lg:even:border-r lg:nth-3:border-r-0 last:border-b-0 md:nth-5:border-b-0 md:nth-6:border-b-0 lg:nth-4:border-b-0 lg:nth-5:border-b-0 lg:nth-6:border-b-0 last:border-r-0"
     >
       <CornerSquares />
       {/* Icon chip — brand-tinted border on hover */}
       <img src={feature.link} className="w-[150px]"></img>
 
-      <h3 className="font-aller font-bold text-[#111111] text-[1.05rem] leading-snug mb-2">
+      <h3 className="font-aller font-bold text-[#f0f0f0] text-[1.05rem] leading-snug mb-2">
         {feature.title}
       </h3>
-      <p className="font-satoshi text-[#6b6b6b] text-[0.9rem] leading-relaxed">
+      <p className="font-satoshi text-[#888888] text-[0.9rem] leading-relaxed">
         {feature.description}
       </p>
     </motion.div>
@@ -92,24 +92,24 @@ export default function FeaturesSection() {
   });
 
   return (
-    <section className="border-t border-[#e5e5e5] bg-linear-to-b from-brand-primary via-white to white">
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] bg-white">
+    <section className="border-t border-[#2a2a2a] bg-[#111111]">
+      <div className="max-w-[1600px] mx-auto border-x border-[#2a2a2a] bg-[#111111]">
         {/* Section header */}
         <motion.div
           ref={headingRef}
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#2a2a2a] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           <CornerSquares />
           <div>
             <p className="label-mono mb-3">Why Precision Signs</p>
-            <h2 className="font-aller font-bold text-[#111111] text-3xl md:text-4xl leading-tight">
+            <h2 className="font-aller font-bold text-[#f0f0f0] text-3xl md:text-4xl leading-tight">
               Signage built for the gaming floor
             </h2>
           </div>
-          <p className="font-satoshi text-[#6b6b6b] text-[0.9rem] leading-relaxed max-w-sm">
+          <p className="font-satoshi text-[#888888] text-[0.9rem] leading-relaxed max-w-sm">
             Every product is engineered to meet the demanding standards of
             Australia&apos;s leading casinos, clubs, and hotels.
           </p>

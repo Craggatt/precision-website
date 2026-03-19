@@ -9,8 +9,8 @@ const navItems = ["Products", "Custom", "Support", "Blog"];
 
 function Nav() {
   return (
-    <nav className="border-b border-[#e5e5e5] ">
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] px-10 flex items-center justify-between h-14 relative">
+    <nav className="border-b border-[#2a2a2a]">
+      <div className="max-w-[1600px] mx-auto border-x border-[#2a2a2a] px-10 flex items-center justify-between h-14 relative">
         <motion.img
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -46,7 +46,7 @@ function Nav() {
         >
           <button
             className="font-satoshi text-[0.8rem]  text-white px-4 py-1.5 rounded-sm hover:text-[#111111] transition-colors"
-            style={{ border: "1px solid #e5e5e5" }}
+            style={{ border: "1px solid #2a2a2a" }}
           >
             Contact Us
           </button>
@@ -204,7 +204,7 @@ export default function NewHomeSection() {
   const videoY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
   return (
     <section
-      className="relative border-b border-[#e5e5e5] bg-white h-[100vh]  flex flex-col justify-between bg-brand-primary!"
+      className="relative border-b border-[#2a2a2a] bg-[#0a0a0a] h-[100vh] flex flex-col justify-between"
       ref={ref}
     >
       <Nav />

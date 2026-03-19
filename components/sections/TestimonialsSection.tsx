@@ -45,7 +45,7 @@ function CornerDot({ position }: { position: "tl" | "tr" | "bl" | "br" }) {
   };
   return (
     <div
-      className={`bg-white border border-neutral-200 h-1.25 w-1.25 absolute ${posMap[position]} z-10`}
+      className={`bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute ${posMap[position]} z-10`}
     />
   );
 }
@@ -141,9 +141,9 @@ function TestimonialCell({
       className={[
         "relative p-5 md:p-10 overflow-hidden",
         // Right border: only left column cells, and only on md+ (1-col on mobile)
-        isLeftCol ? "md:border-r md:border-[#e5e5e5]" : "",
+        isLeftCol ? "md:border-r md:border-[#2a2a2a]" : "",
         // Bottom border: only top row cells
-        isFirstRow ? "border-b border-[#e5e5e5]" : "",
+        isFirstRow ? "border-b border-[#2a2a2a]" : "",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -155,26 +155,26 @@ function TestimonialCell({
       {/* Quote mark */}
       <span
         className="block font-aller font-bold text-[3rem] leading-none mb-4"
-        style={{ color: "#e5e5e5" }}
+        style={{ color: "#333333" }}
         aria-hidden
       >
         &ldquo;
       </span>
 
-      <p className="font-satoshi text-[#3a3a3a] text-[0.95rem] leading-relaxed mb-8">
+      <p className="font-satoshi text-[#cccccc] text-[0.95rem] leading-relaxed mb-8">
         {testimonial.quote}
       </p>
 
       <div className="flex items-center gap-3">
         <div
           className="w-9 h-9 rounded-full shrink-0"
-          style={{ background: "#f2f2f2", border: "1px solid #e5e5e5" }}
+          style={{ background: "#2a2a2a", border: "1px solid #3a3a3a" }}
         />
         <div>
-          <p className="font-aller font-bold text-[#111111] text-[0.85rem] leading-snug">
+          <p className="font-aller font-bold text-[#f0f0f0] text-[0.85rem] leading-snug">
             {testimonial.author}
           </p>
-          <p className="font-satoshi text-[0.75rem] text-[#aaaaaa] mt-0.5">
+          <p className="font-satoshi text-[0.75rem] text-[#666666] mt-0.5">
             {testimonial.role} · {testimonial.venue}
           </p>
         </div>
@@ -194,13 +194,13 @@ export default function TestimonialsSection() {
   const totalRows = Math.ceil(testimonials.length / totalCols);
 
   return (
-    <section className="border-t border-[#e5e5e5] bg-linear-to-b from-brand-primary via-white to-white ">
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] relative bg-white">
+    <section className="border-t border-[#2a2a2a] bg-[#111111]">
+      <div className="max-w-[1600px] mx-auto border-x border-[#2a2a2a] relative bg-[#111111]">
         {/* Outer container corners — these four are always present */}
-        <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10" />
-        <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10" />
-        <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10" />
-        <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10" />
+        <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10" />
+        <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10" />
+        <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10" />
+        <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10" />
 
         {/* Section header */}
         <motion.div
@@ -208,21 +208,21 @@ export default function TestimonialsSection() {
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#2a2a2a] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           {/* Header has its own bottom-edge crossing dots */}
-          <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10" />
-          <div className="bg-white border border-neutral-200 h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10" />
+          <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10" />
+          <div className="bg-[#111111] border border-[#2a2a2a] h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10" />
 
           <div>
             <p className="label-mono mb-3">Client testimonials</p>
-            <h2 className="font-aller font-bold text-[#111111] text-3xl md:text-4xl leading-tight">
+            <h2 className="font-aller font-bold text-[#f0f0f0] text-3xl md:text-4xl leading-tight">
               Trusted by Australia&apos;s
               <br />
               leading venues
             </h2>
           </div>
-          <p className="font-satoshi text-[#6b6b6b] text-[0.9rem] leading-relaxed max-w-sm">
+          <p className="font-satoshi text-[#888888] text-[0.9rem] leading-relaxed max-w-sm">
             From major casinos to regional clubs, our signage is installed
             across hundreds of gaming venues nationwide.
           </p>

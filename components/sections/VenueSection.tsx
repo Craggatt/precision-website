@@ -124,7 +124,7 @@ export default function VenueSection() {
   return (
     <section
       ref={containerRef}
-      className="w-full bg-[#f9f9f9] border-t border-[#e5e5e5] py-24 overflow-hidden"
+      className="w-full bg-[#0f0f0f] border-t border-[#2a2a2a] py-24 overflow-hidden"
     >
       <div className="max-w-[1600px] mx-auto px-10 mb-10">
         <p className="label-mono mb-3">Trusted by venues across Australia</p>
@@ -133,7 +133,7 @@ export default function VenueSection() {
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-aller font-bold text-[#111111] text-3xl"
+          className="font-aller font-bold text-[#f0f0f0] text-3xl"
         >
           Chosen by Industry Leaders
         </motion.h3>

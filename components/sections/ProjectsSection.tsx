@@ -88,12 +88,12 @@ export default function ProjectsSection() {
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#2a2a2a] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
-          <div className="bg-white h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
-          <div className="bg-white h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
-          <div className="bg-white h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10"></div>
-          <div className="bg-white h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10"></div>
+          <div className="bg-[#0b6fd3] h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
+          <div className="bg-[#0b6fd3] h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
+          <div className="bg-[#0b6fd3] h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10"></div>
+          <div className="bg-[#0b6fd3] h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10"></div>
 
           <div>
             <p className="label-mono mb-3 text-white!">Featured projects</p>
@@ -187,7 +187,7 @@ export default function ProjectsSection() {
         </motion.div>
       </div>
       <div className=""></div>
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] h-[70px] relative">
+      <div className="max-w-[1600px] mx-auto border-x border-[#2a2a2a] h-[70px] relative">
         <div className="bg-white h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
         <div className="bg-white h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
 
