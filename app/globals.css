@@ -1,21 +1,11 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Century Gothic";
-  src: url("/fonts/CenturyGothic_Rg.ttf?v=1") format("truetype");
-  font-weight: 400;
+  font-family: "Satoshi Variable";
+  src: url("/fonts/Satoshi-Variable.ttf") format("truetype");
+  font-weight: 300 900;
   font-style: normal;
   font-display: swap;
-}
-
-@font-face {
-  font-family: "Century Gothic Semi";
-  src: url("/fonts/CenturyGothic_Sb.ttf?v=1") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  ascent-override: 98%;
-  descent-override: 18%;
 }
 
 @font-face {
@@ -85,10 +75,8 @@
     "Inter Variable", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
   --font-aller:
     "Aller", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
-  --font-century-gothic:
-    "Century Gothic", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
-  --font-century-gothic-semi:
-    "Century Gothic Semi", system-ui, -apple-system, "Segoe UI", "Roboto",
+  --font-satoshi:
+    "Satoshi Variable", system-ui, -apple-system, "Segoe UI", "Roboto",
     sans-serif;
 
   /* 2.2 Font Weights (Restricted) */
@@ -204,7 +192,7 @@
   }
 
   .text-body {
-    font-family: "Century Gothic";
+    font-family: "Satoshi Variable";
     font-size: var(--text-body);
     line-height: var(--leading-body);
     font-weight: var(--font-weight-light);
@@ -213,7 +201,7 @@
   }
 
   .text-label {
-    font-family: "Century Gothic Semi";
+    font-family: "Satoshi Variable";
     font-size: var(--text-label);
     line-height: var(--leading-label);
     font-weight: var(--font-weight-regular);
@@ -222,7 +210,7 @@
   }
 
   .text-meta {
-    font-family: "Century Gothic Semi";
+    font-family: "Satoshi Variable";
     font-size: var(--text-meta);
     line-height: var(--leading-meta);
     font-weight: var(--font-weight-regular);
@@ -236,8 +224,8 @@ body {
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
     "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  background: #0a0a0a;
-  color: #ffffff;
+  background: #111111;
+  color: #f0f0f0;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -264,9 +252,48 @@ code {
 }
 
 .background-texture {
-  background-color: #f7f9fb;
+  background-color: var(--color-neutral-800);
   background-image:
-    linear-gradient(#edf2f7 1px, transparent 1px),
-    linear-gradient(to right, #edf2f7 1px, #f7f9fb 1px);
-  background-size: 20px 20px;
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.background-diagonal {
+  background-color: var(--color-neutral-800);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-neutral-700) 0,
+    var(--color-neutral-700) 1px,
+    var(--color-neutral-800) 1px,
+    var(--color-neutral-800) 20px
+  );
+}
+
+.hero-dot-grid {
+  background-color: #0a0a0a;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
+  background-size: 24px 24px;
+}
+
+/* Technical minimalism utilities */
+.cell-border {
+  border: 1px solid #2a2a2a;
+}
+
+.font-mono-ui {
+  font-family: "Aller", system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.label-mono {
+  font-family: "Satoshi Variable", system-ui, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-brand-primary);
+  font-weight: 500;
 }
