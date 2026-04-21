@@ -1,5 +1,6 @@
 "use client";
 
+import { caseStudies } from "@/data/caseStudies";
 import CircularGallery from "../CircularGallery";
 import Tag from "../Tag";
 
@@ -19,11 +20,17 @@ const items = [
 ];
 
 export default function GallerySection() {
+  const items = caseStudies.map((cs) => {
+    return {
+      image: `/_next/image?url=${encodeURIComponent(cs.feature_image)}&w=1920&q=75`,
+      text: cs.name,
+    };
+  });
   return (
     <section className="bg-neutral-900 border-b border-t border-t-neutral-700 border-b-neutral-700 h-screen flex flex-col">
       {/* Section header — keep padding here */}
       <div className="px-2.5 md:px-5 lg:px-10">
-        <div className="max-w-[1600px] w-full mx-auto border-x border-b border-[#2a2a2a] px-10 py-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="max-w-[1600px] w-full mx-auto border-x border-b border-[#2a2a2a] p-2.5 md:p-5 py-10 lg:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div className="flex flex-col gap-300">
             <Tag number="02" text="OUR WORK" />
             <h2 className="font-aller font-bold text-white text-3xl md:text-5xl leading-tight">
