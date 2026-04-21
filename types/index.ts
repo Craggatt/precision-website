@@ -57,3 +57,12 @@ export type ProductCategory =
   | "Infills"
   | "Jackpot History"
   | "Large Screens";
+
+export interface CaseStudy {
+  name: string;
+  slug: string;
+  feature_image: string;
+  images: string[];
+  video: string | null;
+  description: string;
+}

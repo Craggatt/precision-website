@@ -6,7 +6,6 @@ import { useRef } from "react";
 import CornerSquares from "../CornerSquares";
 
 function AnimatedHeading({ ready }: { ready: boolean }) {
-
   const wordVariants = {
     hidden: { y: "100%", opacity: 0, rotateX: -40 },
     visible: (i: number) => ({
@@ -77,11 +76,13 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
 
   return (
     <h1
-      className="font-aller text-white text-4xl sm:text-5xl md:text-[64px] leading-[1.06] tracking-tight "
+      className="font-aller text-white  leading-[1.06] tracking-tight "
       style={{ perspective: "1000px" }}
     >
-      <span className="block">{line1.map((w, i) => word(w, i))}</span>
-      <span className="block font-bold">
+      <span className="block text-2xl sm:text-5xl md:text-[64px]">
+        {line1.map((w, i) => word(w, i))}
+      </span>
+      <span className="block font-bold text-3xl sm:text-5xl md:text-[64px]">
         {boldWord("unforgettable experience.", 0)}
       </span>
     </h1>
@@ -147,7 +148,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
   const videoY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
   return (
     <section
-      className="relative border-b border-[#2a2a2a] bg-[#0a0a0a] h-[100vh] flex flex-col justify-between overflow-hidden"
+      className="relative border-b border-[#2a2a2a] bg-[#0a0a0a] h-screen flex flex-col justify-between overflow-hidden"
       ref={ref}
     >
       {/* Full-section video background */}
@@ -166,23 +167,28 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
       </motion.video>
 
       {/* Overlay */}
-      <div className="absolute inset-0 z-[1] bg-black/60" />
+      <div className="absolute inset-0 z-1 bg-black/60" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-between h-full">
         <div className="h-14" />
-        <div className="relative w-full max-w-[1600px] mx-auto p-600 border-x border-white/20 h-fit">
-          <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
-          <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
-          <AnimatedHeading ready={ready} />
-          <div className="bg-white/20 h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10"></div>
-          <div className="bg-white/20 h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10"></div>
+        <div className="px-2.5 md:px-5 lg:px-10">
+          <div className="relative w-full max-w-[1600px] px-2.5 md:px-5 mx-auto p-10 border-x border-white/20 h-fit">
+            <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
+            <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
+            <AnimatedHeading ready={ready} />
+            <div className="bg-white/20 h-1.25 w-1.25 absolute bottom-[-3px] left-[-3px] z-10"></div>
+            <div className="bg-white/20 h-1.25 w-1.25 absolute bottom-[-3px] right-[-3px] z-10"></div>
+          </div>
         </div>
+
         {/* Hero body */}
         <div className="px-4 md:px-800 flex-1 border-y border-white/20">
           <div className="relative max-w-[1600px] overflow-hidden mx-auto h-full w-full border-x border-white/20">
             <p className="absolute bottom-6 left-6 max-w-xs font-satoshi text-sm text-white/60 leading-relaxed">
-              Premium Australian-made LED signage and digital displays for casinos, clubs, and hotels. Designed and manufactured locally with precision.
+              Premium Australian-made LED signage and digital displays for
+              casinos, clubs, and hotels. Designed and manufactured locally with
+              precision.
             </p>
             {/* Spinning circular text */}
             <div className="absolute bottom-6 right-6 flex items-center justify-center w-24 h-24">
@@ -198,7 +204,10 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                     d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
                   />
                 </defs>
-                <text className="fill-white/60 text-[11px]" style={{ fontSize: 11, letterSpacing: "0.18em" }}>
+                <text
+                  className="fill-white/60 text-[11px]"
+                  style={{ fontSize: 11, letterSpacing: "0.18em" }}
+                >
                   <textPath href="#circle" startOffset="0%">
                     SEE OUR WORK • SEE OUR WORK •
                   </textPath>
