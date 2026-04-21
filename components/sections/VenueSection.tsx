@@ -11,6 +11,7 @@ import {
   useAnimationFrame,
   useInView,
 } from "motion/react";
+import Tag from "../Tag";
 
 const topRowLogos = [
   "aussie.png",
@@ -124,36 +125,38 @@ export default function VenueSection() {
   return (
     <section
       ref={containerRef}
-      className="w-full bg-[#0f0f0f] border-t border-[#2a2a2a] py-24 overflow-hidden"
+      className="w-full bg-neutral-800  overflow-hidden"
     >
-      <div className="max-w-[1600px] mx-auto px-10 mb-10">
-        <p className="label-mono mb-3">Trusted by venues across Australia</p>
+      <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700">
+        <Tag text="OUR CUSTOMERS" number="03" />
         <motion.h3
           ref={headingRef}
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-aller font-bold text-[#f0f0f0] text-3xl"
+          className="font-aller font-bold text-white text-5xl"
         >
           Chosen by Industry Leaders
         </motion.h3>
       </div>
+      <div className="border-y border-neutral-700 py-10">
+        <div className="mb-8">
+          <LogoRow
+            logos={topRowLogos}
+            baseVelocity={-1}
+            scrollVelocity={smoothVelocity}
+          />
+        </div>
 
-      {/* Top Row - scrolls left, speeds up when scrolling down */}
-      <div className="mb-8">
+        {/* Bottom Row - scrolls right, speeds up when scrolling up */}
         <LogoRow
-          logos={topRowLogos}
-          baseVelocity={-1}
+          logos={bottomRowLogos}
+          baseVelocity={1}
           scrollVelocity={smoothVelocity}
         />
       </div>
-
-      {/* Bottom Row - scrolls right, speeds up when scrolling up */}
-      <LogoRow
-        logos={bottomRowLogos}
-        baseVelocity={1}
-        scrollVelocity={smoothVelocity}
-      />
+      <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700"></div>
+      {/* Top Row - scrolls left, speeds up when scrolling down */}
     </section>
   );
 }

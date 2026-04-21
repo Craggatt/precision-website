@@ -76,7 +76,8 @@
   --font-aller:
     "Aller", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
   --font-satoshi:
-    "Satoshi Variable", system-ui, -apple-system, "Segoe UI", "Roboto", sans-serif;
+    "Satoshi Variable", system-ui, -apple-system, "Segoe UI", "Roboto",
+    sans-serif;
 
   /* 2.2 Font Weights (Restricted) */
   --font-weight-regular: 400;
@@ -251,16 +252,30 @@ code {
 }
 
 .background-texture {
-  background-color: #0f0f0f;
+  background-color: var(--color-neutral-800);
   background-image:
-    linear-gradient(#2a2a2a 1px, transparent 1px),
-    linear-gradient(to right, #2a2a2a 1px, #0f0f0f 1px);
-  background-size: 24px 24px;
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.background-diagonal {
+  background-color: var(--color-neutral-800);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-neutral-700) 0,
+    var(--color-neutral-700) 1px,
+    var(--color-neutral-800) 1px,
+    var(--color-neutral-800) 20px
+  );
 }
 
 .hero-dot-grid {
   background-color: #0a0a0a;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px
+  );
   background-size: 24px 24px;
 }
 
