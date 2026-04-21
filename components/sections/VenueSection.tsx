@@ -125,20 +125,23 @@ export default function VenueSection() {
   return (
     <section
       ref={containerRef}
-      className="w-full bg-neutral-800  overflow-hidden"
+      className="w-full bg-neutral-800  overflow-hidden "
     >
-      <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700">
-        <Tag text="OUR CUSTOMERS" number="03" />
-        <motion.h3
-          ref={headingRef}
-          initial={{ opacity: 0 }}
-          animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="font-aller font-bold text-white text-5xl"
-        >
-          Chosen by Industry Leaders
-        </motion.h3>
+      <div className="px-2.5 md:px-5 lg:px-10">
+        <div className="max-w-[1600px] mx-auto pt-10 px-2.5 md:px-5 lg:px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700">
+          <Tag text="OUR CUSTOMERS" number="03" />
+          <motion.h3
+            ref={headingRef}
+            initial={{ opacity: 0 }}
+            animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="font-aller font-bold text-white text-4xl lg:text-5xl"
+          >
+            Chosen by Industry Leaders
+          </motion.h3>
+        </div>
       </div>
+
       <div className="border-y border-neutral-700 py-10">
         <div className="mb-8">
           <LogoRow
@@ -155,7 +158,10 @@ export default function VenueSection() {
           scrollVelocity={smoothVelocity}
         />
       </div>
-      <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700"></div>
+
+      <div className="px-2.5 md:px-5 lg:px-10">
+        <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700"></div>
+      </div>
       {/* Top Row - scrolls left, speeds up when scrolling down */}
     </section>
   );
