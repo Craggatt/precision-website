@@ -37,21 +37,15 @@ export default function NewProductsSection() {
   const [menuHovered, setMenuHovered] = useState(false);
 
   return (
-    <div className="h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
+    <div className="lg:h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
       <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
         {/* Left: Gaming floor copy + buttons */}
         <div
-          className="flex flex-col justify-center px-10 gap-500 overflow-hidden"
-          style={{
-            flexGrow: menuHovered ? 1 : 1,
-            flexShrink: 1,
-            flexBasis: 0,
-            transition: "flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)",
-          }}
+          className={`flex flex-col justify-center py-10 px-2.5 md:px-5 lg:px-10 gap-500 overflow-hidden shrink lg:basis-0 grow transition-[flex-grow] duration-600 ease-[cubic-bezier(0.76,0,0.24,1)]`}
         >
           <div className="flex flex-col gap-300">
             <Tag number="01" text="OUR PRODUCTS" />
-            <h2 className="font-aller font-black text-5xl leading-tight">
+            <h2 className="font-aller font-black text-4xl lg:text-5xl leading-tight">
               Gaming floor <br />
               signage, engineered.
             </h2>

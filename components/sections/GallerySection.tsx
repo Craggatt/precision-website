@@ -33,7 +33,7 @@ export default function GallerySection() {
         <div className="max-w-[1600px] w-full mx-auto border-x border-b border-[#2a2a2a] p-2.5 md:p-5 py-10 lg:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div className="flex flex-col gap-300">
             <Tag number="02" text="OUR WORK" />
-            <h2 className="font-aller font-bold text-white text-3xl md:text-5xl leading-tight">
+            <h2 className="font-aller font-bold text-white text-4xl md:text-5xl leading-tight">
               Featured installations
             </h2>
           </div>
