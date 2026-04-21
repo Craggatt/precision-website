@@ -6,6 +6,7 @@ import { Search, X } from "lucide-react";
 import useProducts from "@/hooks/useProducts";
 import { ALL_CATEGORIES } from "@/store/productStore";
 import { Product, ProductCategory } from "@/types";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 const CATEGORY_COLORS: Record<ProductCategory, string> = {
   "Overbank Signage":
@@ -19,7 +20,7 @@ const CATEGORY_COLORS: Record<ProductCategory, string> = {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group flex flex-col bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition-colors duration-200 overflow-hidden">
+    <div className="group flex flex-col bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition-colors duration-200  h-fit">
       <div className="relative aspect-[4/3] overflow-hidden bg-neutral-800">
         <img
           src={product.feature_image}
@@ -51,11 +52,11 @@ function ProductCard({ product }: { product: Product }) {
           </p>
         )}
 
-        <p className="text-neutral-400 font-satoshi text-sm leading-relaxed line-clamp-3">
+        <p className="text-neutral-400 font-satoshi text-sm leading-relaxed line-clamp-2">
           {product.description}
         </p>
 
-        {product.features.length > 0 && (
+        {/* {product.features.length > 0 && (
           <ul className="mt-auto flex flex-col gap-1">
             {product.features.slice(0, 3).map((f) => (
               <li
@@ -67,7 +68,7 @@ function ProductCard({ product }: { product: Product }) {
               </li>
             ))}
           </ul>
-        )}
+        )} */}
 
         <div className="mt-3 pt-3 border-t border-neutral-700 flex gap-2">
           <button className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors">
@@ -100,9 +101,11 @@ export default function ProductsClient() {
 
   // Initialise store from URL on mount
   useEffect(() => {
-    const cats = searchParams.getAll("cat").filter((c) =>
-      ALL_CATEGORIES.includes(c as ProductCategory)
-    ) as ProductCategory[];
+    const cats = searchParams
+      .getAll("cat")
+      .filter((c) =>
+        ALL_CATEGORIES.includes(c as ProductCategory),
+      ) as ProductCategory[];
     setCategories(cats);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -113,7 +116,7 @@ export default function ProductsClient() {
       cats.forEach((c) => params.append("cat", c));
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams],
   );
 
   const handleToggle = useCallback(
@@ -124,7 +127,7 @@ export default function ProductsClient() {
       toggleCategory(cat);
       pushCats(next);
     },
-    [selectedCategories, toggleCategory, pushCats]
+    [selectedCategories, toggleCategory, pushCats],
   );
 
   const handleClear = useCallback(() => {
@@ -145,11 +148,13 @@ export default function ProductsClient() {
   const hasActiveFilters =
     selectedCategories.length > 0 || searchQuery.trim().length > 0;
 
+  const [parent] = useAutoAnimate({ duration: 300 });
+
   return (
-    <div className="flex-1 w-full px-10 flex flex-col">
-      <div className="max-w-[1600px] mx-auto w-full flex-1 flex flex-row">
+    <div className="flex-1 min-h-0 w-full flex flex-col ">
+      <div className=" mx-auto w-full flex-1 min-h-0 flex flex-row pl-[calc(max(2rem,50vw-760px))]">
         {/* Sidebar */}
-        <aside className="w-64 shrink-0 py-8 pr-8 flex flex-col gap-6 border-r border-neutral-700">
+        <aside className="w-64 shrink-0 py-8 pr-8 flex flex-col gap-6 border-r border-neutral-700 ">
           {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500 pointer-events-none" />
@@ -254,56 +259,62 @@ export default function ProductsClient() {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 py-8 pl-8 background-texture">
-          {/* Results header */}
-          <div className="flex items-center justify-between mb-6">
-            <p className="font-satoshi text-sm text-neutral-400">
-              {hasActiveFilters ? (
-                <>
-                  <span className="text-white font-semibold">
-                    {filteredProducts.length}
-                  </span>{" "}
-                  of{" "}
-                  <span className="text-white font-semibold">
-                    {allProducts.length}
-                  </span>{" "}
-                  products
-                </>
-              ) : (
-                <>
-                  All{" "}
-                  <span className="text-white font-semibold">
-                    {allProducts.length}
-                  </span>{" "}
-                  products
-                </>
-              )}
-            </p>
-          </div>
 
-          {/* Grid */}
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-400 ">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.name} product={product} />
-              ))}
+        <main data-lenis-prevent className="flex-1 min-h-0 w-full background-texture overflow-y-auto scrollbar-thin py-8 pl-8 pr-[calc(max(2rem,50vw-760px))]">
+          <div>
+            {/* Results header */}
+            <div className="flex items-center justify-between mb-6">
+              <p className="font-satoshi text-sm text-neutral-400">
+                {hasActiveFilters ? (
+                  <>
+                    <span className="text-white font-semibold">
+                      {filteredProducts.length}
+                    </span>{" "}
+                    of{" "}
+                    <span className="text-white font-semibold">
+                      {allProducts.length}
+                    </span>{" "}
+                    products
+                  </>
+                ) : (
+                  <>
+                    All{" "}
+                    <span className="text-white font-semibold">
+                      {allProducts.length}
+                    </span>{" "}
+                    products
+                  </>
+                )}
+              </p>
             </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-              <p className="font-aller font-bold text-white text-xl">
-                No products found
-              </p>
-              <p className="font-satoshi text-sm text-neutral-500">
-                Try adjusting your filters or search query.
-              </p>
-              <button
-                onClick={handleClear}
-                className="font-satoshi text-sm text-brand-primary hover:text-blue-400 transition-colors mt-1"
+
+            {/* Grid */}
+            {filteredProducts.length > 0 ? (
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-400 h-full "
+                ref={parent}
               >
-                Clear all filters
-              </button>
-            </div>
-          )}
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.name} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
+                <p className="font-aller font-bold text-white text-xl">
+                  No products found
+                </p>
+                <p className="font-satoshi text-sm text-neutral-500">
+                  Try adjusting your filters or search query.
+                </p>
+                <button
+                  onClick={handleClear}
+                  className="font-satoshi text-sm text-brand-primary hover:text-blue-400 transition-colors mt-1"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
+          </div>
         </main>
       </div>
     </div>
