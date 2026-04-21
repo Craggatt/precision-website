@@ -158,7 +158,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
     >
       <a
-        className="flex items-center justify-between px-10 h-full relative cursor-pointer uppercase no-underline font-semibold text-[4vh]"
+        className="flex items-center justify-between px-10 h-full relative cursor-pointer uppercase no-underline font-aller font-bold text-[4vh]"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -175,7 +175,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         <div className="h-full w-fit flex" ref={marqueeInnerRef}>
           {[...Array(repetitions)].map((_, idx) => (
             <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
-              <span className="whitespace-nowrap uppercase font-normal text-[4vh] leading-[1] px-[1vw]">{text}</span>
+              <span className="whitespace-nowrap uppercase font-aller font-bold text-[4vh] leading-none px-[1vw]">{text}</span>
               <div
                 className="w-[400px] h-[70%] mx-[2vw] bg-cover bg-center"
                 style={{ backgroundImage: `url(${image})` }}
