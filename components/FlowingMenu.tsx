@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect, useState } from 'react';
-import { gsap } from 'gsap';
-import { ArrowRight } from 'lucide-react';
+import React, { useRef, useEffect, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ArrowRight } from "lucide-react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface MenuItemData {
   link: string;
@@ -27,19 +30,36 @@ interface MenuItemProps extends MenuItemData {
   marqueeTextColor: string;
   borderColor: string;
   isFirst: boolean;
+  isMobile: boolean;
 }
 
 const FlowingMenu: React.FC<FlowingMenuProps> = ({
   items = [],
   speed = 15,
-  textColor = '#fff',
-  bgColor = '#120F17',
-  marqueeBgColor = '#fff',
-  marqueeTextColor = '#120F17',
-  borderColor = '#fff'
+  textColor = "#fff",
+  bgColor = "#120F17",
+  marqueeBgColor = "#fff",
+  marqueeTextColor = "#120F17",
+  borderColor = "#fff",
 }) => {
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px)").matches,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   return (
-    <div className="w-full h-full overflow-hidden" style={{ backgroundColor: bgColor }}>
+    <div
+      className="w-full h-full overflow-hidden"
+      style={{ backgroundColor: bgColor }}
+    >
       <nav className="flex flex-col h-full m-0 p-0">
         {items.map((item, idx) => (
           <MenuItem
@@ -51,6 +71,7 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({
             marqueeTextColor={marqueeTextColor}
             borderColor={borderColor}
             isFirst={idx === 0}
+            isMobile={isMobile}
           />
         ))}
       </nav>
@@ -67,7 +88,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
   marqueeBgColor,
   marqueeTextColor,
   borderColor,
-  isFirst
+  isFirst,
+  isMobile,
 }) => {
   const itemRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -75,18 +97,26 @@ const MenuItem: React.FC<MenuItemProps> = ({
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const [repetitions, setRepetitions] = useState(4);
 
-  const animationDefaults = { duration: 0.6, ease: 'expo' };
+  const animationDefaults = { duration: 0.6, ease: "expo" };
 
-  const findClosestEdge = (mouseX: number, mouseY: number, width: number, height: number): 'top' | 'bottom' => {
+  const findClosestEdge = (
+    mouseX: number,
+    mouseY: number,
+    width: number,
+    height: number,
+  ): "top" | "bottom" => {
     const topEdgeDist = Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY, 2);
-    const bottomEdgeDist = Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY - height, 2);
-    return topEdgeDist < bottomEdgeDist ? 'top' : 'bottom';
+    const bottomEdgeDist =
+      Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY - height, 2);
+    return topEdgeDist < bottomEdgeDist ? "top" : "bottom";
   };
 
   useEffect(() => {
     const calculateRepetitions = () => {
       if (!marqueeInnerRef.current) return;
-      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part') as HTMLElement;
+      const marqueeContent = marqueeInnerRef.current.querySelector(
+        ".marquee-part",
+      ) as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
       const viewportWidth = window.innerWidth;
@@ -95,14 +125,16 @@ const MenuItem: React.FC<MenuItemProps> = ({
     };
 
     calculateRepetitions();
-    window.addEventListener('resize', calculateRepetitions);
-    return () => window.removeEventListener('resize', calculateRepetitions);
+    window.addEventListener("resize", calculateRepetitions);
+    return () => window.removeEventListener("resize", calculateRepetitions);
   }, [text, image]);
 
   useEffect(() => {
     const setupMarquee = () => {
       if (!marqueeInnerRef.current) return;
-      const marqueeContent = marqueeInnerRef.current.querySelector('.marquee-part') as HTMLElement;
+      const marqueeContent = marqueeInnerRef.current.querySelector(
+        ".marquee-part",
+      ) as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
       if (contentWidth === 0) return;
@@ -114,8 +146,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
       animationRef.current = gsap.to(marqueeInnerRef.current, {
         x: -contentWidth,
         duration: speed,
-        ease: 'none',
-        repeat: -1
+        ease: "none",
+        repeat: -1,
       });
     };
 
@@ -128,34 +160,105 @@ const MenuItem: React.FC<MenuItemProps> = ({
     };
   }, [text, image, repetitions, speed]);
 
+  // Mobile: scroll-driven reveal via ScrollTrigger
+  useEffect(() => {
+    if (
+      !isMobile ||
+      !itemRef.current ||
+      !marqueeRef.current ||
+      !marqueeInnerRef.current
+    )
+      return;
+
+    const marqueeEl = marqueeRef.current;
+    const marqueeInnerEl = marqueeInnerRef.current;
+
+    const trigger = ScrollTrigger.create({
+      trigger: itemRef.current,
+      start: "top 30%",
+      end: "bottom 30%",
+      onEnter: () => {
+        gsap
+          .timeline({ defaults: animationDefaults })
+          .set(marqueeEl, { y: "101%" })
+          .set(marqueeInnerEl, { y: "-101%" })
+          .to([marqueeEl, marqueeInnerEl], { y: "0%" });
+      },
+      onLeave: () => {
+        gsap
+          .timeline({ defaults: animationDefaults })
+          .to(marqueeEl, { y: "-101%" })
+          .to(marqueeInnerEl, { y: "101%" }, 0);
+      },
+      onEnterBack: () => {
+        gsap
+          .timeline({ defaults: animationDefaults })
+          .set(marqueeEl, { y: "-101%" })
+          .set(marqueeInnerEl, { y: "101%" })
+          .to([marqueeEl, marqueeInnerEl], { y: "0%" });
+      },
+      onLeaveBack: () => {
+        gsap
+          .timeline({ defaults: animationDefaults })
+          .to(marqueeEl, { y: "101%" })
+          .to(marqueeInnerEl, { y: "-101%" }, 0);
+      },
+    });
+
+    return () => trigger.kill();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile]);
+
   const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
+    if (
+      isMobile ||
+      !itemRef.current ||
+      !marqueeRef.current ||
+      !marqueeInnerRef.current
+    )
+      return;
     const rect = itemRef.current.getBoundingClientRect();
-    const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
+    const edge = findClosestEdge(
+      ev.clientX - rect.left,
+      ev.clientY - rect.top,
+      rect.width,
+      rect.height,
+    );
 
     gsap
       .timeline({ defaults: animationDefaults })
-      .set(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-      .set(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0)
-      .to([marqueeRef.current, marqueeInnerRef.current], { y: '0%' }, 0);
+      .set(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+      .set(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0)
+      .to([marqueeRef.current, marqueeInnerRef.current], { y: "0%" }, 0);
   };
 
   const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
+    if (
+      isMobile ||
+      !itemRef.current ||
+      !marqueeRef.current ||
+      !marqueeInnerRef.current
+    )
+      return;
     const rect = itemRef.current.getBoundingClientRect();
-    const edge = findClosestEdge(ev.clientX - rect.left, ev.clientY - rect.top, rect.width, rect.height);
+    const edge = findClosestEdge(
+      ev.clientX - rect.left,
+      ev.clientY - rect.top,
+      rect.width,
+      rect.height,
+    );
 
     gsap
       .timeline({ defaults: animationDefaults })
-      .to(marqueeRef.current, { y: edge === 'top' ? '-101%' : '101%' }, 0)
-      .to(marqueeInnerRef.current, { y: edge === 'top' ? '101%' : '-101%' }, 0);
+      .to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }, 0)
+      .to(marqueeInnerRef.current, { y: edge === "top" ? "101%" : "-101%" }, 0);
   };
 
   return (
     <div
       className="flex-1 relative overflow-hidden text-center"
       ref={itemRef}
-      style={{ borderTop: isFirst ? 'none' : `1px solid ${borderColor}` }}
+      style={{ borderTop: isFirst ? "none" : `1px solid ${borderColor}` }}
     >
       <a
         className="flex items-center justify-between px-10 h-full relative cursor-pointer uppercase no-underline font-aller font-bold text-[4vh]"
@@ -174,8 +277,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
       >
         <div className="h-full w-fit flex" ref={marqueeInnerRef}>
           {[...Array(repetitions)].map((_, idx) => (
-            <div className="marquee-part flex items-center flex-shrink-0" key={idx} style={{ color: marqueeTextColor }}>
-              <span className="whitespace-nowrap uppercase font-aller font-bold text-[4vh] leading-none px-[1vw]">{text}</span>
+            <div
+              className="marquee-part flex items-center flex-shrink-0"
+              key={idx}
+              style={{ color: marqueeTextColor }}
+            >
+              <span className="whitespace-nowrap uppercase font-aller font-bold text-[4vh] leading-none px-[1vw]">
+                {text}
+              </span>
               <div
                 className="w-[400px] h-[70%] mx-[2vw] bg-cover bg-center"
                 style={{ backgroundImage: `url(${image})` }}
