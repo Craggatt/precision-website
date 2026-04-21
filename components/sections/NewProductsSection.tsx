@@ -41,7 +41,7 @@ export default function NewProductsSection() {
       <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
         {/* Left: Gaming floor copy + buttons */}
         <div
-          className={`flex flex-col justify-center py-10 px-2.5 md:px-5 lg:px-10 gap-500 overflow-hidden shrink lg:basis-0 grow transition-[flex-grow] duration-600 ease-[cubic-bezier(0.76,0,0.24,1)]`}
+          className={`flex flex-col justify-center py-10 px-2.5 md:px-5 lg:px-10 gap-500 overflow-hidden shrink lg:basis-0 grow transition-[flex-grow] duration-600 ease-[cubic-bezier(0.76,0,0.24,1)] min-h-[50vh]`}
         >
           <div className="flex flex-col gap-300">
             <Tag number="01" text="OUR PRODUCTS" />
@@ -73,7 +73,7 @@ export default function NewProductsSection() {
 
         {/* Right: Flowing product menu */}
         <div
-          className="border-l border-l-neutral-700"
+          className="border-t border-t-neutral-700 lg:border-t-0 lg:border-l lg:border-l-neutral-700"
           style={{
             flexGrow: menuHovered ? 2 : 1,
             flexShrink: 1,

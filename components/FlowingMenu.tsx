@@ -175,8 +175,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
     const trigger = ScrollTrigger.create({
       trigger: itemRef.current,
-      start: "top 30%",
-      end: "bottom 30%",
+      start: "top 50%",
+      end: "bottom 50%",
       onEnter: () => {
         gsap
           .timeline({ defaults: animationDefaults })
@@ -261,7 +261,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       style={{ borderTop: isFirst ? "none" : `1px solid ${borderColor}` }}
     >
       <a
-        className="flex items-center justify-between px-10 h-full relative cursor-pointer uppercase no-underline font-aller font-bold text-[4vh]"
+        className="flex items-center justify-between px-2.5 md:px-5 lg:px-10 h-full py-5 relative cursor-pointer uppercase no-underline font-aller font-bold text-[4vh]"
         href={link}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
