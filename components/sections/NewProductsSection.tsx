@@ -6,11 +6,11 @@ import Tag from "../Tag";
 import FlowingMenu from "../FlowingMenu";
 
 const menuItems = [
-  { link: "#", text: "Overbank Signage", image: "/images/casino-overbank.png" },
-  { link: "#", text: "Entry Displays", image: "/images/gaming-floor.png" },
-  { link: "#", text: "Screens", image: "/images/crossroads-hotel.jpg" },
-  { link: "#", text: "Infills", image: "/images/casino-overbank.png" },
-  { link: "#", text: "Jackpot History", image: "/images/gaming-floor.png" },
+  { link: "/products?cat=Overbank+Signage", text: "Overbank Signage", image: "/images/casino-overbank.png" },
+  { link: "/products?cat=Entry+Displays", text: "Entry Displays", image: "/images/gaming-floor.png" },
+  { link: "/products?cat=Screens", text: "Screens", image: "/images/crossroads-hotel.jpg" },
+  { link: "/products?cat=Infills", text: "Infills", image: "/images/casino-overbank.png" },
+  { link: "/products?cat=Jackpot+History", text: "Jackpot History", image: "/images/gaming-floor.png" },
 ];
 
 export default function NewProductsSection() {
@@ -43,12 +43,13 @@ export default function NewProductsSection() {
             aliquip ex ea commodo consequat.
           </p>
           <div className="flex flex-row gap-300">
-            <button
+            <a
+              href="/products"
               className="font-satoshi text-sm text-white px-5 py-2.5 rounded-sm transition-colors"
               style={{ border: "1px solid rgba(255,255,255,0.2)" }}
             >
               View Products
-            </button>
+            </a>
             <button className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-200 transition-colors font-medium flex items-center gap-200">
               Get a Quote
               <ArrowRight size={14} strokeWidth={1.5} />
