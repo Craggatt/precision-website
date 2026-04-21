@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import ProductsClient from "./ProductsClient";
 import Footer from "@/components/Footer";
@@ -15,7 +16,9 @@ export default function Products() {
             </p>
           </div>
         </div>
-        <ProductsClient />
+        <Suspense>
+          <ProductsClient />
+        </Suspense>
       </main>
     </>
   );
