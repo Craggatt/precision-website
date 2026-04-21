@@ -34,7 +34,6 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
   };
 
   const line1 = ["Transform", "your", "gaming", "floor", "into", "an"];
-  //const line2 = ["into", "an"];
 
   const word = (text: string, i: number) => (
     <span
@@ -79,10 +78,10 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
       className="font-aller text-white  leading-[1.06] tracking-tight "
       style={{ perspective: "1000px" }}
     >
-      <span className="block text-2xl sm:text-5xl md:text-[64px]">
+      <span className="block text-4xl sm:text-5xl md:text-[64px]">
         {line1.map((w, i) => word(w, i))}
       </span>
-      <span className="block font-bold text-3xl sm:text-5xl md:text-[64px]">
+      <span className="block font-bold text-5xl sm:text-5xl md:text-[64px]">
         {boldWord("unforgettable experience.", 0)}
       </span>
     </h1>
@@ -173,7 +172,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
       <div className="relative z-10 flex flex-col justify-between h-full">
         <div className="h-14" />
         <div className="px-2.5 md:px-5 lg:px-10">
-          <div className="relative w-full max-w-[1600px] px-2.5 md:px-5 mx-auto p-10 border-x border-white/20 h-fit">
+          <div className="relative w-full max-w-[1600px] px-2.5 md:px-5 mx-auto lg:px-10 py-10 border-x border-white/20 h-fit">
             <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
             <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>
             <AnimatedHeading ready={ready} />
@@ -183,15 +182,15 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
         </div>
 
         {/* Hero body */}
-        <div className="px-4 md:px-800 flex-1 border-y border-white/20">
+        <div className="px-2.5 md:px-5 lg:px-10 flex-1 border-y border-white/20">
           <div className="relative max-w-[1600px] overflow-hidden mx-auto h-full w-full border-x border-white/20">
-            <p className="absolute bottom-6 left-6 max-w-xs font-satoshi text-sm text-white/60 leading-relaxed">
+            <p className="absolute left-2.5 md:left-5 lg:left-10 bottom-2.5 md:bottom-5 lg:bottom-10 max-w-xs font-satoshi text-sm text-neutral-300 leading-relaxed">
               Premium Australian-made LED signage and digital displays for
               casinos, clubs, and hotels. Designed and manufactured locally with
               precision.
             </p>
             {/* Spinning circular text */}
-            <div className="absolute bottom-6 right-6 flex items-center justify-center w-24 h-24">
+            <div className="absolute right-2.5 md:right-5 lg:right-10 bottom-2.5 md:bottom-5 lg:bottom-10 flex items-center justify-center w-24 h-24">
               <motion.svg
                 viewBox="0 0 100 100"
                 className="absolute inset-0 w-full h-full"
@@ -205,7 +204,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                   />
                 </defs>
                 <text
-                  className="fill-white/60 text-[11px]"
+                  className="fill-white/80 text-[11px]"
                   style={{ fontSize: 11, letterSpacing: "0.18em" }}
                 >
                   <textPath href="#circle" startOffset="0%">
@@ -213,11 +212,11 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                   </textPath>
                 </text>
               </motion.svg>
-              <ArrowDown className="w-4 h-4 text-white/60 relative z-10" />
+              <ArrowDown className="w-4 h-4 text-white/80 relative z-10" />
             </div>
           </div>
         </div>
-        <div className="h-[80px]">
+        <div className="h-[40px] md:h-[60px] lg:h-[80px] px-2.5 md:px-5 lg:px-10">
           <div className="relative max-w-[1600px] mx-auto h-full w-full border-x border-white/20">
             <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>
             <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] right-[-3px] z-10"></div>

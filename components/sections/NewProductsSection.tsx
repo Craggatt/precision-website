@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
@@ -6,19 +6,39 @@ import Tag from "../Tag";
 import FlowingMenu from "../FlowingMenu";
 
 const menuItems = [
-  { link: "/products?cat=Overbank+Signage", text: "Overbank Signage", image: "/images/casino-overbank.png" },
-  { link: "/products?cat=Entry+Displays", text: "Entry Displays", image: "/images/gaming-floor.png" },
-  { link: "/products?cat=Screens", text: "Screens", image: "/images/crossroads-hotel.jpg" },
-  { link: "/products?cat=Infills", text: "Infills", image: "/images/casino-overbank.png" },
-  { link: "/products?cat=Jackpot+History", text: "Jackpot History", image: "/images/gaming-floor.png" },
+  {
+    link: "/products?cat=Overbank+Signage",
+    text: "Overbank Signage",
+    image: "/images/casino-overbank.png",
+  },
+  {
+    link: "/products?cat=Entry+Displays",
+    text: "Entry Displays",
+    image: "/images/gaming-floor.png",
+  },
+  {
+    link: "/products?cat=Screens",
+    text: "Screens",
+    image: "/images/crossroads-hotel.jpg",
+  },
+  {
+    link: "/products?cat=Infills",
+    text: "Infills",
+    image: "/images/casino-overbank.png",
+  },
+  {
+    link: "/products?cat=Jackpot+History",
+    text: "Jackpot History",
+    image: "/images/gaming-floor.png",
+  },
 ];
 
 export default function NewProductsSection() {
   const [menuHovered, setMenuHovered] = useState(false);
 
   return (
-    <div className="h-screen bg-neutral-900">
-      <div className="max-w-[1600px] mx-auto h-full flex flex-row border-x border-neutral-800">
+    <div className="h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
+      <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
         {/* Left: Gaming floor copy + buttons */}
         <div
           className="flex flex-col justify-center px-10 gap-500 overflow-hidden"
@@ -26,7 +46,7 @@ export default function NewProductsSection() {
             flexGrow: menuHovered ? 1 : 1,
             flexShrink: 1,
             flexBasis: 0,
-            transition: 'flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)',
+            transition: "flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)",
           }}
         >
           <div className="flex flex-col gap-300">
@@ -64,7 +84,7 @@ export default function NewProductsSection() {
             flexGrow: menuHovered ? 2 : 1,
             flexShrink: 1,
             flexBasis: 0,
-            transition: 'flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)',
+            transition: "flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)",
           }}
           onMouseEnter={() => setMenuHovered(true)}
           onMouseLeave={() => setMenuHovered(false)}
