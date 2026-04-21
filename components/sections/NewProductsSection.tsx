@@ -37,8 +37,8 @@ export default function NewProductsSection() {
   const [menuHovered, setMenuHovered] = useState(false);
 
   return (
-    <div className="h-screen bg-neutral-900">
-      <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-800">
+    <div className="h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
+      <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
         {/* Left: Gaming floor copy + buttons */}
         <div
           className="flex flex-col justify-center px-10 gap-500 overflow-hidden"
