@@ -1,34 +1,12 @@
 "use client";
 
 import { caseStudies } from "@/data/caseStudies";
-import { useEffect, useState } from "react";
+
 import CircularGallery from "../CircularGallery";
+import EmblaCarousel from "../EmblaCarousel";
 import Tag from "../Tag";
 
-const items = [
-  {
-    image: "/images/crossroads-hotel.jpg",
-    text: "Crossroads Hotel",
-  },
-  {
-    image: "/images/gaming-floor.png",
-    text: "Gaming Floor Install",
-  },
-  {
-    image: "/images/casino-overbank.png",
-    text: "Casino Overbank",
-  },
-];
-
 export default function GallerySection() {
-  const [bend, setBend] = useState(0.5);
-  useEffect(() => {
-    const check = () => setBend(window.innerWidth < 768 ? 0.1 : 0.5);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   const items = caseStudies.map((cs) => {
     return {
       image: `/_next/image?url=${encodeURIComponent(cs.feature_image)}&w=1920&q=75`,
@@ -39,7 +17,7 @@ export default function GallerySection() {
     <section className="bg-neutral-900 border-b border-t border-t-neutral-700 border-b-neutral-700 h-screen flex flex-col">
       {/* Section header — keep padding here */}
       <div className="px-2.5 md:px-5 lg:px-10">
-        <div className="max-w-[1600px] w-full mx-auto border-x border-b border-[#2a2a2a] p-2.5 md:p-5 py-10 lg:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div className="max-w-[1600px] w-full mx-auto border-x border-b border-[#2a2a2a] p-2.5 md:p-5 py-20 lg:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
           <div className="flex flex-col gap-300">
             <Tag number="02" text="OUR WORK" />
             <h2 className="font-aller font-bold text-white text-4xl md:text-5xl leading-tight">
@@ -63,11 +41,16 @@ export default function GallerySection() {
           />
         </div>
 
-        {/* Gallery itself — full viewport width */}
-        <div className="absolute inset-0 z-10 bg-linear-to-b from-neutral-900/0 to-neutral-900 -top-10">
+        {/* Mobile: Embla loop carousel */}
+        <div className="md:hidden absolute inset-0 z-10 flex flex-col justify-center px-2.5 pb-4">
+          <EmblaCarousel items={items} />
+        </div>
+
+        {/* Desktop: OGL circular gallery */}
+        <div className="hidden md:block absolute inset-0 z-10 bg-linear-to-b from-neutral-900/0 to-neutral-900 -top-10">
           <CircularGallery
             items={items}
-            bend={bend}
+            bend={0.5}
             textColor="rgba(255,255,255,0.8)"
             borderRadius={0}
             scrollEase={0.02}
