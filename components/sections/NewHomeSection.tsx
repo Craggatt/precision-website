@@ -184,7 +184,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
         {/* Hero body */}
         <div className="px-2.5 md:px-5 lg:px-10 flex-1 border-y border-white/20">
           <div className="relative max-w-[1600px] overflow-hidden mx-auto h-full w-full border-x border-white/20">
-            <p className="absolute left-2.5 md:left-5 lg:left-10 bottom-2.5 md:bottom-5 lg:bottom-10 max-w-xs font-satoshi text-sm text-neutral-300 leading-relaxed">
+            <p className="absolute left-2.5 md:left-5 lg:left-10 bottom-2.5 md:bottom-5 lg:bottom-10 max-w-xs font-satoshi text-sm text-neutral-300 leading-relaxed pr-10 md:pr-0">
               Premium Australian-made LED signage and digital displays for
               casinos, clubs, and hotels. Designed and manufactured locally with
               precision.

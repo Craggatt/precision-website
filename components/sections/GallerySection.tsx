@@ -1,6 +1,7 @@
 "use client";
 
 import { caseStudies } from "@/data/caseStudies";
+import { useEffect, useState } from "react";
 import CircularGallery from "../CircularGallery";
 import Tag from "../Tag";
 
@@ -20,6 +21,14 @@ const items = [
 ];
 
 export default function GallerySection() {
+  const [bend, setBend] = useState(0.5);
+  useEffect(() => {
+    const check = () => setBend(window.innerWidth < 768 ? 0.1 : 0.5);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const items = caseStudies.map((cs) => {
     return {
       image: `/_next/image?url=${encodeURIComponent(cs.feature_image)}&w=1920&q=75`,
@@ -58,7 +67,7 @@ export default function GallerySection() {
         <div className="absolute inset-0 z-10 bg-linear-to-b from-neutral-900/0 to-neutral-900 -top-10">
           <CircularGallery
             items={items}
-            bend={0.5}
+            bend={bend}
             textColor="rgba(255,255,255,0.8)"
             borderRadius={0}
             scrollEase={0.02}
