@@ -12,7 +12,7 @@ import GradualBlur from "@/components/GradualBlur";
 
 export default function Home() {
   return (
-    <main className="min-h-screen max-w-screen">
+    <main className="min-h-screen max-w-screen overlow-y-hidden">
       <HeroEntrance />
       <NewProductsSection />
       <GallerySection />
