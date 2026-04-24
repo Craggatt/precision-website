@@ -12,6 +12,7 @@ export interface PrecisionSignsCatalog {
 
 export interface Product {
   name: string;
+  slug: string;
   category: ProductCategory;
   subcategory: string | null;
   url: string;
