@@ -1,16 +1,18 @@
-import HomeSection from "@/components/sections/HomeSection";
-import StatsSection from "@/components/sections/StatsSection";
+"use client";
+
 import VenueSection from "@/components/sections/VenueSection";
-import ProductsSection from "@/components/sections/ProductsSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import CTASection from "@/components/sections/CTASection";
 import Footer from "@/components/Footer";
 import GallerySection from "@/components/sections/GallerySection";
 import NewProductsSection from "@/components/sections/NewProductsSection";
 import HeroEntrance from "@/components/HeroEntrance";
-import GradualBlur from "@/components/GradualBlur";
+import QuoteForm from "@/components/QuoteForm";
+import { useQuoteStore } from "@/store/quoteStore";
+import { AnimatePresence } from "motion/react";
 
 export default function Home() {
+  const open = useQuoteStore((s) => s.open);
   return (
     <main className="min-h-screen max-w-screen overlow-y-hidden">
       <HeroEntrance />
@@ -20,6 +22,7 @@ export default function Home() {
       <TestimonialsSection />
       <CTASection />
       <Footer />
+      <AnimatePresence>{open && <QuoteForm />}</AnimatePresence>
       {/* <GradualBlur
         target="page"
         position="bottom"

@@ -160,7 +160,7 @@ export default function VenueSection() {
       </div>
 
       <div className="px-2.5 md:px-5 lg:px-10">
-        <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700"></div>
+        <div className="max-w-[1600px] mx-auto pt-10 pb-10 px-10 flex flex-col gap-300 border-x border-neutral-700"></div>
       </div>
       {/* Top Row - scrolls left, speeds up when scrolling down */}
     </section>

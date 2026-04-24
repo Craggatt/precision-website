@@ -8,6 +8,7 @@ import useProducts from "@/hooks/useProducts";
 import { ALL_CATEGORIES } from "@/store/productStore";
 import { Product, ProductCategory } from "@/types";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import BorderGlow from "@/components/BorderGlow";
 
 const CATEGORY_COLORS: Record<ProductCategory, string> = {
   "Overbank Signage":
@@ -21,43 +22,53 @@ const CATEGORY_COLORS: Record<ProductCategory, string> = {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group flex flex-col bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition-colors duration-200  h-fit">
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-800">
-        <img
-          src={product.feature_image}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        {product.status && (
-          <div className="absolute top-3 left-3 bg-amber-500 text-black text-[0.65rem] font-satoshi font-bold px-2 py-0.5 uppercase tracking-wider">
-            {product.status}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-col flex-1 p-5 gap-3">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-aller font-bold text-white text-lg leading-tight">
-            {product.name}
-          </h3>
-          <span
-            className={`shrink-0 text-[0.65rem] font-satoshi font-semibold px-2 py-0.5 border rounded-sm uppercase tracking-wide ${CATEGORY_COLORS[product.category]}`}
-          >
-            {product.category}
-          </span>
+    <BorderGlow
+      backgroundColor="#171717"
+      borderRadius={0}
+      colors={["#0b6fd3", "#1a7fe3", "#0958a8"]}
+      glowColor="210 90 60"
+      glowIntensity={5}
+      glowRadius={100}
+      edgeSensitivity={5}
+      className="max-w-[1600px] mx-auto"
+    >
+      <div className="group flex flex-col bg-neutral-900 border border-neutral-700  duration-200  h-fit">
+        <div className="relative aspect-[4/3] overflow-hidden bg-neutral-800">
+          <img
+            src={product.feature_image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          {product.status && (
+            <div className="absolute top-3 left-3 bg-amber-500 text-black text-[0.65rem] font-satoshi font-bold px-2 py-0.5 uppercase tracking-wider">
+              {product.status}
+            </div>
+          )}
         </div>
 
-        {product.subcategory && (
-          <p className="text-neutral-500 font-satoshi text-xs uppercase tracking-wider -mt-1">
-            {product.subcategory}
+        <div className="flex flex-col flex-1 p-5 gap-3">
+          <div className="flex items-start justify-between gap-2">
+            <h3 className="font-aller font-bold text-white text-lg leading-tight">
+              {product.name}
+            </h3>
+            <span
+              className={`shrink-0 text-[0.65rem] font-satoshi font-semibold px-2 py-0.5 border rounded-sm uppercase tracking-wide ${CATEGORY_COLORS[product.category]}`}
+            >
+              {product.category}
+            </span>
+          </div>
+
+          {product.subcategory && (
+            <p className="text-neutral-500 font-satoshi text-xs uppercase tracking-wider -mt-1">
+              {product.subcategory}
+            </p>
+          )}
+
+          <p className="text-neutral-400 font-satoshi text-sm leading-relaxed line-clamp-2">
+            {product.description}
           </p>
-        )}
 
-        <p className="text-neutral-400 font-satoshi text-sm leading-relaxed line-clamp-2">
-          {product.description}
-        </p>
-
-        {/* {product.features.length > 0 && (
+          {/* {product.features.length > 0 && (
           <ul className="mt-auto flex flex-col gap-1">
             {product.features.slice(0, 3).map((f) => (
               <li
@@ -71,16 +82,17 @@ function ProductCard({ product }: { product: Product }) {
           </ul>
         )} */}
 
-        <div className="mt-3 pt-3 border-t border-neutral-700 flex gap-2">
-          <button className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors">
-            Learn More
-          </button>
-          <button className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors">
-            Get a Quote
-          </button>
+          <div className="mt-3 pt-3 border-t border-neutral-700 flex gap-2">
+            <button className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors">
+              Learn More
+            </button>
+            <button className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors">
+              Get a Quote
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </BorderGlow>
   );
 }
 
@@ -261,7 +273,10 @@ export default function ProductsClient() {
 
         {/* Main content */}
 
-        <main data-lenis-prevent className="flex-1 min-h-0 w-full background-texture overflow-y-auto scrollbar-thin py-8 pl-8 pr-[calc(max(2rem,50vw-760px))]">
+        <main
+          data-lenis-prevent
+          className="flex-1 min-h-0 w-full background-texture overflow-y-auto scrollbar-thin py-8 pl-8 pr-[calc(max(2rem,50vw-760px))]"
+        >
           <div>
             {/* Results header */}
             <div className="flex items-center justify-between mb-6">
