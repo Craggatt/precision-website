@@ -7,7 +7,7 @@ import { ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface MenuItemData {
+export interface MenuItemData {
   link: string;
   text: string;
   image: string;
@@ -43,9 +43,7 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({
   borderColor = "#fff",
 }) => {
   const [isMobile, setIsMobile] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(max-width: 768px)").matches,
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches,
   );
 
   useEffect(() => {
@@ -56,10 +54,7 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({
   }, []);
 
   return (
-    <div
-      className="w-full h-full overflow-hidden"
-      style={{ backgroundColor: bgColor }}
-    >
+    <div className="w-full h-full overflow-hidden" style={{ backgroundColor: bgColor }}>
       <nav className="flex flex-col h-full m-0 p-0">
         {items.map((item, idx) => (
           <MenuItem
@@ -106,17 +101,14 @@ const MenuItem: React.FC<MenuItemProps> = ({
     height: number,
   ): "top" | "bottom" => {
     const topEdgeDist = Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY, 2);
-    const bottomEdgeDist =
-      Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY - height, 2);
+    const bottomEdgeDist = Math.pow(mouseX - width / 2, 2) + Math.pow(mouseY - height, 2);
     return topEdgeDist < bottomEdgeDist ? "top" : "bottom";
   };
 
   useEffect(() => {
     const calculateRepetitions = () => {
       if (!marqueeInnerRef.current) return;
-      const marqueeContent = marqueeInnerRef.current.querySelector(
-        ".marquee-part",
-      ) as HTMLElement;
+      const marqueeContent = marqueeInnerRef.current.querySelector(".marquee-part") as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
       const viewportWidth = window.innerWidth;
@@ -132,9 +124,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   useEffect(() => {
     const setupMarquee = () => {
       if (!marqueeInnerRef.current) return;
-      const marqueeContent = marqueeInnerRef.current.querySelector(
-        ".marquee-part",
-      ) as HTMLElement;
+      const marqueeContent = marqueeInnerRef.current.querySelector(".marquee-part") as HTMLElement;
       if (!marqueeContent) return;
       const contentWidth = marqueeContent.offsetWidth;
       if (contentWidth === 0) return;
@@ -162,13 +152,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
 
   // Mobile: scroll-driven reveal via ScrollTrigger
   useEffect(() => {
-    if (
-      !isMobile ||
-      !itemRef.current ||
-      !marqueeRef.current ||
-      !marqueeInnerRef.current
-    )
-      return;
+    if (!isMobile || !itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
 
     const marqueeEl = marqueeRef.current;
     const marqueeInnerEl = marqueeInnerRef.current;
@@ -210,13 +194,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   }, [isMobile]);
 
   const handleMouseEnter = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-    if (
-      isMobile ||
-      !itemRef.current ||
-      !marqueeRef.current ||
-      !marqueeInnerRef.current
-    )
-      return;
+    if (isMobile || !itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(
       ev.clientX - rect.left,
@@ -233,13 +211,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   };
 
   const handleMouseLeave = (ev: React.MouseEvent<HTMLAnchorElement>) => {
-    if (
-      isMobile ||
-      !itemRef.current ||
-      !marqueeRef.current ||
-      !marqueeInnerRef.current
-    )
-      return;
+    if (isMobile || !itemRef.current || !marqueeRef.current || !marqueeInnerRef.current) return;
     const rect = itemRef.current.getBoundingClientRect();
     const edge = findClosestEdge(
       ev.clientX - rect.left,

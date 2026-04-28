@@ -3,44 +3,14 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import Tag from "../Tag";
-
-const testimonials = [
-  {
-    quote:
-      "The overbank signage Precision installed across our gaming floor has been running 24/7 for three years without a single failure. The quality is unmatched.",
-    author: "James Hollis",
-    role: "Gaming Floor Manager",
-    venue: "The Star Sydney",
-  },
-  {
-    quote:
-      "From design brief to installation, the whole process was seamless. They understood our brand requirements and delivered something that genuinely elevates the space.",
-    author: "Karen Mace",
-    role: "Head of Operations",
-    venue: "Twin Towns Services Club",
-  },
-  {
-    quote:
-      "We've used three different signage suppliers over the years. Precision Signs is the only one that actually builds for the demands of a casino environment.",
-    author: "David Nguyen",
-    role: "Facilities Director",
-    venue: "Crown Melbourne",
-  },
-  {
-    quote:
-      "Their team had our entry displays installed over a weekend with zero disruption to trading. The result looks incredible and our members have noticed.",
-    author: "Sarah Okoye",
-    role: "Club Manager",
-    venue: "Bankstown Sports Club",
-  },
-];
+import { Media, Testimonial } from "@/payload-types";
 
 function TestimonialCell({
   testimonial,
   index,
   isRightCol,
 }: {
-  testimonial: (typeof testimonials)[0];
+  testimonial: Testimonial;
   index: number;
   isRightCol: boolean;
 }) {
@@ -49,6 +19,9 @@ function TestimonialCell({
 
   const isLeftCol = !isRightCol;
   const isFirstRow = index < 2;
+
+  const profileImg = testimonial.profilePicture?.value;
+  const profileUrl = typeof profileImg === "object" ? (profileImg as Media).url ?? null : null;
 
   return (
     <motion.div
@@ -65,7 +38,6 @@ function TestimonialCell({
         .filter(Boolean)
         .join(" ")}
     >
-      {/* Quote mark */}
       <span
         className="block font-aller font-bold text-[3rem] leading-none lg:mb-4 text-neutral-600"
         aria-hidden
@@ -78,13 +50,21 @@ function TestimonialCell({
       </p>
 
       <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-full shrink-0 bg-neutral-300" />
+        {profileUrl ? (
+          <img
+            src={profileUrl}
+            alt={testimonial.name ?? ""}
+            className="w-9 h-9 rounded-full shrink-0 object-cover"
+          />
+        ) : (
+          <div className="w-9 h-9 rounded-full shrink-0 bg-neutral-600" />
+        )}
         <div>
           <p className="font-aller font-bold text-neutral-200 text-[0.85rem] leading-snug">
-            {testimonial.author}
+            {testimonial.name}
           </p>
           <p className="font-satoshi text-[0.75rem] text-neutral-400 mt-0.5">
-            {testimonial.role} · {testimonial.venue}
+            {testimonial.position} · {testimonial.organisation}
           </p>
         </div>
       </div>
@@ -92,12 +72,23 @@ function TestimonialCell({
   );
 }
 
-export default function TestimonialsSection() {
+interface TestimonialSectionProps {
+  testimonials: Testimonial[];
+}
+
+export default function TestimonialsSection({ testimonials }: TestimonialSectionProps) {
   const headingRef = useRef<HTMLDivElement>(null);
   const isHeadingInView = useInView(headingRef, {
     once: true,
     margin: "0px 0px -10% 0px",
   });
+
+  const featured = testimonials.filter((t) => t.isFeatured);
+  const display = featured.slice(0, 4);
+  if (display.length < 4 && testimonials.length > 0) {
+    const first = testimonials[0];
+    while (display.length < 4) display.push(first);
+  }
 
   const totalCols = 2;
 
@@ -120,24 +111,21 @@ export default function TestimonialsSection() {
             </h2>
           </div>
           <p className="font-satoshi text-neutral-400 text-[0.9rem] leading-relaxed max-w-sm">
-            From major casinos to regional clubs, our signage is installed
-            across hundreds of gaming venues nationwide.
+            From major casinos to regional clubs, our signage is installed across hundreds of gaming
+            venues nationwide.
           </p>
         </motion.div>
 
         {/* Testimonial grid — 2 columns */}
         <div className="grid grid-cols-1 md:grid-cols-2">
-          {testimonials.map((testimonial, index) => {
-            const col = index % totalCols;
-            return (
-              <TestimonialCell
-                key={testimonial.author}
-                testimonial={testimonial}
-                index={index}
-                isRightCol={col === totalCols - 1}
-              />
-            );
-          })}
+          {display.map((testimonial, index) => (
+            <TestimonialCell
+              key={`${testimonial.id}-${index}`}
+              testimonial={testimonial}
+              index={index}
+              isRightCol={index % totalCols === totalCols - 1}
+            />
+          ))}
         </div>
       </div>
     </section>

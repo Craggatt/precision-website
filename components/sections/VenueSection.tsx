@@ -12,33 +12,14 @@ import {
   useInView,
 } from "motion/react";
 import Tag from "../Tag";
-
-const topRowLogos = [
-  "aussie.png",
-  "bayview.png",
-  "bradys.png",
-  "castlereagh.png",
-  "crown.png",
-  "farrer.png",
-  "federal.png",
-];
-
-const bottomRowLogos = [
-  "hornsby.png",
-  "hunter.png",
-  "lodge.png",
-  "moorebank.png",
-  "northside.png",
-  "parc.png",
-  "woywoy.png",
-];
+import { Media, VenueLogo } from "@/payload-types";
 
 function LogoRow({
   logos,
   baseVelocity,
   scrollVelocity,
 }: {
-  logos: string[];
+  logos: VenueLogo[];
   baseVelocity: number;
   scrollVelocity: ReturnType<typeof useSpring>;
 }) {
@@ -89,25 +70,33 @@ function LogoRow({
   return (
     <div className="relative overflow-hidden">
       <motion.div ref={rowRef} className="flex gap-12" style={{ x: baseX }}>
-        {tripleLogos.map((logo, index) => (
-          <div
-            key={`${logo}-${index}`}
-            className="shrink-0 w-50 h-25 relative grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-300"
-          >
-            <Image
-              src={`/images/venues/${logo}`}
-              alt={logo.replace(".png", "")}
-              fill
-              className="object-contain"
-            />
-          </div>
-        ))}
+        {tripleLogos.map((logo, index) => {
+          const img = logo.image.value;
+          const url = typeof img === "object" ? ((img as Media).url ?? "") : "";
+          return (
+            <div
+              key={`${logo.id}-${index}`}
+              className="shrink-0 w-50 h-25 relative grayscale opacity-40 hover:grayscale-0 hover:opacity-80 transition-all duration-300"
+            >
+              {url && <Image src={url} alt={logo.name} fill className="object-contain" />}
+            </div>
+          );
+        })}
       </motion.div>
     </div>
   );
 }
 
-export default function VenueSection() {
+interface VenueSectionProps {
+  venueLogos: VenueLogo[];
+}
+
+export default function VenueSection({ venueLogos }: VenueSectionProps) {
+  const sorted = [...venueLogos].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
+  const mid = Math.ceil(sorted.length / 2);
+  const topRowLogos = sorted.slice(0, mid);
+  const bottomRowLogos = sorted.slice(mid);
+
   const containerRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const isHeadingInView = useInView(headingRef, {
@@ -123,10 +112,7 @@ export default function VenueSection() {
   });
 
   return (
-    <section
-      ref={containerRef}
-      className="w-full bg-neutral-800  overflow-hidden "
-    >
+    <section ref={containerRef} className="w-full bg-neutral-800  overflow-hidden ">
       <div className="px-2.5 md:px-5 lg:px-10">
         <div className="max-w-[1600px] mx-auto pt-10 px-2.5 md:px-5 lg:px-10 pb-10 flex flex-col gap-300 border-x border-neutral-700">
           <Tag text="OUR CUSTOMERS" number="03" />
@@ -144,19 +130,11 @@ export default function VenueSection() {
 
       <div className="border-y border-neutral-700 py-10">
         <div className="mb-8">
-          <LogoRow
-            logos={topRowLogos}
-            baseVelocity={-1}
-            scrollVelocity={smoothVelocity}
-          />
+          <LogoRow logos={topRowLogos} baseVelocity={-1} scrollVelocity={smoothVelocity} />
         </div>
 
         {/* Bottom Row - scrolls right, speeds up when scrolling up */}
-        <LogoRow
-          logos={bottomRowLogos}
-          baseVelocity={1}
-          scrollVelocity={smoothVelocity}
-        />
+        <LogoRow logos={bottomRowLogos} baseVelocity={1} scrollVelocity={smoothVelocity} />
       </div>
 
       <div className="px-2.5 md:px-5 lg:px-10">
