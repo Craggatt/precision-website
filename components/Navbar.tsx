@@ -4,10 +4,17 @@ import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import BorderGlow from "./BorderGlow";
 import { useQuoteStore } from "@/store/quoteStore";
+import { Media, Product, ProductCategory, ProductSubcategory } from "@/payload-types";
 
 const navItems = ["Products", "Custom", "Support", "Blog"];
 
-export default function Navbar({ ready }: { ready: boolean }) {
+interface NavbarProps {
+  ready: boolean;
+  products: Product[];
+  productCategories: ProductCategory[];
+}
+
+export default function Navbar({ ready, products, productCategories }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [productsHovered, setProductsHovered] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -28,124 +35,35 @@ export default function Navbar({ ready }: { ready: boolean }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menu = [
-    {
-      name: "Overbank Signage",
-      description:
-        "Precision Signs offer content support with each Halo purchase, which includes free game theme changes if required for 12 months.",
-      category: [
-        {
-          name: "Mini",
-          items: [
-            {
-              name: "Halo Mini Single Sided",
-            },
-            {
-              name: "Halo Mini Double Sided",
-            },
-            {
-              name: "Halo Mini Carousel",
-            },
-          ],
-        },
-        {
-          name: "Standard",
-          items: [
-            {
-              name: "Halo Single Sided",
-            },
-            {
-              name: "Halo Double Sided",
-            },
-            {
-              name: "Halo Carousel",
-            },
-          ],
-        },
-        {
-          name: "Maxi",
-          items: [
-            {
-              name: "Halo Maxi Single Sided",
-            },
-            {
-              name: "Halo Maxi Double Sided",
-            },
-            {
-              name: "Halo Maxi Carousel",
-            },
-          ],
-        },
-        {
-          name: "GameRise",
-          items: [
-            {
-              name: "GameRise",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Entry Displays",
-      description:
-        "Precision Signs offer content support with each Halo purchase, which includes free game theme changes if required for 12 months.",
-      category: [
-        {
-          name: "Gongs",
-          items: [
-            {
-              name: "Gong - 1200",
-            },
-            {
-              name: "Gong - 1850",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Screens",
-      description:
-        "Precision Signs offer content support with each Halo purchase, which includes free game theme changes if required for 12 months.",
-      category: [
-        {
-          name: "End of Bank",
-          items: [
-            {
-              name: "Bank Ends",
-            },
-            {
-              name: 'Neoglass 55"',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Infills",
-      description:
-        "Precision Signs offer content support with each Halo purchase, which includes free game theme changes if required for 12 months.",
-      category: [
-        {
-          name: "LED Infill",
-          items: [
-            {
-              name: "Monolith Mini",
-            },
-            {
-              name: "Monolith",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      name: "Overbank Signage",
-      description:
-        "Precision Signs offer content support with each Halo purchase, which includes free game theme changes if required for 12 months.",
-    },
-  ];
+  const menu = productCategories.map((cat) => {
+    const thumbnailImg = cat.thumbnail.value;
+    const thumbnailUrl =
+      typeof thumbnailImg === "object" ? ((thumbnailImg as Media).url ?? null) : null;
+
+    const catProducts = products.filter((p) => {
+      const c = p.category;
+      return typeof c === "object" ? c.id === cat.id : c === cat.id;
+    });
+
+    const subcategoryMap: Record<string, string[]> = {};
+    for (const product of catProducts) {
+      const subs = product.subcategory;
+      let subName = "General";
+      if (subs && subs.length > 0) {
+        const first = subs[0];
+        subName = typeof first === "object" ? (first as ProductSubcategory).name : "General";
+      }
+      if (!subcategoryMap[subName]) subcategoryMap[subName] = [];
+      subcategoryMap[subName].push(product.name);
+    }
+
+    const subcategories = Object.entries(subcategoryMap).map(([name, items]) => ({
+      name,
+      items,
+    }));
+
+    return { id: cat.id, name: cat.name, slug: cat.slug, thumbnailUrl, subcategories };
+  });
 
   return (
     <>
@@ -241,56 +159,47 @@ export default function Navbar({ ready }: { ready: boolean }) {
                   exit={{ opacity: 0, y: 40 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 >
-                  <div className="flex flex-row w-full ">
-                    {menu.map((item) => {
-                      return (
-                        <div
-                          className="flex flex-col p-5 border-l border-l-neutral-700"
-                          key={item.name}
-                        >
+                  <div className="flex flex-row w-full">
+                    {menu.map((item) => (
+                      <a
+                        href={`/products?cat=${encodeURIComponent(item.name)}`}
+                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 hover:bg-neutral-800/50 transition-colors"
+                        key={item.id}
+                      >
+                        {item.thumbnailUrl && (
                           <img
-                            src="https://precisionsigns.com.au/wp-content/uploads/2023/07/Halo-Maxi-4.png"
+                            src={item.thumbnailUrl}
                             alt={item.name}
-                            className="w-28"
+                            className="w-28 h-20 object-contain"
                           />
-                          <h3 className="font-aller text-xl mt-2">
-                            Overbank Signage
-                          </h3>
-                          <p className="font-satoshi text-sm text-neutral-400">
-                            Precision Signs offer content support with each Halo
-                            purchase, which includes free game theme changes if
-                            required for 12 months.
-                          </p>
-                        </div>
-                      );
-                    })}
+                        )}
+                        <h3 className="font-aller text-xl mt-2">{item.name}</h3>
+                      </a>
+                    ))}
                   </div>
                   <div className="flex flex-row w-full bg-neutral-800">
                     {menu.map((item) => (
                       <div
-                        key={item.name}
-                        className="flex-col  p-5 border-l border-l-neutral-700 flex-1 gap-6 flex"
+                        key={item.id}
+                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 gap-6"
                       >
-                        {item &&
-                          item?.category?.map((category, index) => (
-                            <div key={index} className="flex flex-col ">
-                              <div>
-                                <h3 className="uppercase font-mono text-neutral-400 mb-2">
-                                  {category.name}
-                                </h3>
-                                <div className="flex flex-col gap-1">
-                                  {category.items.map((product) => (
-                                    <h4
-                                      key={product.name}
-                                      className="font-aller text-neutral-300"
-                                    >
-                                      {product.name}
-                                    </h4>
-                                  ))}
-                                </div>
-                              </div>
+                        {item.subcategories.map((sub) => (
+                          <div key={sub.name} className="flex flex-col">
+                            <h3 className="uppercase font-mono text-neutral-400 text-xs mb-2">
+                              {sub.name}
+                            </h3>
+                            <div className="flex flex-col gap-1">
+                              {sub.items.map((productName) => (
+                                <h4
+                                  key={productName}
+                                  className="font-aller text-neutral-300 text-sm"
+                                >
+                                  {productName}
+                                </h4>
+                              ))}
                             </div>
-                          ))}
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>

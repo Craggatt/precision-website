@@ -1,200 +1,114 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useInView } from "motion/react";
-import { useRef } from "react";
-import CornerSquares from "../CornerSquares";
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import Tag from "../Tag";
+import FlowingMenu, { MenuItemData } from "../FlowingMenu";
+import { Product, ProductCategory } from "@/payload-types";
+import { ProductCategories } from "@/collections/ProductCategories";
 
-const featuredProduct = {
-  name: "Halo Maxi",
-  variant: "Double Sided",
-  description: "Our flagship overbank signage unit — dual-faced LED display engineered for maximum gaming floor visibility. Built to Australian standards with premium aluminium extrusion and customisable RGB lighting zones.",
-  image: "/images/products/Halo-Maxi-4.png",
-};
-
-const products = [
+const menuItems = [
   {
-    name: "Halo Maxi",
-    variant: "Single Sided",
-    image: "/images/products/Halo-Maxi-4.png",
+    link: "/products?cat=Overbank+Signage",
+    text: "Overbank Signage",
+    image: "/images/casino-overbank.png",
   },
   {
-    name: "Halo Maxi",
-    variant: "Corner Unit",
-    image: "/images/products/Halo-Maxi-4.png",
+    link: "/products?cat=Entry+Displays",
+    text: "Entry Displays",
+    image: "/images/gaming-floor.png",
   },
   {
-    name: "Halo Maxi",
-    variant: "Entry Display",
-    image: "/images/products/Halo-Maxi-4.png",
+    link: "/products?cat=Screens",
+    text: "Screens",
+    image: "/images/crossroads-hotel.jpg",
   },
   {
-    name: "Halo Maxi",
-    variant: "Infill Panel",
-    image: "/images/products/Halo-Maxi-4.png",
+    link: "/products?cat=Infills",
+    text: "Infills",
+    image: "/images/casino-overbank.png",
+  },
+  {
+    link: "/products?cat=Jackpot+History",
+    text: "Jackpot History",
+    image: "/images/gaming-floor.png",
   },
 ];
 
-function FeaturedCell() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px 0px -10% 0px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="relative col-span-2 row-span-2 border-r border-[#e5e5e5] flex flex-col"
-    >
-      <CornerSquares bg="#e5e5e5" />
-
-      {/* Image */}
-      <div className="relative flex-1 bg-[#f5f5f5] overflow-hidden min-h-[300px]">
-        <Image
-          src={featuredProduct.image}
-          alt={featuredProduct.name}
-          fill
-          className="object-contain p-12"
-        />
-        <span
-          className="absolute top-4 left-4 font-satoshi text-[0.7rem] tracking-widest uppercase px-2.5 py-1"
-          style={{ background: "#111111", color: "#ffffff" }}
-        >
-          Featured
-        </span>
-      </div>
-
-      {/* Info */}
-      <div className="flex flex-col p-8 md:p-10 border-t border-[#e5e5e5]">
-        <p className="font-satoshi text-meta tracking-widest uppercase text-[#aaaaaa] mb-2">
-          {featuredProduct.variant}
-        </p>
-        <h3 className="font-aller font-bold text-[#111111] text-3xl md:text-4xl leading-tight mb-4">
-          {featuredProduct.name}
-        </h3>
-        <p className="font-satoshi text-[0.9rem] text-[#666666] leading-relaxed mb-6">
-          {featuredProduct.description}
-        </p>
-        <div className="flex items-center gap-3">
-          <button className="font-satoshi text-[0.82rem] px-5 py-2.5 rounded-sm bg-[#111111] text-white hover:bg-[#2a2a2a] transition-colors font-medium">
-            Find out More
-          </button>
-          <button
-            className="font-satoshi text-[0.82rem] px-5 py-2.5 rounded-sm text-[#111111] hover:bg-[#f0f0f0] transition-colors"
-            style={{ border: "1px solid #e5e5e5" }}
-          >
-            Get a Quote
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
+interface ProductsSectionProps {
+  productCategories: ProductCategory[];
 }
 
-function ProductCell({
-  product,
-  index,
-}: {
-  product: (typeof products)[0];
-  index: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px 0px -5% 0px" });
-
+export default function ProductsSection({ productCategories }: ProductsSectionProps) {
+  const [menuHovered, setMenuHovered] = useState(false);
+  const menuItems = productCategories.map((category) => {
+    const img = category.featuredImage.value;
+    const imageUrl = typeof img === "object" ? (img.url ?? undefined) : undefined;
+    if (!imageUrl) {
+      return;
+    }
+    return {
+      link: `/products?cat=${category.name}`,
+      text: category.name,
+      image: imageUrl,
+    };
+  }) as MenuItemData[];
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0 }}
-      animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.07, ease: "easeOut" }}
-      className={`relative p-6 border-b border-[#e5e5e5] ${index % 2 === 0 ? "border-r" : ""} ${index >= 2 ? "border-b-0" : ""}`}
-    >
-      <CornerSquares bg="#e5e5e5" />
-
-      {/* Image */}
-      <div className="relative w-full aspect-4/3 bg-[#f5f5f5] border border-[#e5e5e5] overflow-hidden mb-5">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-contain p-4"
-        />
-      </div>
-
-      {/* Info */}
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="font-aller font-bold text-[#111111] text-base leading-snug">
-            {product.name}
-          </p>
-          <p className="font-satoshi text-[0.8rem] text-[#aaaaaa] mt-0.5">
-            {product.variant}
-          </p>
-        </div>
-        <button
-          className="font-satoshi text-[0.75rem] text-[#666666] px-3 py-1.5 rounded-sm hover:text-[#111111] transition-colors shrink-0"
-          style={{ border: "1px solid #e5e5e5" }}
+    <div className="lg:h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
+      <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
+        {/* Left: Gaming floor copy + buttons */}
+        <div
+          className={`flex flex-col justify-center py-10 px-2.5 md:px-5 lg:px-10 gap-500 overflow-hidden shrink lg:basis-0 grow transition-[flex-grow] duration-600 ease-[cubic-bezier(0.76,0,0.24,1)] min-h-[50vh]`}
         >
-          Find out More
-        </button>
-      </div>
-    </motion.div>
-  );
-}
-
-export default function ProductsSection() {
-  const headingRef = useRef<HTMLDivElement>(null);
-  const isHeadingInView = useInView(headingRef, {
-    once: true,
-    margin: "0px 0px -15% 0px",
-  });
-
-  return (
-    <section className="border-t border-[#e5e5e5] overflow-hidden bg-white">
-      <div className="max-w-[1600px] mx-auto border-x border-[#e5e5e5] bg-white">
-        {/* Section header */}
-        <motion.div
-          ref={headingRef}
-          initial={{ opacity: 0 }}
-          animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="relative px-5 md:px-10 py-10 md:py-12 border-b border-[#e5e5e5] flex flex-col md:flex-row md:items-end md:justify-between gap-4"
-        >
-          <CornerSquares bg="#e5e5e5" />
-          <div>
-            <p className="label-mono mb-3 text-[#aaaaaa]">Product catalogue</p>
-            <h2 className="font-aller font-bold text-[#111111] text-3xl md:text-4xl leading-tight">
-              Our Product Range
+          <div className="flex flex-col gap-300">
+            <Tag number="01" text="OUR PRODUCTS" />
+            <h2 className="font-aller font-black text-4xl lg:text-5xl leading-tight">
+              Gaming floor <br />
+              signage, engineered.
             </h2>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
-            {["Overbank Signage", "Entry Displays", "Screens", "Infills"].map(
-              (cat, i) => (
-                <button
-                  key={cat}
-                  className="font-satoshi text-[0.78rem] px-3 py-1.5 rounded-sm transition-colors"
-                  style={{
-                    border: "1px solid #e5e5e5",
-                    background: i === 0 ? "#111111" : "transparent",
-                    color: i === 0 ? "#ffffff" : "#888888",
-                  }}
-                >
-                  {cat}
-                </button>
-              ),
-            )}
+          <p className="font-satoshi text-neutral-400 text-sm leading-relaxed max-w-sm">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+          <div className="flex flex-row gap-300">
+            <a
+              href="/products"
+              className="font-satoshi text-sm text-white px-5 py-2.5 rounded-sm transition-colors"
+              style={{ border: "1px solid rgba(255,255,255,0.2)" }}
+            >
+              View Products
+            </a>
+            <button className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-200 transition-colors font-medium flex items-center gap-200">
+              Get a Quote
+              <ArrowRight size={14} strokeWidth={1.5} />
+            </button>
           </div>
-        </motion.div>
+        </div>
 
-        {/* 4-col grid: featured spans left 2 cols × 2 rows, 4 products fill right 2 cols × 2 rows */}
-        <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2">
-          <FeaturedCell />
-          {products.map((product, index) => (
-            <ProductCell key={index} product={product} index={index} />
-          ))}
+        {/* Right: Flowing product menu */}
+        <div
+          className="border-t border-t-neutral-700 lg:border-t-0 lg:border-l lg:border-l-neutral-700"
+          style={{
+            flexGrow: menuHovered ? 2 : 1,
+            flexShrink: 1,
+            flexBasis: 0,
+            transition: "flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)",
+          }}
+          onMouseEnter={() => setMenuHovered(true)}
+          onMouseLeave={() => setMenuHovered(false)}
+        >
+          <FlowingMenu
+            items={menuItems}
+            bgColor="#14171a"
+            marqueeBgColor="#0b6fd3"
+            marqueeTextColor="#ffffff"
+            borderColor="#404040"
+            textColor="#ffffff"
+          />
         </div>
       </div>
-    </section>
+    </div>
   );
 }

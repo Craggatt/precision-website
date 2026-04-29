@@ -72,7 +72,7 @@ export default function QuoteForm() {
         initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
         <motion.div
           className="bg-neutral-800 w-full px-2.5 md:px-5  lg:px-10 border-t border-t-neutral-700"

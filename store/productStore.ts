@@ -1,37 +1,42 @@
 import { create } from "zustand";
-import { Product, ProductCategory } from "@/types";
-import { wesbiteData } from "@/data/products";
-
-const ALL_CATEGORIES: ProductCategory[] = [
-  "Overbank Signage",
-  "Entry Displays",
-  "Screens",
-  "Infills",
-  "Jackpot History",
-  "Large Screens",
-];
+import { Product, ProductCategory } from "@/payload-types";
 
 interface ProductStore {
   allProducts: Product[];
-  selectedCategories: ProductCategory[];
+  categories: ProductCategory[];
+  selectedCategories: string[];
   searchQuery: string;
   filteredProducts: Product[];
+  isLoading: boolean;
 
-  toggleCategory: (category: ProductCategory) => void;
-  setCategories: (categories: ProductCategory[]) => void;
+  fetchProducts: () => Promise<void>;
+  toggleCategory: (name: string) => void;
+  setCategories: (names: string[]) => void;
   clearFilters: () => void;
   setSearchQuery: (query: string) => void;
 }
 
+function getCategoryName(product: Product): string {
+  return typeof product.category === "object" ? product.category.name : "";
+}
+
+function extractText(node: Record<string, unknown>): string {
+  if (typeof node.text === "string") return node.text;
+  if (Array.isArray(node.children)) {
+    return (node.children as Record<string, unknown>[]).map(extractText).join(" ");
+  }
+  return "";
+}
+
 function applyFilters(
   products: Product[],
-  selectedCategories: ProductCategory[],
-  searchQuery: string
+  selectedCategories: string[],
+  searchQuery: string,
 ): Product[] {
   let result = products;
 
   if (selectedCategories.length > 0) {
-    result = result.filter((p) => selectedCategories.includes(p.category));
+    result = result.filter((p) => selectedCategories.includes(getCategoryName(p)));
   }
 
   if (searchQuery.trim()) {
@@ -39,8 +44,10 @@ function applyFilters(
     result = result.filter(
       (p) =>
         p.name.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
+        getCategoryName(p).toLowerCase().includes(q) ||
+        extractText(p.description as Record<string, unknown>)
+          .toLowerCase()
+          .includes(q),
     );
   }
 
@@ -48,27 +55,52 @@ function applyFilters(
 }
 
 export const useProductStore = create<ProductStore>((set, get) => ({
-  allProducts: wesbiteData.products,
+  allProducts: [],
+  categories: [],
   selectedCategories: [],
   searchQuery: "",
-  filteredProducts: wesbiteData.products,
+  filteredProducts: [],
+  isLoading: false,
 
-  toggleCategory: (category) => {
+  fetchProducts: async () => {
+    set({ isLoading: true });
+    try {
+      const [productsRes, categoriesRes] = await Promise.all([
+        fetch("/api/products?depth=2&limit=100"),
+        fetch("/api/product-categories?limit=100"),
+      ]);
+      const productsData = await productsRes.json();
+      const categoriesData = await categoriesRes.json();
+      const allProducts: Product[] = productsData.docs ?? [];
+      const categories: ProductCategory[] = categoriesData.docs ?? [];
+      const { selectedCategories, searchQuery } = get();
+      set({
+        allProducts,
+        categories,
+        filteredProducts: applyFilters(allProducts, selectedCategories, searchQuery),
+        isLoading: false,
+      });
+    } catch {
+      set({ isLoading: false });
+    }
+  },
+
+  toggleCategory: (name) => {
     const { selectedCategories, allProducts, searchQuery } = get();
-    const next = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category];
+    const next = selectedCategories.includes(name)
+      ? selectedCategories.filter((c) => c !== name)
+      : [...selectedCategories, name];
     set({
       selectedCategories: next,
       filteredProducts: applyFilters(allProducts, next, searchQuery),
     });
   },
 
-  setCategories: (categories) => {
+  setCategories: (names) => {
     const { allProducts, searchQuery } = get();
     set({
-      selectedCategories: categories,
-      filteredProducts: applyFilters(allProducts, categories, searchQuery),
+      selectedCategories: names,
+      filteredProducts: applyFilters(allProducts, names, searchQuery),
     });
   },
 
@@ -88,5 +120,3 @@ export const useProductStore = create<ProductStore>((set, get) => ({
     });
   },
 }));
-
-export { ALL_CATEGORIES };
