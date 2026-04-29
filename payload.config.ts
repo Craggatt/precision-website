@@ -5,6 +5,7 @@ import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
 import { s3Storage } from "@payloadcms/storage-s3";
+import { importExportPlugin } from "@payloadcms/plugin-import-export";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
@@ -35,6 +36,14 @@ export default buildConfig({
     Testimonials,
     VenueLogos,
   ],
+  jobs: {
+    autoRun: [
+      {
+        cron: "*/5 * * * *",
+        queue: "default",
+      },
+    ],
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
@@ -60,6 +69,9 @@ export default buildConfig({
         },
         region: process.env.S3_REGION,
       },
+    }),
+    importExportPlugin({
+      collections: [],
     }),
   ],
 });
