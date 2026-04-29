@@ -7,7 +7,7 @@ export default function Products() {
   return (
     <>
       <main className="min-h-screen h-screen bg-neutral-900 flex flex-col">
-        <Navbar ready={true} />
+        <Navbar ready={true} products={[]} productCategories={[]} />
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
           <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
             <h1 className="font-aller font-bold text-5xl">Products</h1>
