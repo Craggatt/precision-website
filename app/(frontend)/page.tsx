@@ -9,6 +9,7 @@ import { payloadService } from "@/services/payloadService";
 import QuoteFormSection from "@/components/sections/QuoteFormSection";
 import { ProductCategories } from "@/collections/ProductCategories";
 
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const products = await payloadService.getProducts();
   const productCategories = await payloadService.getProductCategories();
