@@ -3,7 +3,6 @@ import Navbar from "@/components/Navbar";
 import ProductsClient from "./ProductsClient";
 import Footer from "@/components/Footer";
 
-export const dynamic = "force-dynamic";
 export default function Products() {
   return (
     <>
