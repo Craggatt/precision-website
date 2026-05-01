@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.ytimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "dlpwfd6kwolf1.cloudfront.net",
+      },
     ],
   },
 };

@@ -59,7 +59,11 @@ export default buildConfig({
     s3Storage({
       enabled: true,
       collections: {
-        media: true,
+        media: {
+          generateFileURL: ({ filename }) => {
+            return `https://dlpwfd6kwolf1.cloudfront.net/${filename}`;
+          },
+        },
       },
       bucket: process.env.S3_BUCKET as string,
       config: {
