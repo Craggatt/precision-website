@@ -88,9 +88,12 @@ function ProductCard({ product }: { product: Product }) {
         </p>
 
         <div className="mt-3 pt-3 border-t border-neutral-700 flex gap-2">
-          <button className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors">
+          <a
+            href={`/products/${product.slug}`}
+            className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors text-center"
+          >
             Learn More
-          </button>
+          </a>
           <button className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors">
             Get a Quote
           </button>

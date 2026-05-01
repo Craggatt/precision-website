@@ -45,7 +45,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
       return typeof c === "object" ? c.id === cat.id : c === cat.id;
     });
 
-    const subcategoryMap: Record<string, string[]> = {};
+    const subcategoryMap: Record<string, { name: string; slug: string }[]> = {};
     for (const product of catProducts) {
       const subs = product.subcategory;
       let subName = "General";
@@ -54,7 +54,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
         subName = typeof first === "object" ? (first as ProductSubcategory).name : "General";
       }
       if (!subcategoryMap[subName]) subcategoryMap[subName] = [];
-      subcategoryMap[subName].push(product.name);
+      subcategoryMap[subName].push({ name: product.name, slug: product.slug });
     }
 
     const subcategories = Object.entries(subcategoryMap).map(([name, items]) => ({
@@ -189,13 +189,14 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
                               {sub.name}
                             </h3>
                             <div className="flex flex-col gap-1">
-                              {sub.items.map((productName) => (
-                                <h4
-                                  key={productName}
-                                  className="font-aller text-neutral-300 text-sm"
+                              {sub.items.map((product) => (
+                                <a
+                                  key={product.slug}
+                                  href={`/products/${product.slug}`}
+                                  className="font-aller text-neutral-300 text-sm hover:text-white transition-colors"
                                 >
-                                  {productName}
-                                </h4>
+                                  {product.name}
+                                </a>
                               ))}
                             </div>
                           </div>

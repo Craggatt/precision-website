@@ -36,4 +36,15 @@ export const payloadService = {
     const result = await payload.find({ collection: "product-categories", depth: 2, limit: 100 });
     return result.docs as ProductCategory[];
   },
+
+  getProductBySlug: async (slug: string): Promise<Product | null> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({
+      collection: "products",
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    });
+    return (result.docs[0] as Product) ?? null;
+  },
 };
