@@ -29,7 +29,7 @@ const run = async () => {
       });
       console.log(`Created: ${row.name}`);
     } catch (e) {
-      console.error(`Failed: ${row.name}`, e.message);
+      console.error(`Failed: ${row.name}`);
     }
   }
 
