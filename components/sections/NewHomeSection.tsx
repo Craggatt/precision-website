@@ -159,10 +159,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
         playsInline
         style={{ translateY: videoY }}
       >
-        <source
-          src="https://precisionsigns.com.au/wp-content/themes/Precision%200.0.1/img/video.mp4"
-          type="video/mp4"
-        />
+        <source src="https://dlpwfd6kwolf1.cloudfront.net/bg.mp4" type="video/mp4" />
       </motion.video>
 
       {/* Overlay */}
@@ -185,9 +182,8 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
         <div className="px-2.5 md:px-5 lg:px-10 flex-1 border-y border-white/20">
           <div className="relative max-w-[1600px] overflow-hidden mx-auto h-full w-full border-x border-white/20">
             <p className="absolute left-2.5 md:left-5 lg:left-10 bottom-2.5 md:bottom-5 lg:bottom-10 max-w-xs font-satoshi text-sm text-neutral-300 leading-relaxed pr-10 md:pr-0">
-              Premium Australian-made LED signage and digital displays for
-              casinos, clubs, and hotels. Designed and manufactured locally with
-              precision.
+              Premium Australian-made LED signage and digital displays for casinos, clubs, and
+              hotels. Designed and manufactured locally with precision.
             </p>
             {/* Spinning circular text */}
             <div className="absolute right-2.5 md:right-5 lg:right-10 bottom-2.5 md:bottom-5 lg:bottom-10 flex items-center justify-center w-24 h-24">
@@ -198,10 +194,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                 transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
               >
                 <defs>
-                  <path
-                    id="circle"
-                    d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                  />
+                  <path id="circle" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
                 </defs>
                 <text
                   className="fill-white/80 text-[11px]"
