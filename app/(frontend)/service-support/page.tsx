@@ -5,15 +5,17 @@ import ServiceSupportForm from "./ServiceSupportForm";
 import { QrCode, Mail, Phone } from "lucide-react";
 
 export default async function ServiceSupportPage() {
-  const [products, productCategories] = await Promise.all([
+  const [products, productCategories, content, contentCategories] = await Promise.all([
     payloadService.getProducts(),
     payloadService.getProductCategories(),
+    payloadService.getContent(),
+    payloadService.getContentCategories(),
   ]);
 
   return (
     <>
       <main className="min-h-screen bg-neutral-900 flex flex-col">
-        <Navbar ready={true} products={products} productCategories={productCategories} />
+      <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
 
         {/* Hero Section */}
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
