@@ -4,15 +4,17 @@ import ProductsClient from "./ProductsClient";
 import { payloadService } from "@/services/payloadService";
 
 export default async function Products() {
-  const [products, productCategories] = await Promise.all([
+  const [products, productCategories, content, contentCategories] = await Promise.all([
     payloadService.getProducts(),
     payloadService.getProductCategories(),
+    payloadService.getContent(),
+    payloadService.getContentCategories(),
   ]);
 
   return (
     <>
       <main className="min-h-screen h-screen bg-neutral-900 flex flex-col">
-        <Navbar ready={true} products={products} productCategories={productCategories} />
+        <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
           <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
             <h1 className="font-aller font-bold text-5xl">Products</h1>

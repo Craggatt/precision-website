@@ -4,29 +4,41 @@ import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import BorderGlow from "./BorderGlow";
 import { useQuoteStore } from "@/store/quoteStore";
-import { Media, Product, ProductCategory, ProductSubcategory } from "@/payload-types";
+import { Media, Product, ProductCategory, ProductSubcategory, Content, ContentCategory, ContentSubcategory } from "@/payload-types";
 
-const navItems = ["Products", "Custom", "Support", "Blog"];
+const navItems = ["Products", "Content", "Custom", "Support", "Blog"];
 
 interface NavbarProps {
   ready: boolean;
   products: Product[];
   productCategories: ProductCategory[];
+  content: Content[];
+  contentCategories: ContentCategory[];
 }
 
-export default function Navbar({ ready, products, productCategories }: NavbarProps) {
+export default function Navbar({ ready, products, productCategories, content, contentCategories }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [productsHovered, setProductsHovered] = useState(false);
+  const [contentHovered, setContentHovered] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { setOpen } = useQuoteStore();
 
-  const openMenu = () => {
+  const openMenu = (menuType: "products" | "content") => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setProductsHovered(true);
+    if (menuType === "products") {
+      setProductsHovered(true);
+      setContentHovered(false);
+    } else {
+      setContentHovered(true);
+      setProductsHovered(false);
+    }
   };
 
   const closeMenu = () => {
-    closeTimer.current = setTimeout(() => setProductsHovered(false), 100);
+    closeTimer.current = setTimeout(() => {
+      setProductsHovered(false);
+      setContentHovered(false);
+    }, 100);
   };
 
   useEffect(() => {
@@ -35,7 +47,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const menu = productCategories.map((cat) => {
+  const productMenu = productCategories.map((cat) => {
     const thumbnailImg = cat.thumbnail.value;
     const thumbnailUrl =
       typeof thumbnailImg === "object" ? ((thumbnailImg as Media).url ?? null) : null;
@@ -55,6 +67,36 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
       }
       if (!subcategoryMap[subName]) subcategoryMap[subName] = [];
       subcategoryMap[subName].push({ name: product.name, slug: product.slug });
+    }
+
+    const subcategories = Object.entries(subcategoryMap).map(([name, items]) => ({
+      name,
+      items,
+    }));
+
+    return { id: cat.id, name: cat.name, slug: cat.slug, thumbnailUrl, subcategories };
+  });
+
+  const contentMenu = contentCategories.map((cat) => {
+    const thumbnailImg = cat.thumbnail.value;
+    const thumbnailUrl =
+      typeof thumbnailImg === "object" ? ((thumbnailImg as Media).url ?? null) : null;
+
+    const catContent = content.filter((c) => {
+      const category = c.category;
+      return typeof category === "object" ? category.id === cat.id : category === cat.id;
+    });
+
+    const subcategoryMap: Record<string, { name: string; slug: string }[]> = {};
+    for (const contentItem of catContent) {
+      const subs = contentItem.subcategory;
+      let subName = "General";
+      if (subs && subs.length > 0) {
+        const first = subs[0];
+        subName = typeof first === "object" ? (first as ContentSubcategory).name : "General";
+      }
+      if (!subcategoryMap[subName]) subcategoryMap[subName] = [];
+      subcategoryMap[subName].push({ name: contentItem.name, slug: contentItem.slug });
     }
 
     const subcategories = Object.entries(subcategoryMap).map(([name, items]) => ({
@@ -85,27 +127,45 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
           />
 
           <div className="hidden md:flex items-stretch gap-8">
-            {navItems.map((item, i) => (
-              <motion.p
-                key={item}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: ready ? 1 : 0 }}
-                transition={{
-                  delay: 0.15 + i * 0.06,
-                  duration: 0.4,
-                  ease: "easeOut",
-                }}
-                className={`font-satoshi text-[0.85rem] font-semibold cursor-pointer transition-colors duration-300 flex items-center ${
-                  scrolled
-                    ? "text-[#111111] hover:text-[#555555]"
-                    : "text-white hover:text-white/70"
-                }`}
-                onHoverStart={() => item === "Products" && openMenu()}
-                onHoverEnd={() => item === "Products" && closeMenu()}
-              >
-                {item}
-              </motion.p>
-            ))}
+            {navItems.map((item, i) => {
+              const isLink = item === "Support";
+              const href = item === "Support" ? "/service-support" : undefined;
+
+              const menuContent = (
+                <motion.p
+                  key={item}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: ready ? 1 : 0 }}
+                  transition={{
+                    delay: 0.15 + i * 0.06,
+                    duration: 0.4,
+                    ease: "easeOut",
+                  }}
+                  className={`font-satoshi text-[0.85rem] font-semibold cursor-pointer transition-colors duration-300 flex items-center ${
+                    scrolled
+                      ? "text-[#111111] hover:text-[#555555]"
+                      : "text-white hover:text-white/70"
+                  }`}
+                  onHoverStart={() => {
+                    if (item === "Products") openMenu("products");
+                    if (item === "Content") openMenu("content");
+                  }}
+                  onHoverEnd={() => {
+                    if (item === "Products" || item === "Content") closeMenu();
+                  }}
+                >
+                  {item}
+                </motion.p>
+              );
+
+              return isLink ? (
+                <a key={item} href={href}>
+                  {menuContent}
+                </a>
+              ) : (
+                menuContent
+              );
+            })}
           </div>
 
           <motion.div
@@ -152,7 +212,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
               edgeSensitivity={20}
               className="max-w-[1600px] mx-auto"
             >
-              <div onMouseEnter={openMenu} onMouseLeave={closeMenu}>
+              <div onMouseEnter={() => openMenu("products")} onMouseLeave={closeMenu}>
                 <motion.div
                   className="flex flex-col w-full"
                   initial={{ opacity: 0, y: 40 }}
@@ -161,7 +221,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
                   transition={{ duration: 0.25, ease: "easeOut" }}
                 >
                   <div className="flex flex-row w-full">
-                    {menu.map((item) => (
+                    {productMenu.map((item) => (
                       <a
                         href={`/products?cat=${encodeURIComponent(item.name)}`}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 hover:bg-neutral-800/50 transition-colors"
@@ -179,7 +239,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
                     ))}
                   </div>
                   <div className="flex flex-row w-full bg-neutral-800">
-                    {menu.map((item) => (
+                    {productMenu.map((item) => (
                       <div
                         key={item.id}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 gap-6"
@@ -197,6 +257,82 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
                                   className="font-aller text-neutral-300 text-sm hover:text-white transition-colors"
                                 >
                                   {product.name}
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </BorderGlow>
+          </motion.div>
+        )}
+        {contentHovered && (
+          <motion.div
+            className="w-full fixed top-14 left-0 z-50 px-10 h-screen backdrop-blur-lg"
+            initial={{ opacity: 0, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <BorderGlow
+              backgroundColor="#171717"
+              borderRadius={0}
+              colors={["#0b6fd3", "#1a7fe3", "#0958a8"]}
+              glowColor="210 90 60"
+              glowIntensity={1.2}
+              glowRadius={30}
+              edgeSensitivity={20}
+              className="max-w-[1600px] mx-auto"
+            >
+              <div onMouseEnter={() => openMenu("content")} onMouseLeave={closeMenu}>
+                <motion.div
+                  className="flex flex-col w-full"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 40 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                >
+                  <div className="flex flex-row w-full">
+                    {contentMenu.map((item) => (
+                      <a
+                        href={`/content?cat=${encodeURIComponent(item.name)}`}
+                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 hover:bg-neutral-800/50 transition-colors"
+                        key={item.id}
+                      >
+                        {item.thumbnailUrl && (
+                          <img
+                            src={item.thumbnailUrl}
+                            alt={item.name}
+                            className="w-28 h-20 object-contain"
+                          />
+                        )}
+                        <h3 className="font-aller text-xl mt-2">{item.name}</h3>
+                      </a>
+                    ))}
+                  </div>
+                  <div className="flex flex-row w-full bg-neutral-800">
+                    {contentMenu.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 gap-6"
+                      >
+                        {item.subcategories.map((sub) => (
+                          <div key={sub.name} className="flex flex-col">
+                            <h3 className="uppercase font-mono text-neutral-400 text-xs mb-2">
+                              {sub.name}
+                            </h3>
+                            <div className="flex flex-col gap-1">
+                              {sub.items.map((contentItem) => (
+                                <a
+                                  key={contentItem.slug}
+                                  href={`/content/${contentItem.slug}`}
+                                  className="font-aller text-neutral-300 text-sm hover:text-white transition-colors"
+                                >
+                                  {contentItem.name}
                                 </a>
                               ))}
                             </div>

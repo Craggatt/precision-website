@@ -72,6 +72,9 @@ export interface Config {
     'product-categories': ProductCategory;
     'product-subcategories': ProductSubcategory;
     products: Product;
+    'content-categories': ContentCategory;
+    'content-subcategories': ContentSubcategory;
+    content: Content;
     projects: Project;
     testimonials: Testimonial;
     'venue-logos': VenueLogo;
@@ -90,6 +93,9 @@ export interface Config {
     'product-categories': ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
     'product-subcategories': ProductSubcategoriesSelect<false> | ProductSubcategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    'content-categories': ContentCategoriesSelect<false> | ContentCategoriesSelect<true>;
+    'content-subcategories': ContentSubcategoriesSelect<false> | ContentSubcategoriesSelect<true>;
+    content: ContentSelect<false> | ContentSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'venue-logos': VenueLogosSelect<false> | VenueLogosSelect<true>;
@@ -267,6 +273,66 @@ export interface Product {
       relationTo: 'media';
       value: number | Media;
     } | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-categories".
+ */
+export interface ContentCategory {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  featuredImage: {
+    relationTo: 'media';
+    value: number | Media;
+  };
+  thumbnail: {
+    relationTo: 'media';
+    value: number | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-subcategories".
+ */
+export interface ContentSubcategory {
+  id: number;
+  name: string;
+  slug: string;
+  parentCategory?: (number | null) | ContentCategory;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content".
+ */
+export interface Content {
+  id: number;
+  name: string;
+  slug: string;
+  category: number | ContentCategory;
+  subcategory?: (number | ContentSubcategory)[] | null;
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
   };
   updatedAt: string;
   createdAt: string;
@@ -537,6 +603,18 @@ export interface PayloadLockedDocument {
         value: number | Product;
       } | null)
     | ({
+        relationTo: 'content-categories';
+        value: number | ContentCategory;
+      } | null)
+    | ({
+        relationTo: 'content-subcategories';
+        value: number | ContentSubcategory;
+      } | null)
+    | ({
+        relationTo: 'content';
+        value: number | Content;
+      } | null)
+    | ({
         relationTo: 'projects';
         value: number | Project;
       } | null)
@@ -682,6 +760,43 @@ export interface ProductsSelect<T extends boolean = true> {
         voltage?: T;
         design?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-categories_select".
+ */
+export interface ContentCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  featuredImage?: T;
+  thumbnail?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-subcategories_select".
+ */
+export interface ContentSubcategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  parentCategory?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  category?: T;
+  subcategory?: T;
+  richText?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -877,6 +992,9 @@ export interface TaskCreateCollectionExport {
       | 'product-categories'
       | 'product-subcategories'
       | 'products'
+      | 'content-categories'
+      | 'content-subcategories'
+      | 'content'
       | 'projects'
       | 'testimonials'
       | 'venue-logos'

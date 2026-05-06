@@ -10,15 +10,19 @@ import QuoteFormSection from "@/components/sections/QuoteFormSection";
 import { ProductCategories } from "@/collections/ProductCategories";
 
 export default async function Home() {
-  const products = await payloadService.getProducts();
-  const productCategories = await payloadService.getProductCategories();
-  const testimonials = await payloadService.getTestimonials();
-  const projects = await payloadService.getProjects();
-  const venueLogos = await payloadService.getVenueLogos();
+  const [products, productCategories, content, contentCategories, testimonials, projects, venueLogos] = await Promise.all([
+    payloadService.getProducts(),
+    payloadService.getProductCategories(),
+    payloadService.getContent(),
+    payloadService.getContentCategories(),
+    payloadService.getTestimonials(),
+    payloadService.getProjects(),
+    payloadService.getVenueLogos(),
+  ]);
 
   return (
     <main className="min-h-screen max-w-screen overlow-y-hidden">
-      <HeroEntrance products={products} productCategories={productCategories} />
+      <HeroEntrance products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
       <ProductsSection productCategories={productCategories} />
       <GallerySection projects={projects} />
       <VenueSection venueLogos={venueLogos} />

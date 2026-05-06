@@ -12,6 +12,9 @@ import { Media } from "./collections/Media";
 import { ProductCategories } from "./collections/ProductCategories";
 import { ProductSubCategories } from "./collections/ProductSubCategories";
 import { Products } from "./collections/Products";
+import { ContentCategories } from "./collections/ContentCategories";
+import { ContentSubCategories } from "./collections/ContentSubCategories";
+import { Content } from "./collections/Content";
 import { VenueLogos } from "./collections/VenueLogos";
 import { Projects } from "./collections/Projects";
 import { Testimonials } from "./collections/Testimonials";
@@ -32,6 +35,9 @@ export default buildConfig({
     ProductCategories,
     ProductSubCategories,
     Products,
+    ContentCategories,
+    ContentSubCategories,
+    Content,
     Projects,
     Testimonials,
     VenueLogos,

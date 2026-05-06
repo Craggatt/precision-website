@@ -175,10 +175,12 @@ function CornerBrackets() {
 export default async function ProductDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
 
-  const [product, products, productCategories] = await Promise.all([
+  const [product, products, productCategories, content, contentCategories] = await Promise.all([
     payloadService.getProductBySlug(slug),
     payloadService.getProducts(),
     payloadService.getProductCategories(),
+    payloadService.getContent(),
+    payloadService.getContentCategories(),
   ]);
 
   if (!product) notFound();
@@ -197,7 +199,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 
   return (
     <main className="min-h-screen bg-neutral-900 text-white">
-      <Navbar ready={true} products={products} productCategories={productCategories} />
+      <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
 
       {/* ============== Breadcrumb rail ============== */}
       <div className="pt-14 border-b border-neutral-800">
