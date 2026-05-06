@@ -103,7 +103,12 @@ function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export default function ProductsClient() {
+interface ProductsClientProps {
+  products: Product[];
+  categories: ProductCategory[];
+}
+
+export default function ProductsClient({ products: initialProducts, categories: initialCategories }: ProductsClientProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -115,7 +120,7 @@ export default function ProductsClient() {
     selectedCategories,
     searchQuery,
     isLoading,
-    fetchProducts,
+    initializeProducts,
     toggleCategory,
     setCategories,
     clearFilters,
@@ -123,12 +128,11 @@ export default function ProductsClient() {
   } = useProducts();
 
   useEffect(() => {
-    fetchProducts().then(() => {
-      const cats = searchParams
-        .getAll("cat")
-        .filter((c) => categories.some((cat) => cat.name === c));
-      if (cats.length > 0) setCategories(cats);
-    });
+    initializeProducts(initialProducts, initialCategories);
+    const cats = searchParams
+      .getAll("cat")
+      .filter((c) => initialCategories.some((cat) => cat.name === c));
+    if (cats.length > 0) setCategories(cats);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushCats = useCallback(

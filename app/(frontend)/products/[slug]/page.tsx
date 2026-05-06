@@ -7,7 +7,7 @@ import QuoteFormSection from "@/components/sections/QuoteFormSection";
 import QuoteButton from "./QuoteButton";
 import { Product, ProductCategory, ProductSubcategory, Media } from "@/payload-types";
 import { Check, Zap, Network, Gauge, ArrowUpRight, Shield, MapPin, Headphones } from "lucide-react";
-import { code } from "payload/shared";
+import BorderGlow from "@/components/BorderGlow";
 
 type Params = Promise<{ slug: string }>;
 
@@ -63,7 +63,7 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
       return (
         <p
           key={key}
-          className="font-satoshi text-neutral-300 text-[1.0625rem] leading-[1.7] mb-5 last:mb-0"
+          className="font-satoshi text-neutral-300  leading-[1.7] mb-3 last:mb-0"
         >
           {children}
         </p>
@@ -114,34 +114,39 @@ const CATEGORY_ACCENT: Record<string, { dot: string; text: string; border: strin
       glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
     },
     "Entry Displays": {
-      dot: "bg-emerald-400",
-      text: "text-emerald-400",
-      border: "border-emerald-500/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(52_211_153/0.5)]",
+      dot: "bg-brand-primary",
+      text: "text-brand-primary",
+      border: "border-brand-primary/40",
+      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
+
     },
     Screens: {
-      dot: "bg-purple-400",
-      text: "text-purple-400",
-      border: "border-purple-500/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(192_132_252/0.5)]",
+      dot: "bg-brand-primary",
+      text: "text-brand-primary",
+      border: "border-brand-primary/40",
+      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
+
     },
     Infills: {
-      dot: "bg-amber-400",
-      text: "text-amber-400",
-      border: "border-amber-500/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(251_191_36/0.5)]",
+      dot: "bg-brand-primary",
+      text: "text-brand-primary",
+      border: "border-brand-primary/40",
+      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
+
     },
     "Jackpot History": {
-      dot: "bg-rose-400",
-      text: "text-rose-400",
-      border: "border-rose-500/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(251_113_133/0.5)]",
+      dot: "bg-brand-primary",
+      text: "text-brand-primary",
+      border: "border-brand-primary/40",
+      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
+
     },
     "Large Screens": {
-      dot: "bg-cyan-400",
-      text: "text-cyan-400",
-      border: "border-cyan-500/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(34_211_238/0.5)]",
+      dot: "bg-brand-primary",
+      text: "text-brand-primary",
+      border: "border-brand-primary/40",
+      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
+
     },
   };
 
@@ -191,7 +196,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const featureCount = product.features?.filter((f) => f.feature).length ?? 0;
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
+    <main className="min-h-screen bg-neutral-900 text-white">
       <Navbar ready={true} products={products} productCategories={productCategories} />
 
       {/* ============== Breadcrumb rail ============== */}
@@ -229,10 +234,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 
       {/* ============== Hero ============== */}
       <section className="relative border-b border-neutral-800 overflow-hidden">
-        {/* blueprint grid */}
-
         <div className="relative max-w-[1600px] mx-auto px-6 lg:px-10 grid grid-cols-12 gap-6 lg:gap-10 py-10 lg:py-16">
-          {/* LEFT META RAIL — narrow column */}
           <aside className="col-span-12 lg:col-span-2 lg:border-r lg:border-neutral-800 lg:pr-6">
             <div className="flex lg:flex-col gap-6 lg:gap-8 lg:sticky lg:top-24">
               <div>
@@ -268,10 +270,19 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             </h1>
 
             {/* Image card with corner brackets */}
-            <div
-              className={`relative bg-neutral-900/60 border ${accent.border} ${accent.glow} aspect-[4/3] overflow-hidden`}
+<BorderGlow
+              backgroundColor="#171717"
+              borderRadius={0}
+              colors={["#0b6fd3", "#1a7fe3", "#0958a8"]}
+              glowColor="210 90 60"
+              glowIntensity={1.2}
+              glowRadius={50}
+              edgeSensitivity={20}
+              className="max-w-[1600px] mx-auto"
             >
-              <CornerBrackets />
+<div
+              className={`relative bg-neutral-800 aspect-[4/3] overflow-hidden`}
+            >
               {/* Tick marks on top */}
               <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1 items-end h-2">
                 {Array.from({ length: 9 }).map((_, i) => (
@@ -294,7 +305,6 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               {/* Bottom rule with label */}
               <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
-                  Fig. 01 — Product
                 </span>
                 {product.code && (
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
@@ -303,74 +313,48 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 )}
               </div>
             </div>
+            </BorderGlow>
           </div>
 
           {/* RIGHT — Quote panel (sticky) */}
-          <aside className="col-span-12 lg:col-span-3">
-            <div className="lg:sticky lg:top-24 flex flex-col gap-4">
-              {/* Stat trio */}
-              <div className="grid grid-cols-3 gap-px bg-neutral-800 border border-neutral-800">
-                <div className="bg-neutral-950 p-3 text-center">
-                  <p className="font-aller font-bold text-2xl text-white">{featureCount}</p>
-                  <p className="font-mono text-[9px] uppercase tracking-widest text-neutral-500 mt-1">
-                    Features
-                  </p>
-                </div>
-                <div className="bg-neutral-950 p-3 text-center">
-                  <p className="font-aller font-bold text-2xl text-white">
-                    {req?.voltage ?? "—"}
-                    {req?.voltage && <span className="text-sm text-neutral-400">V</span>}
-                  </p>
-                  <p className="font-mono text-[9px] uppercase tracking-widest text-neutral-500 mt-1">
-                    Voltage
-                  </p>
-                </div>
-                <div className="bg-neutral-950 p-3 text-center">
-                  <p className="font-aller font-bold text-2xl text-white">
-                    3<span className="text-sm text-neutral-400">yr</span>
-                  </p>
-                  <p className="font-mono text-[9px] uppercase tracking-widest text-neutral-500 mt-1">
-                    Warranty
-                  </p>
-                </div>
-              </div>
-              <p className="font-satoshi text-sm text-neutral-400 mb-5 leading-relaxed">
-                <RichText content={product.description} />
-              </p>
-
-              {/* Quote CTA card */}
-              <div className="relative bg-neutral-900 border border-neutral-800 p-5">
-                <CornerBrackets />
+          <aside className="col-span-12 lg:col-span-3 mt-[100px]">
+            <div className="lg:sticky lg:top-24 flex flex-col gap-4 justify-between h-full">
+              <div className="flex flex-col gap-4">
+<div className="relative bg-neutral-800 border border-neutral-700 p-5">
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
                   Pricing
                 </p>
-                <p className="font-aller font-bold text-white text-2xl mb-1">Configured to spec</p>
+                <p className="font-aller font-bold text-white text-2xl mb-1">Enquire For Pricing</p>
                 <p className="font-satoshi text-sm text-neutral-400 mb-5 leading-relaxed">
                   Site survey & engineering quote prepared per venue.
                 </p>
                 <div className="flex flex-col gap-2.5">
                   <QuoteButton />
-                  <a
+                  {/* <a
                     href="mailto:info@precisionsigns.com.au"
                     className="group flex items-center justify-between font-satoshi text-sm font-semibold py-3 px-4 border border-neutral-700 text-neutral-200 hover:border-neutral-500 hover:bg-neutral-800/50 transition-colors"
                   >
                     Talk to engineering
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </a>
+                  </a> */}
                 </div>
               </div>
 
+              <RichText content={product.description} />
+              </div>
+              
+              {/* Quote CTA card */}
               {/* Trust strip */}
               <ul className="flex flex-col gap-2 mt-1">
-                <li className="flex items-center gap-2.5 text-xs text-neutral-400 font-satoshi">
+                <li className="flex items-center gap-2.5 text-sm text-neutral-400 font-satoshi">
                   <MapPin className="w-3.5 h-3.5 text-neutral-500" />
                   Designed & manufactured in Australia
                 </li>
-                <li className="flex items-center gap-2.5 text-xs text-neutral-400 font-satoshi">
+                <li className="flex items-center gap-2.5 text-sm text-neutral-400 font-satoshi">
                   <Shield className="w-3.5 h-3.5 text-neutral-500" />
                   3-year parts & labour warranty
                 </li>
-                <li className="flex items-center gap-2.5 text-xs text-neutral-400 font-satoshi">
+                <li className="flex items-center gap-2.5 text-sm text-neutral-400 font-satoshi">
                   <Headphones className="w-3.5 h-3.5 text-neutral-500" />
                   24/7 support portal access
                 </li>
@@ -381,21 +365,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
       </section>
 
       {/* ============== Section: Overview ============== */}
-      <section className="border-b border-neutral-800">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 grid grid-cols-12 gap-6 lg:gap-10 py-16 lg:py-20">
-          <div className="col-span-12 lg:col-span-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-500 mb-2">
-              ── 01
-            </p>
-            <h2 className="font-aller font-bold text-white text-2xl lg:text-3xl leading-tight">
-              Overview
-            </h2>
-          </div>
-          <div className="col-span-12 lg:col-span-7 lg:col-start-5 max-w-3xl">
-            <RichText content={product.description} />
-          </div>
-        </div>
-      </section>
+      
 
       {/* ============== Section: Features ============== */}
       {product.features && product.features.length > 0 && (
@@ -403,7 +373,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <div className="max-w-[1600px] mx-auto px-6 lg:px-10 grid grid-cols-12 gap-6 lg:gap-10 py-16 lg:py-20">
             <div className="col-span-12 lg:col-span-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-500 mb-2">
-                ── 02
+                ── 01
               </p>
               <h2 className="font-aller font-bold text-white text-2xl lg:text-3xl leading-tight">
                 Key features
@@ -413,12 +383,12 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </p>
             </div>
             <div className="col-span-12 lg:col-span-9">
-              <ul className="grid sm:grid-cols-2 gap-px bg-neutral-800 border border-neutral-800">
+              <ul className="grid sm:grid-cols-2 gap-px bg-neutral-800 border border-neutral-700">
                 {product.features.map((f, i) =>
                   f.feature ? (
                     <li
                       key={i}
-                      className="bg-neutral-950 p-5 lg:p-6 flex items-start gap-4 hover:bg-neutral-900 transition-colors group"
+                      className="bg-neutral-800 p-5 lg:p-6 flex items-start gap-4 hover:bg-neutral-900 transition-colors group"
                     >
                       <div className="flex flex-col items-center gap-1 shrink-0">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">
@@ -448,7 +418,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <div className="max-w-[1600px] mx-auto px-6 lg:px-10 grid grid-cols-12 gap-6 lg:gap-10 py-16 lg:py-20">
             <div className="col-span-12 lg:col-span-3">
               <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-500 mb-2">
-                ── 03
+                ── 02
               </p>
               <h2 className="font-aller font-bold text-white text-2xl lg:text-3xl leading-tight">
                 Power & connectivity
@@ -458,7 +428,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </p>
             </div>
             <div className="col-span-12 lg:col-span-9">
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-neutral-800 border border-neutral-800">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-neutral-800 border border-neutral-700">
                 {req!.powerOutlets ? (
                   <SpecBlock
                     icon={<Zap className="w-4 h-4" />}
@@ -477,7 +447,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 ) : null}
                 {req!.voltage ? (
                   <SpecBlock
-                    icon={<Gauge className="w-4 h-4" />}
+                    icon={<Zap className="w-4 h-4" />}
                     label="Voltage"
                     value={String(req!.voltage)}
                     unit="V"
@@ -490,7 +460,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                     label="Max amps"
                     value={String(req!.maxAmps)}
                     unit="A"
-                    accent="text-amber-400"
+                    accent={accent.text}
                   />
                 ) : null}
               </div>
@@ -506,7 +476,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             <div className="flex items-end justify-between mb-8 flex-wrap gap-4">
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-500 mb-2">
-                  ── 04
+                  ── 03
                 </p>
                 <h2 className="font-aller font-bold text-white text-2xl lg:text-3xl leading-tight">
                   Technical drawing
@@ -518,7 +488,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 </p>
               )}
             </div>
-            <div className="relative border border-neutral-800 bg-neutral-950 p-8 lg:p-12">
+            <div className="relative border border-neutral-800 bg-white p-8 lg:p-12">
               <CornerBrackets />
               <img
                 src={designDiagramUrl}
@@ -576,7 +546,7 @@ function SpecBlock({
   accent: string;
 }) {
   return (
-    <div className="bg-neutral-950 p-5 lg:p-6 flex flex-col gap-3 hover:bg-neutral-900 transition-colors">
+    <div className="bg-neutral-800 p-5 lg:p-6 flex flex-col gap-3 hover:bg-neutral-900 transition-colors">
       <div className="flex items-center justify-between">
         <span className={`${accent}`}>{icon}</span>
         <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">

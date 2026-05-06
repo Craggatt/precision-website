@@ -1,13 +1,18 @@
 import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import ProductsClient from "./ProductsClient";
-import Footer from "@/components/Footer";
+import { payloadService } from "@/services/payloadService";
 
-export default function Products() {
+export default async function Products() {
+  const [products, productCategories] = await Promise.all([
+    payloadService.getProducts(),
+    payloadService.getProductCategories(),
+  ]);
+
   return (
     <>
       <main className="min-h-screen h-screen bg-neutral-900 flex flex-col">
-        <Navbar ready={true} products={[]} productCategories={[]} />
+        <Navbar ready={true} products={products} productCategories={productCategories} />
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
           <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
             <h1 className="font-aller font-bold text-5xl">Products</h1>
@@ -17,7 +22,7 @@ export default function Products() {
           </div>
         </div>
         <Suspense>
-          <ProductsClient />
+          <ProductsClient products={products} categories={productCategories} />
         </Suspense>
       </main>
     </>

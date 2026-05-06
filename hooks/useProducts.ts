@@ -7,6 +7,7 @@ export default function useProducts() {
   const selectedCategories = useProductStore((s) => s.selectedCategories);
   const searchQuery = useProductStore((s) => s.searchQuery);
   const isLoading = useProductStore((s) => s.isLoading);
+  const initializeProducts = useProductStore((s) => s.initializeProducts);
   const fetchProducts = useProductStore((s) => s.fetchProducts);
   const toggleCategory = useProductStore((s) => s.toggleCategory);
   const setCategories = useProductStore((s) => s.setCategories);
@@ -20,6 +21,7 @@ export default function useProducts() {
     selectedCategories,
     searchQuery,
     isLoading,
+    initializeProducts,
     fetchProducts,
     toggleCategory,
     setCategories,

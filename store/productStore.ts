@@ -9,6 +9,7 @@ interface ProductStore {
   filteredProducts: Product[];
   isLoading: boolean;
 
+  initializeProducts: (products: Product[], categories: ProductCategory[]) => void;
   fetchProducts: () => Promise<void>;
   toggleCategory: (name: string) => void;
   setCategories: (names: string[]) => void;
@@ -61,6 +62,16 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   searchQuery: "",
   filteredProducts: [],
   isLoading: false,
+
+  initializeProducts: (products, categories) => {
+    const { selectedCategories, searchQuery } = get();
+    set({
+      allProducts: products,
+      categories,
+      filteredProducts: applyFilters(products, selectedCategories, searchQuery),
+      isLoading: false,
+    });
+  },
 
   fetchProducts: async () => {
     set({ isLoading: true });

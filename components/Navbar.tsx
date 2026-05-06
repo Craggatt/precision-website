@@ -114,7 +114,8 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
             transition={{ delay: 0.4, duration: 0.4 }}
             className="hidden md:flex items-center gap-3 h-full"
           >
-            <button
+            <a
+              href="/contact"
               className={`font-satoshi text-[0.8rem] px-4 py-1.5 rounded-sm transition-colors duration-300 ${
                 scrolled
                   ? "text-[#111111] border border-[#111111]/20 hover:bg-gray-100"
@@ -122,7 +123,7 @@ export default function Navbar({ ready, products, productCategories }: NavbarPro
               }`}
             >
               Contact Us
-            </button>
+            </a>
             <button
               className="font-satoshi text-[0.8rem] bg-brand-primary text-white px-4 py-1.5 rounded-sm hover:bg-[#2a2a2a] transition-colors font-medium"
               onClick={() => setOpen(true)}

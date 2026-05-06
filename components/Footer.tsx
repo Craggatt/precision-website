@@ -46,7 +46,10 @@ export default function Footer() {
                 <ul className="flex flex-col gap-2.5">
                   {items.map((item) => (
                     <li key={item}>
-                      <a className="font-satoshi text-[0.85rem] text-neutral-300 hover:text-[#f0f0f0] transition-colors cursor-pointer">
+                      <a
+                        href={item === "Contact" ? "/contact" : "#"}
+                        className="font-satoshi text-[0.85rem] text-neutral-300 hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                      >
                         {item}
                       </a>
                     </li>
