@@ -17,10 +17,10 @@ export default async function ContactPage() {
         <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
 
         {/* Hero Section */}
-        <div className="px-10 border-b border-b-neutral-700 flex flex-col">
-          <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
-            <h1 className="font-aller font-bold text-5xl">Contact Us</h1>
-            <p className="font-satoshi text-neutral-400 text-sm mt-2">
+        <div className="px-4 sm:px-6 md:px-10 border-b border-b-neutral-700 flex flex-col pt-20 sm:pt-24">
+          <div className="max-w-[1600px] mx-auto p-4 sm:p-6 md:p-10 w-full flex-1">
+            <h1 className="font-aller font-bold text-3xl sm:text-4xl md:text-5xl">Contact Us</h1>
+            <p className="font-satoshi text-neutral-400 text-xs sm:text-sm mt-2">
               Get in touch with our team for quotes, support, or general inquiries
             </p>
           </div>
@@ -31,19 +31,19 @@ export default async function ContactPage() {
           <div className="max-w-[1600px] mx-auto border-x border-neutral-700 bg-neutral-800/30">
             <div className="grid grid-cols-1 lg:grid-cols-2">
               {/* Contact Information */}
-              <div className="p-10 border-r border-neutral-700">
-                <h2 className="font-aller font-bold text-3xl mb-6">Get in Touch</h2>
-                <p className="font-satoshi text-neutral-300 text-base mb-8 leading-relaxed">
+              <div className="p-6 sm:p-8 md:p-10 lg:border-r border-neutral-700 border-b lg:border-b-0">
+                <h2 className="font-aller font-bold text-2xl sm:text-3xl mb-4 sm:mb-6">Get in Touch</h2>
+                <p className="font-satoshi text-neutral-300 text-sm sm:text-base mb-6 sm:mb-8 leading-relaxed">
                   Whether you need a quote for a new project, have questions about our products,
                   or require support, we're here to help. Our team of experts is ready to assist
                   you with all your gaming signage needs.
                 </p>
 
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Address */}
                   <div>
                     <h3 className="label-mono mb-2">ADDRESS</h3>
-                    <p className="font-satoshi text-neutral-300 text-sm">
+                    <p className="font-satoshi text-neutral-300 text-xs sm:text-sm">
                       Precision Signs Pty Ltd<br />
                       Wagga Wagga, NSW<br />
                       Australia
@@ -55,7 +55,7 @@ export default async function ContactPage() {
                     <h3 className="label-mono mb-2">PHONE</h3>
                     <a
                       href="tel:+61269219999"
-                      className="font-satoshi text-neutral-300 text-sm hover:text-brand-primary transition-colors"
+                      className="font-satoshi text-neutral-300 text-xs sm:text-sm hover:text-brand-primary transition-colors"
                     >
                       +61 2 6921 9999
                     </a>
@@ -66,7 +66,7 @@ export default async function ContactPage() {
                     <h3 className="label-mono mb-2">EMAIL</h3>
                     <a
                       href="mailto:info@precisionsigns.com.au"
-                      className="font-satoshi text-neutral-300 text-sm hover:text-brand-primary transition-colors"
+                      className="font-satoshi text-neutral-300 text-xs sm:text-sm hover:text-brand-primary transition-colors"
                     >
                       info@precisionsigns.com.au
                     </a>
@@ -75,7 +75,7 @@ export default async function ContactPage() {
                   {/* Business Hours */}
                   <div>
                     <h3 className="label-mono mb-2">BUSINESS HOURS</h3>
-                    <p className="font-satoshi text-neutral-300 text-sm">
+                    <p className="font-satoshi text-neutral-300 text-xs sm:text-sm">
                       Monday - Friday: 8:00 AM - 5:00 PM AEST<br />
                       Saturday - Sunday: Closed
                     </p>
@@ -83,7 +83,7 @@ export default async function ContactPage() {
                 </div>
 
                 {/* Additional Info */}
-                <div className="mt-10 p-5 bg-neutral-900/50 border border-neutral-700 rounded-sm">
+                <div className="mt-6 sm:mt-10 p-4 sm:p-5 bg-neutral-900/50 border border-neutral-700 rounded-sm">
                   <h3 className="label-mono mb-2">AUSTRALIAN MADE</h3>
                   <p className="font-satoshi text-neutral-400 text-xs leading-relaxed">
                     Proudly manufacturing LED signage solutions in Australia since 1999.

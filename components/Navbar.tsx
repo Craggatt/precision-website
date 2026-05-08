@@ -6,7 +6,7 @@ import BorderGlow from "./BorderGlow";
 import { useQuoteStore } from "@/store/quoteStore";
 import { Media, Product, ProductCategory, ProductSubcategory, Content, ContentCategory, ContentSubcategory } from "@/payload-types";
 
-const navItems = ["Products", "Content", "Custom", "Support", "Customer Login"];
+const navItems = ["Products", "Content", "Support", "Customer Login"];
 
 interface NavbarProps {
   ready: boolean;
@@ -152,8 +152,12 @@ export default function Navbar({ ready, products, productCategories, content, co
 
           <div className="hidden md:flex items-stretch gap-8">
             {navItems.map((item, i) => {
-              const isLink = item === "Support";
-              const href = item === "Support" ? "/service-support" : undefined;
+              const isLink = item === "Support" || item === "Products" || item === "Content";
+              const href =
+                item === "Support" ? "/service-support" :
+                item === "Products" ? "/products" :
+                item === "Content" ? "/content" :
+                undefined;
 
               const menuContent = (
                 <motion.p

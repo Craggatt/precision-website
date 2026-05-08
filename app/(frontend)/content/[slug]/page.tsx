@@ -131,32 +131,32 @@ export default async function ContentDetailPage({ params }: { params: Params }) 
         />
         {/* Hero Section */}
         <div>
-        <div className="pt-14 border-b border-neutral-700">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between">
+        <div className="pt-14 sm:pt-16 border-b border-neutral-700">
+        <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-10 py-3 flex items-center justify-between">
           <Breadcrumb items={breadcrumbItems} />
-          
+
         </div>
       </div>
         </div>
-        <div className="px-10 border-b border-b-neutral-700">
-          <div className="max-w-[1600px] mx-auto px-10 py-16 w-full">
-            <h1 className="font-aller font-bold text-white text-5xl mt-3">{contentItem.name}</h1>
+        <div className="px-4 sm:px-6 md:px-10 border-b border-b-neutral-700">
+          <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 w-full">
+            <h1 className="font-aller font-bold text-white text-3xl sm:text-4xl md:text-5xl mt-3">{contentItem.name}</h1>
           </div>
         </div>
 
         {/* Intro / Image Section */}
         {(contentItem.description || contentItem.featureImage) && (
-          <div className="w-full px-10 border-b border-b-neutral-700">
-            <div className="flex flex-row max-w-[1600px] mx-auto border-x border-x-neutral-700">
+          <div className="w-full px-4 sm:px-6 md:px-10 border-b border-b-neutral-700">
+            <div className="flex flex-col lg:flex-row max-w-[1600px] mx-auto border-x border-x-neutral-700">
               {contentItem.description && (
-                <div className="flex-1 flex flex-col items-start justify-center gap-6 p-10 border-r border-r-neutral-700">
-                  <p className="font-aller text-neutral-200 text-2xl leading-snug">
+                <div className="flex-1 flex flex-col items-start justify-center gap-4 sm:gap-6 p-6 sm:p-8 md:p-10 lg:border-r lg:border-r-neutral-700 border-b lg:border-b-0 border-b-neutral-700">
+                  <p className="font-aller text-neutral-200 text-lg sm:text-xl md:text-2xl leading-snug">
                     {contentItem.description}
                   </p>
                   {contentItem.contentSections && contentItem.contentSections.length > 0 && (
                     <a
                       href="#details"
-                      className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-400 hover:text-brand-primary transition-colors"
+                      className="group inline-flex items-center gap-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-neutral-400 hover:text-brand-primary transition-colors"
                     >
                       Read More
                       <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
@@ -167,7 +167,7 @@ export default async function ContentDetailPage({ params }: { params: Params }) 
                 </div>
               )}
               {contentItem.featureImage && typeof contentItem.featureImage === "object" && (
-                <div className="flex-1 p-10">
+                <div className="flex-1 p-6 sm:p-8 md:p-10">
                   <img
                     src={contentItem.featureImage.url || ""}
                     alt={contentItem.featureImage.alt || contentItem.name}
@@ -182,22 +182,22 @@ export default async function ContentDetailPage({ params }: { params: Params }) 
         {contentItem.contentSections && contentItem.contentSections.length > 0 && (
           <div id="details">
             {contentItem.contentSections.map((section, index) => (
-              <div key={index} className="w-full px-10 border-b border-b-neutral-700">
-                <div className="flex flex-row max-w-[1600px] mx-auto px-10 py-16 gap-16 border-x border-x-neutral-700 bg-neutral-800">
-                  <div className="flex flex-col w-1/3">
+              <div key={index} className="w-full px-4 sm:px-6 md:px-10 border-b border-b-neutral-700">
+                <div className="flex flex-col lg:flex-row max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 py-8 sm:py-12 md:py-16 gap-6 sm:gap-8 lg:gap-16 border-x border-x-neutral-700 bg-neutral-800">
+                  <div className="flex flex-col lg:w-1/3">
                     {section.tag && <Tag number={String(index + 1)} text={section.tag} variant="sm" />}
-                    <h2 className="font-aller font-bold text-white text-4xl mt-2 mb-2">
+                    <h2 className="font-aller font-bold text-white text-2xl sm:text-3xl md:text-4xl mt-2 mb-2">
                       {section.name}
                     </h2>
                     {section.shortDescription && (
-                      <p className="font-satoshi text-sm text-neutral-400">
+                      <p className="font-satoshi text-xs sm:text-sm text-neutral-400">
                         {section.shortDescription}
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col w-2/3">
+                  <div className="flex flex-col lg:w-2/3">
                     {section.longDescription && (
-                      <div className="font-satoshi text-lg text-neutral-200 leading-relaxed">
+                      <div className="font-satoshi text-base sm:text-lg text-neutral-200 leading-relaxed">
                         {renderRichText(section.longDescription)}
                       </div>
                     )}

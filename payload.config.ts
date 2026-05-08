@@ -18,6 +18,8 @@ import { Content } from "./collections/Content";
 import { VenueLogos } from "./collections/VenueLogos";
 import { Projects } from "./collections/Projects";
 import { Testimonials } from "./collections/Testimonials";
+import { ContactSubmissions } from "./collections/ContactSubmissions";
+import { QuoteRequests } from "./collections/QuoteRequests";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -41,6 +43,8 @@ export default buildConfig({
     Projects,
     Testimonials,
     VenueLogos,
+    ContactSubmissions,
+    QuoteRequests,
   ],
   jobs: {
     autoRun: [

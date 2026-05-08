@@ -3,8 +3,9 @@
 import { Input } from "@base-ui/react";
 import { ArrowRight } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 interface ContactFormValues {
   firstName: string;
@@ -61,10 +62,12 @@ function Field({
 }
 
 const inputClasses =
-  "bg-neutral-800 border-b border-b-neutral-700 hover:border-b-neutral-500 focus:border-b-brand-primary focus:outline-none transition-colors text-[15px] px-2.5 py-2.5 font-mono text-neutral-100 placeholder:text-neutral-600 w-full";
+  "bg-neutral-800 border-b border-b-neutral-700 hover:border-b-neutral-500 focus:border-b-brand-primary focus:outline-none transition-colors text-sm sm:text-[15px] px-2 sm:px-2.5 py-2 sm:py-2.5 font-mono text-neutral-100 placeholder:text-neutral-600 w-full";
 
 export default function ContactForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<any>(null);
 
   const {
     register,
@@ -74,22 +77,44 @@ export default function ContactForm() {
   } = useForm<ContactFormValues>();
 
   const onSubmit: SubmitHandler<ContactFormValues> = async (data) => {
-    console.log("Contact form submission:", data);
-    // TODO: wire up API call with react-query mutation
+    try {
+      if (!turnstileToken) {
+        console.error("Turnstile token not available");
+        return;
+      }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          turnstileToken,
+        }),
+      });
 
-    setSubmitSuccess(true);
-    reset();
+      if (!response.ok) {
+        throw new Error("Failed to submit form");
+      }
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setSubmitSuccess(false), 5000);
+      setSubmitSuccess(true);
+      reset();
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
+
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error("Contact form submission error:", error);
+      turnstileRef.current?.reset();
+      // You could add error state handling here if needed
+    }
   };
 
   return (
-    <div className="p-10">
-      <h3 className="font-mono uppercase text-[11px] text-neutral-500 tracking-[0.12em] mb-6">
+    <div className="p-6 sm:p-8 md:p-10">
+      <h3 className="font-mono uppercase text-[10px] sm:text-[11px] text-neutral-500 tracking-[0.12em] mb-4 sm:mb-6">
         Send us a Message
       </h3>
 
@@ -108,9 +133,9 @@ export default function ContactForm() {
         )}
       </AnimatePresence>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 sm:gap-6">
         {/* Name Fields */}
-        <div className="flex flex-col sm:flex-row gap-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
           <Field
             label="First Name"
             htmlFor="firstName"
@@ -208,12 +233,27 @@ export default function ContactForm() {
           />
         </Field>
 
+        {/* Turnstile (Invisible) */}
+        <div className="hidden">
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken(null)}
+            onExpire={() => setTurnstileToken(null)}
+            options={{
+              theme: "dark",
+              size: "invisible",
+            }}
+          />
+        </div>
+
         {/* Submit Button */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mt-2 pt-2">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mt-1 sm:mt-2 pt-1 sm:pt-2">
           <button
             type="submit"
-            disabled={isSubmitting}
-            className="group relative font-satoshi bg-brand-primary text-white px-4 py-2 rounded-sm font-medium flex items-center gap-2.5 justify-center sm:justify-between sm:w-auto w-full overflow-hidden transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isSubmitting || !turnstileToken}
+            className="group relative font-satoshi bg-brand-primary text-white px-4 py-2.5 sm:py-2 rounded-sm font-medium flex items-center gap-2.5 justify-center sm:justify-between sm:w-auto w-full overflow-hidden transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
           >
             <span className="relative z-10 tracking-wide">
               {isSubmitting ? "Sending…" : "Send message"}

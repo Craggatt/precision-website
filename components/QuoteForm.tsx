@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Checkbox, Input } from "@base-ui/react";
 import { ArrowRight, CheckIcon, X } from "lucide-react";
 import { wesbiteData } from "@/data/products";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useQuoteStore } from "@/store/quoteStore";
 import { motion, AnimatePresence } from "motion/react";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 interface QuoteFormValues {
   firstName: string;
@@ -110,6 +111,8 @@ export default function QuoteForm() {
   const products = wesbiteData.products;
   const selectedProducts = useQuoteStore((s) => s.selectedProducts);
   const setOpen = useQuoteStore((s) => s.setOpen);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<any>(null);
 
   const {
     register,
@@ -132,12 +135,41 @@ export default function QuoteForm() {
   }, [setOpen]);
 
   const onSubmit: SubmitHandler<QuoteFormValues> = async (data) => {
-    const payload = {
-      ...data,
-      products: selectedProducts.map((p) => p.slug),
-    };
-    console.log("Quote submission:", payload);
-    reset();
+    try {
+      if (!turnstileToken) {
+        console.error("Turnstile token not available");
+        return;
+      }
+
+      const payload = {
+        ...data,
+        products: selectedProducts.map((p) => p.slug),
+        turnstileToken,
+      };
+
+      const response = await fetch("/api/quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit quote request");
+      }
+
+      reset();
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
+      setOpen(false);
+
+      // You could add a success notification here if needed
+    } catch (error) {
+      console.error("Quote form submission error:", error);
+      turnstileRef.current?.reset();
+      // You could add error state handling here if needed
+    }
   };
 
   const selectedCount = selectedProducts.length;
@@ -326,10 +358,25 @@ export default function QuoteForm() {
                   />
                 </Field>
 
+                {/* Turnstile (Invisible) */}
+                <div className="hidden">
+                  <Turnstile
+                    ref={turnstileRef}
+                    siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+                    onSuccess={(token) => setTurnstileToken(token)}
+                    onError={() => setTurnstileToken(null)}
+                    onExpire={() => setTurnstileToken(null)}
+                    options={{
+                      theme: "dark",
+                      size: "invisible",
+                    }}
+                  />
+                </div>
+
                 <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mt-2 pt-2">
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !turnstileToken}
                     className="group relative font-satoshi bg-brand-primary text-white px-4 py-2 rounded-sm font-medium flex items-center gap-2.5 justify-center sm:justify-between sm:w-auto w-full overflow-hidden transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="relative z-10 tracking-wide">

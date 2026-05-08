@@ -78,6 +78,8 @@ export interface Config {
     projects: Project;
     testimonials: Testimonial;
     'venue-logos': VenueLogo;
+    'contact-submissions': ContactSubmission;
+    'quote-requests': QuoteRequest;
     exports: Export;
     imports: Import;
     'payload-kv': PayloadKv;
@@ -99,6 +101,8 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'venue-logos': VenueLogosSelect<false> | VenueLogosSelect<true>;
+    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -419,6 +423,43 @@ export interface VenueLogo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions".
+ */
+export interface ContactSubmission {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  subject: string;
+  message: string;
+  status: 'new' | 'in_progress' | 'resolved';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quote-requests".
+ */
+export interface QuoteRequest {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  products?:
+    | {
+        productSlug: string;
+        id?: string | null;
+      }[]
+    | null;
+  additionalInfo?: string | null;
+  status: 'new' | 'quote_sent' | 'in_progress' | 'completed' | 'declined';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
@@ -650,6 +691,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'venue-logos';
         value: number | VenueLogo;
+      } | null)
+    | ({
+        relationTo: 'contact-submissions';
+        value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'quote-requests';
+        value: number | QuoteRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -876,6 +925,41 @@ export interface VenueLogosSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions_select".
+ */
+export interface ContactSubmissionsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  subject?: T;
+  message?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quote-requests_select".
+ */
+export interface QuoteRequestsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  products?:
+    | T
+    | {
+        productSlug?: T;
+        id?: T;
+      };
+  additionalInfo?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports_select".
  */
 export interface ExportsSelect<T extends boolean = true> {
@@ -1034,6 +1118,8 @@ export interface TaskCreateCollectionExport {
       | 'projects'
       | 'testimonials'
       | 'venue-logos'
+      | 'contact-submissions'
+      | 'quote-requests'
       | 'exports'
       | 'imports';
     drafts?: ('yes' | 'no') | null;
