@@ -27,5 +27,43 @@ export const Content: CollectionConfig = {
       },
     },
     { name: "richText", type: "richText", required: true },
+    {
+      name: "featureImage",
+      type: "upload",
+      relationTo: "media",
+      required: false,
+    },
+    {
+      name: "description",
+      type: "textarea",
+      required: false,
+    },
+    {
+      name: "contentSections",
+      type: "array",
+      required: false,
+      fields: [
+        {
+          name: "name",
+          type: "text",
+          required: true,
+        },
+        {
+          name: "tag",
+          type: "text",
+          required: false,
+        },
+        {
+          name: "shortDescription",
+          type: "textarea",
+          required: false,
+        },
+        {
+          name: "longDescription",
+          type: "richText",
+          required: false,
+        },
+      ],
+    },
   ],
 };

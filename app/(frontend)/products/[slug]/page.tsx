@@ -8,6 +8,7 @@ import QuoteButton from "./QuoteButton";
 import { Product, ProductCategory, ProductSubcategory, Media } from "@/payload-types";
 import { Check, Zap, Network, Gauge, ArrowUpRight, Shield, MapPin, Headphones } from "lucide-react";
 import BorderGlow from "@/components/BorderGlow";
+import Breadcrumb, { BreadcrumbItem } from "@/components/Breadcrumb";
 
 type Params = Promise<{ slug: string }>;
 
@@ -197,35 +198,23 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
 
   const featureCount = product.features?.filter((f) => f.feature).length ?? 0;
 
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+    ...(categoryName
+      ? [{ label: categoryName, href: `/products?cat=${encodeURIComponent(categoryName)}` }]
+      : []),
+    { label: product.name },
+  ];
+
   return (
     <main className="min-h-screen bg-neutral-900 text-white">
       <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
 
       {/* ============== Breadcrumb rail ============== */}
-      <div className="pt-14 border-b border-neutral-800">
+      <div className="pt-14 border-b border-neutral-700">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between">
-          <nav className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] text-neutral-500">
-            <a href="/" className="hover:text-white transition-colors">
-              Home
-            </a>
-            <span className="text-neutral-700">/</span>
-            <a href="/products" className="hover:text-white transition-colors">
-              Products
-            </a>
-            {categoryName && (
-              <>
-                <span className="text-neutral-700">/</span>
-                <a
-                  href={`/products?cat=${encodeURIComponent(categoryName)}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {categoryName}
-                </a>
-              </>
-            )}
-            <span className="text-neutral-700">/</span>
-            <span className="text-neutral-200">{product.name}</span>
-          </nav>
+          <Breadcrumb items={breadcrumbItems} />
           {product.code && (
             <p className="hidden md:block font-mono text-[11px] uppercase tracking-[0.15em] text-neutral-500">
               SKU <span className="text-neutral-200 ml-2">{product.code}</span>

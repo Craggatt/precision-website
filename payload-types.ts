@@ -334,6 +334,31 @@ export interface Content {
     };
     [k: string]: unknown;
   };
+  featureImage?: (number | null) | Media;
+  description?: string | null;
+  contentSections?:
+    | {
+        name: string;
+        tag?: string | null;
+        shortDescription?: string | null;
+        longDescription?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -797,6 +822,17 @@ export interface ContentSelect<T extends boolean = true> {
   category?: T;
   subcategory?: T;
   richText?: T;
+  featureImage?: T;
+  description?: T;
+  contentSections?:
+    | T
+    | {
+        name?: T;
+        tag?: T;
+        shortDescription?: T;
+        longDescription?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

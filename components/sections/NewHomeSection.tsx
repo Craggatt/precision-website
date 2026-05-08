@@ -159,7 +159,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
         playsInline
         style={{ translateY: videoY }}
       >
-        <source src="https://dlpwfd6kwolf1.cloudfront.net/bg.mp4" type="video/mp4" />
+        <source src="https://dlpwfd6kwolf1.cloudfront.net/web_video.mp4" type="video/mp4" />
       </motion.video>
 
       {/* Overlay */}

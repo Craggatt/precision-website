@@ -4,6 +4,9 @@ import { payloadService } from "@/services/payloadService";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Content, ContentCategory, ContentSubcategory } from "@/payload-types";
+import Tag from "@/components/Tag";
+import CTASection from "@/components/sections/CTASection";
+import Breadcrumb, { BreadcrumbItem } from "@/components/Breadcrumb";
 
 type Params = Promise<{ slug: string }>;
 
@@ -50,10 +53,7 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
   switch (node.type) {
     case "paragraph":
       return (
-        <p
-          key={key}
-          className="font-satoshi text-neutral-300 leading-[1.7] mb-4 last:mb-0"
-        >
+        <p key={key} className="font-satoshi text-neutral-300 leading-[1.7] mb-4 last:mb-0">
           {children}
         </p>
       );
@@ -95,13 +95,14 @@ function renderRichText(richTextData: any): React.ReactNode {
 
 export default async function ContentDetailPage({ params }: { params: Params }) {
   const { slug } = await params;
-  const [contentItem, products, productCategories, allContent, contentCategories] = await Promise.all([
-    payloadService.getContentBySlug(slug),
-    payloadService.getProducts(),
-    payloadService.getProductCategories(),
-    payloadService.getContent(),
-    payloadService.getContentCategories(),
-  ]);
+  const [contentItem, products, productCategories, allContent, contentCategories] =
+    await Promise.all([
+      payloadService.getContentBySlug(slug),
+      payloadService.getProducts(),
+      payloadService.getProductCategories(),
+      payloadService.getContent(),
+      payloadService.getContentCategories(),
+    ]);
 
   if (!contentItem) {
     notFound();
@@ -109,6 +110,14 @@ export default async function ContentDetailPage({ params }: { params: Params }) 
 
   const categoryName = getCategoryName(contentItem);
   const subcategoryName = getSubcategoryName(contentItem);
+
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: "Content", href: "/content" },
+    ...(categoryName
+      ? [{ label: categoryName, href: `/content?cat=${encodeURIComponent(categoryName)}` }]
+      : []),
+    { label: contentItem.name },
+  ];
 
   return (
     <>
@@ -120,57 +129,86 @@ export default async function ContentDetailPage({ params }: { params: Params }) 
           content={allContent}
           contentCategories={contentCategories}
         />
-
         {/* Hero Section */}
-        <div className="px-10 border-b border-b-neutral-700 flex flex-col">
-          <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
-            <div className="flex items-center gap-2 mb-4">
-              <a
-                href="/content"
-                className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500 hover:text-brand-primary transition-colors"
-              >
-                Content
-              </a>
-              <span className="text-neutral-600">/</span>
-              {categoryName && (
-                <>
-                  <a
-                    href={`/content?cat=${encodeURIComponent(categoryName)}`}
-                    className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500 hover:text-brand-primary transition-colors"
-                  >
-                    {categoryName}
-                  </a>
-                  {subcategoryName && (
-                    <>
-                      <span className="text-neutral-600">/</span>
-                      <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-                        {subcategoryName}
+        <div>
+        <div className="pt-14 border-b border-neutral-700">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between">
+          <Breadcrumb items={breadcrumbItems} />
+          
+        </div>
+      </div>
+        </div>
+        <div className="px-10 border-b border-b-neutral-700">
+          <div className="max-w-[1600px] mx-auto px-10 py-16 w-full">
+            <h1 className="font-aller font-bold text-white text-5xl mt-3">{contentItem.name}</h1>
+          </div>
+        </div>
+
+        {/* Intro / Image Section */}
+        {(contentItem.description || contentItem.featureImage) && (
+          <div className="w-full px-10 border-b border-b-neutral-700">
+            <div className="flex flex-row max-w-[1600px] mx-auto border-x border-x-neutral-700">
+              {contentItem.description && (
+                <div className="flex-1 flex flex-col items-start justify-center gap-6 p-10 border-r border-r-neutral-700">
+                  <p className="font-aller text-neutral-200 text-2xl leading-snug">
+                    {contentItem.description}
+                  </p>
+                  {contentItem.contentSections && contentItem.contentSections.length > 0 && (
+                    <a
+                      href="#details"
+                      className="group inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-400 hover:text-brand-primary transition-colors"
+                    >
+                      Read More
+                      <span aria-hidden className="transition-transform group-hover:translate-y-0.5">
+                        ↓
                       </span>
-                    </>
+                    </a>
                   )}
-                </>
+                </div>
+              )}
+              {contentItem.featureImage && typeof contentItem.featureImage === "object" && (
+                <div className="flex-1 p-10">
+                  <img
+                    src={contentItem.featureImage.url || ""}
+                    alt={contentItem.featureImage.alt || contentItem.name}
+                    className="w-full h-full object-cover rounded-sm"
+                  />
+                </div>
               )}
             </div>
-
-            <h1 className="font-aller font-bold text-5xl mt-3">
-              {contentItem.name}
-            </h1>
           </div>
-        </div>
-
-        {/* Content Body */}
-        <div className="flex-1 px-2.5 md:px-5 lg:px-10">
-          <div className="max-w-[1600px] mx-auto border-x border-neutral-700 bg-neutral-800/30">
-            <div className="p-10">
-              <div className="max-w-4xl mx-auto">
-                <div className="prose prose-invert max-w-none">
-                  {renderRichText(contentItem.richText)}
+        )}
+        {/* Content Sections */}
+        {contentItem.contentSections && contentItem.contentSections.length > 0 && (
+          <div id="details">
+            {contentItem.contentSections.map((section, index) => (
+              <div key={index} className="w-full px-10 border-b border-b-neutral-700">
+                <div className="flex flex-row max-w-[1600px] mx-auto px-10 py-16 gap-16 border-x border-x-neutral-700 bg-neutral-800">
+                  <div className="flex flex-col w-1/3">
+                    {section.tag && <Tag number={String(index + 1)} text={section.tag} variant="sm" />}
+                    <h2 className="font-aller font-bold text-white text-4xl mt-2 mb-2">
+                      {section.name}
+                    </h2>
+                    {section.shortDescription && (
+                      <p className="font-satoshi text-sm text-neutral-400">
+                        {section.shortDescription}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col w-2/3">
+                    {section.longDescription && (
+                      <div className="font-satoshi text-lg text-neutral-200 leading-relaxed">
+                        {renderRichText(section.longDescription)}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        </div>
+        )}
 
+        <CTASection />
         <Footer />
       </main>
     </>
