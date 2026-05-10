@@ -80,6 +80,7 @@ export interface Config {
     'venue-logos': VenueLogo;
     'contact-submissions': ContactSubmission;
     'quote-requests': QuoteRequest;
+    'support-requests': SupportRequest;
     exports: Export;
     imports: Import;
     'payload-kv': PayloadKv;
@@ -103,6 +104,7 @@ export interface Config {
     'venue-logos': VenueLogosSelect<false> | VenueLogosSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
+    'support-requests': SupportRequestsSelect<false> | SupportRequestsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -385,6 +387,21 @@ export interface Project {
       }[]
     | null;
   videoUrl?: string | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -455,6 +472,24 @@ export interface QuoteRequest {
     | null;
   additionalInfo?: string | null;
   status: 'new' | 'quote_sent' | 'in_progress' | 'completed' | 'declined';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-requests".
+ */
+export interface SupportRequest {
+  id: number;
+  venueName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  signDescription: string;
+  serialNumber?: string | null;
+  faultDescription: string;
+  status: 'new' | 'in_progress' | 'awaiting_parts' | 'resolved' | 'closed';
+  priority?: ('low' | 'normal' | 'high' | 'urgent') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -699,6 +734,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'quote-requests';
         value: number | QuoteRequest;
+      } | null)
+    | ({
+        relationTo: 'support-requests';
+        value: number | SupportRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -895,6 +934,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   featuredImage?: T;
   gallery?: T;
   videoUrl?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -955,6 +995,23 @@ export interface QuoteRequestsSelect<T extends boolean = true> {
       };
   additionalInfo?: T;
   status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-requests_select".
+ */
+export interface SupportRequestsSelect<T extends boolean = true> {
+  venueName?: T;
+  contactName?: T;
+  email?: T;
+  phone?: T;
+  signDescription?: T;
+  serialNumber?: T;
+  faultDescription?: T;
+  status?: T;
+  priority?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1120,6 +1177,7 @@ export interface TaskCreateCollectionExport {
       | 'venue-logos'
       | 'contact-submissions'
       | 'quote-requests'
+      | 'support-requests'
       | 'exports'
       | 'imports';
     drafts?: ('yes' | 'no') | null;

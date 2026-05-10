@@ -3,8 +3,9 @@
 import { Input } from "@base-ui/react";
 import { ArrowRight } from "lucide-react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { Turnstile } from "@marsidev/react-turnstile";
 
 interface ServiceSupportFormValues {
   venueName: string;
@@ -66,6 +67,8 @@ const inputClasses =
 
 export default function ServiceSupportForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<any>(null);
 
   const {
     register,
@@ -75,17 +78,39 @@ export default function ServiceSupportForm() {
   } = useForm<ServiceSupportFormValues>();
 
   const onSubmit: SubmitHandler<ServiceSupportFormValues> = async (data) => {
-    console.log("Service support submission:", data);
-    // TODO: wire up API call with react-query mutation
+    try {
+      if (!turnstileToken) {
+        console.error("Turnstile token not available");
+        return;
+      }
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/support", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          turnstileToken,
+        }),
+      });
 
-    setSubmitSuccess(true);
-    reset();
+      if (!response.ok) {
+        throw new Error("Failed to submit support request");
+      }
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setSubmitSuccess(false), 5000);
+      setSubmitSuccess(true);
+      reset();
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
+
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      console.error("Support form submission error:", error);
+      turnstileRef.current?.reset();
+      // You could add error state handling here if needed
+    }
   };
 
   return (
@@ -227,11 +252,26 @@ export default function ServiceSupportForm() {
           />
         </Field>
 
+        {/* Turnstile (Invisible) */}
+        <div className="hidden">
+          <Turnstile
+            ref={turnstileRef}
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+            onSuccess={(token) => setTurnstileToken(token)}
+            onError={() => setTurnstileToken(null)}
+            onExpire={() => setTurnstileToken(null)}
+            options={{
+              theme: "dark",
+              size: "invisible",
+            }}
+          />
+        </div>
+
         {/* Submit Button */}
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 mt-2 pt-2">
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !turnstileToken}
             className="group relative font-satoshi bg-brand-primary text-white px-4 py-2 rounded-sm font-medium flex items-center gap-2.5 justify-center sm:justify-between sm:w-auto w-full overflow-hidden transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="relative z-10 tracking-wide">

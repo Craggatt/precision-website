@@ -20,6 +20,7 @@ import { Projects } from "./collections/Projects";
 import { Testimonials } from "./collections/Testimonials";
 import { ContactSubmissions } from "./collections/ContactSubmissions";
 import { QuoteRequests } from "./collections/QuoteRequests";
+import { SupportRequests } from "./collections/SupportRequests";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -45,6 +46,7 @@ export default buildConfig({
     VenueLogos,
     ContactSubmissions,
     QuoteRequests,
+    SupportRequests,
   ],
   jobs: {
     autoRun: [

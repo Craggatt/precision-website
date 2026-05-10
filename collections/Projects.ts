@@ -20,5 +20,6 @@ export const Projects: CollectionConfig = {
       hasMany: true,
     },
     { name: "videoUrl", type: "text", required: false },
+    { name: "description", type: "richText", required: false },
   ],
 };
