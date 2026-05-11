@@ -68,9 +68,7 @@ export default function ProductsSection({ productCategories }: ProductsSectionPr
             </h2>
           </div>
           <p className="font-satoshi text-neutral-400 text-sm leading-relaxed max-w-sm">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            We design and manufacture the full range of gaming floor signage in-house, including overbank displays, entry signage, screens, infills, and fully custom builds. Every piece is built to last, and backed by 25+ years of work with Australia's leading clubs, hotels, and casinos.
           </p>
           <div className="flex flex-row gap-300">
             <a
