@@ -1,38 +1,43 @@
-"use client";
+'use client';
 
-import { useEffect, useCallback, useState } from "react";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { Search, X, SlidersHorizontal } from "lucide-react";
-import useProducts from "@/hooks/useProducts";
-import { Product, ProductCategory, Media } from "@/payload-types";
+import { useEffect, useCallback, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
+import useProducts from '@/hooks/useProducts';
+import { Product, ProductCategory, Media } from '@/payload-types';
+import Link from 'next/link';
+import { useQuoteStore } from '@/store/quoteStore';
 
 const CATEGORY_COLORS: Record<string, string> = {
-  "Overbank Signage": "bg-brand-primary/20 text-blue-300 border-brand-primary/30",
-  "Entry Displays": "bg-emerald-900/40 text-emerald-400 border-emerald-700/40",
-  Screens: "bg-purple-900/40 text-purple-400 border-purple-700/40",
-  Infills: "bg-amber-900/40 text-amber-400 border-amber-700/40",
-  "Jackpot History": "bg-rose-900/40 text-rose-400 border-rose-700/40",
-  "Large Screens": "bg-cyan-900/40 text-cyan-400 border-cyan-700/40",
+  'Overbank Signage':
+    'bg-brand-primary/20 text-blue-300 border-brand-primary/30',
+  'Entry Displays': 'bg-emerald-900/40 text-emerald-400 border-emerald-700/40',
+  Screens: 'bg-purple-900/40 text-purple-400 border-purple-700/40',
+  Infills: 'bg-amber-900/40 text-amber-400 border-amber-700/40',
+  'Jackpot History': 'bg-rose-900/40 text-rose-400 border-rose-700/40',
+  'Large Screens': 'bg-cyan-900/40 text-cyan-400 border-cyan-700/40',
 };
 
 function getProductCategoryName(product: Product): string {
-  return typeof product.category === "object"
+  return typeof product.category === 'object'
     ? (product.category as ProductCategory).name
-    : "";
+    : '';
 }
 
 function getProductImageUrl(product: Product): string | null {
   const img = product.featuredImage;
-  if (typeof img.value === "object") return (img.value as Media).url ?? null;
+  if (typeof img.value === 'object') return (img.value as Media).url ?? null;
   return null;
 }
 
 function extractPlainText(node: Record<string, unknown>): string {
-  if (typeof node.text === "string") return node.text;
+  if (typeof node.text === 'string') return node.text;
   if (Array.isArray(node.children)) {
-    return (node.children as Record<string, unknown>[]).map(extractPlainText).join(" ");
+    return (node.children as Record<string, unknown>[])
+      .map(extractPlainText)
+      .join(' ');
   }
-  return "";
+  return '';
 }
 
 function getProductDescription(product: Product): string {
@@ -43,7 +48,7 @@ function getProductSubcategoryName(product: Product): string | null {
   const subs = product.subcategory;
   if (!subs || subs.length === 0) return null;
   const first = subs[0];
-  return typeof first === "object" ? first.name : null;
+  return typeof first === 'object' ? first.name : null;
 }
 
 function ProductCard({ product }: { product: Product }) {
@@ -51,8 +56,10 @@ function ProductCard({ product }: { product: Product }) {
   const categoryName = getProductCategoryName(product);
   const subcategoryName = getProductSubcategoryName(product);
   const description = getProductDescription(product);
-  const colorClass = CATEGORY_COLORS[categoryName] ?? "bg-neutral-800 text-neutral-400 border-neutral-700";
-
+  const colorClass =
+    CATEGORY_COLORS[categoryName] ??
+    'bg-neutral-800 text-neutral-400 border-neutral-700';
+  const { setOpen } = useQuoteStore();
   return (
     <div className="group flex flex-col bg-neutral-900 border border-neutral-700 duration-200 h-fit">
       <div className="relative aspect-4/3 overflow-hidden bg-neutral-800">
@@ -88,13 +95,16 @@ function ProductCard({ product }: { product: Product }) {
         </p>
 
         <div className="mt-3 pt-3 border-t border-neutral-700 flex flex-col sm:flex-row gap-2">
-          <a
+          <Link
             href={`/products/${product.slug}`}
             className="flex-1 font-satoshi text-xs font-semibold py-2 border border-neutral-600 text-neutral-300 hover:border-neutral-400 hover:text-white transition-colors text-center"
           >
             Learn More
-          </a>
-          <button className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors">
+          </Link>
+          <button
+            className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors"
+            onClick={() => setOpen(true)}
+          >
             Get a Quote
           </button>
         </div>
@@ -108,7 +118,10 @@ interface ProductsClientProps {
   categories: ProductCategory[];
 }
 
-export default function ProductsClient({ products: initialProducts, categories: initialCategories }: ProductsClientProps) {
+export default function ProductsClient({
+  products: initialProducts,
+  categories: initialCategories,
+}: ProductsClientProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -131,47 +144,53 @@ export default function ProductsClient({ products: initialProducts, categories: 
   useEffect(() => {
     initializeProducts(initialProducts, initialCategories);
     const cats = searchParams
-      .getAll("cat")
-      .filter((c) => initialCategories.some((cat) => cat.name === c));
+      .getAll('cat')
+      .filter(c => initialCategories.some(cat => cat.name === c));
     if (cats.length > 0) setCategories(cats);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const pushCats = useCallback(
     (cats: string[]) => {
       const params = new URLSearchParams(searchParams.toString());
-      params.delete("cat");
-      cats.forEach((c) => params.append("cat", c));
+      params.delete('cat');
+      cats.forEach(c => params.append('cat', c));
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     },
-    [router, pathname, searchParams],
+    [router, pathname, searchParams]
   );
 
   const handleToggle = useCallback(
     (catName: string) => {
       const next = selectedCategories.includes(catName)
-        ? selectedCategories.filter((c) => c !== catName)
+        ? selectedCategories.filter(c => c !== catName)
         : [...selectedCategories, catName];
       toggleCategory(catName);
       pushCats(next);
     },
-    [selectedCategories, toggleCategory, pushCats],
+    [selectedCategories, toggleCategory, pushCats]
   );
 
   const handleClear = useCallback(() => {
     clearFilters();
     const params = new URLSearchParams(searchParams.toString());
-    params.delete("cat");
+    params.delete('cat');
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }, [clearFilters, router, pathname, searchParams]);
 
-  const categoryCounts = categories.reduce<Record<string, number>>((acc, cat) => {
-    acc[cat.name] = allProducts.filter(
-      (p) => typeof p.category === "object" && (p.category as ProductCategory).name === cat.name,
-    ).length;
-    return acc;
-  }, {});
+  const categoryCounts = categories.reduce<Record<string, number>>(
+    (acc, cat) => {
+      acc[cat.name] = allProducts.filter(
+        p =>
+          typeof p.category === 'object' &&
+          (p.category as ProductCategory).name === cat.name
+      ).length;
+      return acc;
+    },
+    {}
+  );
 
-  const hasActiveFilters = selectedCategories.length > 0 || searchQuery.trim().length > 0;
+  const hasActiveFilters =
+    selectedCategories.length > 0 || searchQuery.trim().length > 0;
 
   const FilterContent = () => (
     <>
@@ -182,12 +201,12 @@ export default function ProductsClient({ products: initialProducts, categories: 
           type="text"
           placeholder="Search products..."
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
           className="w-full bg-neutral-900 border border-neutral-700 text-white font-satoshi text-sm pl-9 pr-3 py-2 placeholder:text-neutral-600 focus:outline-none focus:border-neutral-500 transition-colors"
         />
         {searchQuery && (
           <button
-            onClick={() => setSearchQuery("")}
+            onClick={() => setSearchQuery('')}
             className="absolute right-2.5 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300"
           >
             <X className="w-3.5 h-3.5" />
@@ -210,7 +229,7 @@ export default function ProductsClient({ products: initialProducts, categories: 
             </button>
           )}
         </div>
-        {categories.map((cat) => {
+        {categories.map(cat => {
           const active = selectedCategories.includes(cat.name);
           return (
             <button
@@ -218,16 +237,16 @@ export default function ProductsClient({ products: initialProducts, categories: 
               onClick={() => handleToggle(cat.name)}
               className={`flex items-center justify-between w-full px-3 py-2 text-left transition-colors group ${
                 active
-                  ? "bg-neutral-700/60 text-white"
-                  : "text-neutral-400 hover:text-white hover:bg-neutral-800"
+                  ? 'bg-neutral-700/60 text-white'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
               }`}
             >
               <div className="flex items-center gap-2.5">
                 <div
                   className={`w-3.5 h-3.5 shrink-0 border transition-colors ${
                     active
-                      ? "bg-brand-primary border-brand-primary"
-                      : "border-neutral-600 group-hover:border-neutral-400"
+                      ? 'bg-brand-primary border-brand-primary'
+                      : 'border-neutral-600 group-hover:border-neutral-400'
                   } flex items-center justify-center`}
                 >
                   {active && (
@@ -263,7 +282,7 @@ export default function ProductsClient({ products: initialProducts, categories: 
             Active Filters
           </span>
           <div className="flex flex-wrap gap-1.5">
-            {selectedCategories.map((cat) => (
+            {selectedCategories.map(cat => (
               <button
                 key={cat}
                 onClick={() => handleToggle(cat)}
@@ -294,14 +313,19 @@ export default function ProductsClient({ products: initialProducts, categories: 
 
       {/* Mobile filter modal */}
       {isMobileFilterOpen && (
-        <div className="lg:hidden fixed inset-0 bg-black/50 z-50" onClick={() => setIsMobileFilterOpen(false)}>
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-50"
+          onClick={() => setIsMobileFilterOpen(false)}
+        >
           <div
             className="absolute inset-y-0 left-0 w-80 max-w-[85vw] bg-neutral-900 border-r border-neutral-700 overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
           >
             <div className="p-6 flex flex-col gap-6">
               <div className="flex items-center justify-between">
-                <h2 className="font-aller font-bold text-xl text-white">Filters</h2>
+                <h2 className="font-aller font-bold text-xl text-white">
+                  Filters
+                </h2>
                 <button
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="text-neutral-400 hover:text-white"
@@ -334,15 +358,21 @@ export default function ProductsClient({ products: initialProducts, categories: 
                   <span className="text-neutral-500">Loading products…</span>
                 ) : hasActiveFilters ? (
                   <>
-                    <span className="text-white font-semibold">{filteredProducts.length}</span>{" "}
-                    of{" "}
-                    <span className="text-white font-semibold">{allProducts.length}</span>{" "}
+                    <span className="text-white font-semibold">
+                      {filteredProducts.length}
+                    </span>{' '}
+                    of{' '}
+                    <span className="text-white font-semibold">
+                      {allProducts.length}
+                    </span>{' '}
                     products
                   </>
                 ) : (
                   <>
-                    All{" "}
-                    <span className="text-white font-semibold">{allProducts.length}</span>{" "}
+                    All{' '}
+                    <span className="text-white font-semibold">
+                      {allProducts.length}
+                    </span>{' '}
                     products
                   </>
                 )}
@@ -353,18 +383,23 @@ export default function ProductsClient({ products: initialProducts, categories: 
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-neutral-800 animate-pulse aspect-[4/5]" />
+                  <div
+                    key={i}
+                    className="bg-neutral-800 animate-pulse aspect-[4/5]"
+                  />
                 ))}
               </div>
             ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 h-full">
-                {filteredProducts.map((product) => (
+                {filteredProducts.map(product => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-                <p className="font-aller font-bold text-white text-xl">No products found</p>
+                <p className="font-aller font-bold text-white text-xl">
+                  No products found
+                </p>
                 <p className="font-satoshi text-sm text-neutral-500">
                   Try adjusting your filters or search query.
                 </p>

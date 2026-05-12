@@ -4,6 +4,7 @@ import ProductsClient from './ProductsClient';
 import { payloadService } from '@/services/payloadService';
 import Heading from '@/components/Heading';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
+import QuoteFormSection from '@/components/sections/QuoteFormSection';
 
 export default async function Products() {
   const [products, productCategories, content, contentCategories] =
@@ -37,6 +38,7 @@ export default async function Products() {
         <Suspense>
           <ProductsClient products={products} categories={productCategories} />
         </Suspense>
+        <QuoteFormSection />
       </main>
     </>
   );

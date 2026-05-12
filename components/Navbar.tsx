@@ -336,7 +336,7 @@ export default function Navbar({
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                 >
                   <div className="flex flex-row w-full">
-                    {productMenu.map(item => (
+                    {[...productMenu].reverse().map(item => (
                       <a
                         href={`/products?cat=${encodeURIComponent(item.name)}`}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 hover:bg-neutral-800/50 transition-colors"
@@ -354,18 +354,18 @@ export default function Navbar({
                     ))}
                   </div>
                   <div className="flex flex-row w-full bg-neutral-800">
-                    {productMenu.map(item => (
+                    {[...productMenu].reverse().map(item => (
                       <div
                         key={item.id}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 gap-6"
                       >
-                        {item.subcategories.map(sub => (
+                        {[...item.subcategories].reverse().map(sub => (
                           <div key={sub.name} className="flex flex-col">
                             <h3 className="uppercase font-mono text-neutral-400 text-xs mb-2">
                               {sub.name}
                             </h3>
                             <div className="flex flex-col gap-1">
-                              {sub.items.map(product => (
+                              {[...sub.items].reverse().map(product => (
                                 <a
                                   key={product.slug}
                                   href={`/products/${product.slug}`}
@@ -415,7 +415,7 @@ export default function Navbar({
                   transition={{ duration: 0.25, ease: 'easeOut' }}
                 >
                   <div className="flex flex-row w-full">
-                    {contentMenu.map(item => (
+                    {[...contentMenu].reverse().map(item => (
                       <a
                         href={`/content?cat=${encodeURIComponent(item.name)}`}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 hover:bg-neutral-800/50 transition-colors"
@@ -433,18 +433,18 @@ export default function Navbar({
                     ))}
                   </div>
                   <div className="flex flex-row w-full bg-neutral-800">
-                    {contentMenu.map(item => (
+                    {[...contentMenu].reverse().map(item => (
                       <div
                         key={item.id}
                         className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 gap-6"
                       >
-                        {item.subcategories.map(sub => (
+                        {[...item.subcategories].reverse().map(sub => (
                           <div key={sub.name} className="flex flex-col">
                             <h3 className="uppercase font-mono text-neutral-400 text-xs mb-2">
                               {sub.name}
                             </h3>
                             <div className="flex flex-col gap-1">
-                              {sub.items.map(contentItem => (
+                              {[...sub.items].reverse().map(contentItem => (
                                 <a
                                   key={contentItem.slug}
                                   href={`/content/${contentItem.slug}`}

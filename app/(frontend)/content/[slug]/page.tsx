@@ -8,6 +8,7 @@ import Tag from '@/components/Tag';
 import CTASection from '@/components/sections/CTASection';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 import Heading from '@/components/Heading';
+import QuoteFormSection from '@/components/sections/QuoteFormSection';
 
 type Params = Promise<{ slug: string }>;
 
@@ -246,6 +247,7 @@ export default async function ContentDetailPage({
         />
         <Footer />
       </main>
+      <QuoteFormSection />
     </>
   );
 }
