@@ -1,35 +1,52 @@
-import { notFound } from "next/navigation";
-import React from "react";
-import { payloadService } from "@/services/payloadService";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import QuoteFormSection from "@/components/sections/QuoteFormSection";
-import QuoteButton from "./QuoteButton";
-import { Product, ProductCategory, ProductSubcategory, Media } from "@/payload-types";
-import { Check, Zap, Network, Gauge, ArrowUpRight, Shield, MapPin, Headphones } from "lucide-react";
-import BorderGlow from "@/components/BorderGlow";
-import Breadcrumb, { BreadcrumbItem } from "@/components/Breadcrumb";
+import { notFound } from 'next/navigation';
+import React from 'react';
+import { payloadService } from '@/services/payloadService';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import QuoteFormSection from '@/components/sections/QuoteFormSection';
+import QuoteButton from './QuoteButton';
+import {
+  Product,
+  ProductCategory,
+  ProductSubcategory,
+  Media,
+} from '@/payload-types';
+import {
+  Check,
+  Zap,
+  Network,
+  Gauge,
+  ArrowUpRight,
+  Shield,
+  MapPin,
+  Headphones,
+} from 'lucide-react';
+import BorderGlow from '@/components/BorderGlow';
+import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
+import CTASection from '@/components/sections/CTASection';
 
 type Params = Promise<{ slug: string }>;
 
 /* ----------------------------- helpers ----------------------------- */
 
 function getImageUrl(
-  media: { relationTo: string; value: number | Media } | null | undefined,
+  media: { relationTo: string; value: number | Media } | null | undefined
 ): string | null {
-  if (!media || typeof media.value !== "object") return null;
+  if (!media || typeof media.value !== 'object') return null;
   return (media.value as Media).url ?? null;
 }
 
 function getCategoryName(product: Product): string {
-  return typeof product.category === "object" ? (product.category as ProductCategory).name : "";
+  return typeof product.category === 'object'
+    ? (product.category as ProductCategory).name
+    : '';
 }
 
 function getSubcategoryName(product: Product): string | null {
   const subs = product.subcategory;
   if (!subs || subs.length === 0) return null;
   const first = subs[0];
-  return typeof first === "object" ? (first as ProductSubcategory).name : null;
+  return typeof first === 'object' ? (first as ProductSubcategory).name : null;
 }
 
 /* ----------------------------- rich text ----------------------------- */
@@ -44,8 +61,8 @@ type LexicalNode = {
 };
 
 function renderNode(node: LexicalNode, key: number): React.ReactNode {
-  if (node.type === "text") {
-    let el: React.ReactNode = node.text ?? "";
+  if (node.type === 'text') {
+    let el: React.ReactNode = node.text ?? '';
     if ((node.format ?? 0) & 1)
       el = (
         <strong key={`b-${key}`} className="text-white font-semibold">
@@ -55,12 +72,14 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
     if ((node.format ?? 0) & 2) el = <em key={`i-${key}`}>{el}</em>;
     return el;
   }
-  if (node.type === "linebreak") return <br key={key} />;
+  if (node.type === 'linebreak') return <br key={key} />;
 
-  const children = (node.children ?? []).map((child, i) => renderNode(child, i));
+  const children = (node.children ?? []).map((child, i) =>
+    renderNode(child, i)
+  );
 
   switch (node.type) {
-    case "paragraph":
+    case 'paragraph':
       return (
         <p
           key={key}
@@ -69,14 +88,17 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
           {children}
         </p>
       );
-    case "heading":
+    case 'heading':
       return (
-        <h3 key={key} className="font-aller font-bold text-white text-xl mb-3 mt-6 first:mt-0">
+        <h3
+          key={key}
+          className="font-aller font-bold text-white text-xl mb-3 mt-6 first:mt-0"
+        >
           {children}
         </h3>
       );
-    case "list":
-      return node.listType === "number" ? (
+    case 'list':
+      return node.listType === 'number' ? (
         <ol
           key={key}
           className="list-decimal list-inside space-y-1.5 mb-5 marker:text-brand-primary"
@@ -84,11 +106,14 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
           {children}
         </ol>
       ) : (
-        <ul key={key} className="list-disc list-inside space-y-1.5 mb-5 marker:text-brand-primary">
+        <ul
+          key={key}
+          className="list-disc list-inside space-y-1.5 mb-5 marker:text-brand-primary"
+        >
           {children}
         </ul>
       );
-    case "listitem":
+    case 'listitem':
       return (
         <li key={key} className="font-satoshi text-neutral-300 text-base">
           {children}
@@ -99,63 +124,60 @@ function renderNode(node: LexicalNode, key: number): React.ReactNode {
   }
 }
 
-function RichText({ content }: { content: Product["description"] }) {
+function RichText({ content }: { content: Product['description'] }) {
   const root = content.root as { children: LexicalNode[] };
   return <>{root.children.map((node, i) => renderNode(node, i))}</>;
 }
 
 /* ----------------------------- category palette ----------------------------- */
 
-const CATEGORY_ACCENT: Record<string, { dot: string; text: string; border: string; glow: string }> =
-  {
-    "Overbank Signage": {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-    },
-    "Entry Displays": {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-
-    },
-    Screens: {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-
-    },
-    Infills: {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-
-    },
-    "Jackpot History": {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-
-    },
-    "Large Screens": {
-      dot: "bg-brand-primary",
-      text: "text-brand-primary",
-      border: "border-brand-primary/40",
-      glow: "shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]",
-
-    },
-  };
+const CATEGORY_ACCENT: Record<
+  string,
+  { dot: string; text: string; border: string; glow: string }
+> = {
+  'Overbank Signage': {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+  'Entry Displays': {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+  Screens: {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+  Infills: {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+  'Jackpot History': {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+  'Large Screens': {
+    dot: 'bg-brand-primary',
+    text: 'text-brand-primary',
+    border: 'border-brand-primary/40',
+    glow: 'shadow-[0_0_24px_-6px_rgb(59_130_246/0.5)]',
+  },
+};
 
 const DEFAULT_ACCENT = {
-  dot: "bg-neutral-400",
-  text: "text-neutral-300",
-  border: "border-neutral-600",
-  glow: "",
+  dot: 'bg-neutral-400',
+  text: 'text-neutral-300',
+  border: 'border-neutral-600',
+  glow: '',
 };
 
 /* ----------------------------- corner brackets ----------------------------- */
@@ -173,16 +195,21 @@ function CornerBrackets() {
 
 /* ----------------------------- page ----------------------------- */
 
-export default async function ProductDetailPage({ params }: { params: Params }) {
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Params;
+}) {
   const { slug } = await params;
 
-  const [product, products, productCategories, content, contentCategories] = await Promise.all([
-    payloadService.getProductBySlug(slug),
-    payloadService.getProducts(),
-    payloadService.getProductCategories(),
-    payloadService.getContent(),
-    payloadService.getContentCategories(),
-  ]);
+  const [product, products, productCategories, content, contentCategories] =
+    await Promise.all([
+      payloadService.getProductBySlug(slug),
+      payloadService.getProducts(),
+      payloadService.getProductCategories(),
+      payloadService.getContent(),
+      payloadService.getContentCategories(),
+    ]);
 
   if (!product) notFound();
 
@@ -194,34 +221,36 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
   const req = product.requirements;
   const designDiagramUrl = getImageUrl(req?.design ?? null);
   const hasRequirements =
-    req && (req.powerOutlets || req.ethernetPorts || req.maxAmps || req.voltage);
+    req &&
+    (req.powerOutlets || req.ethernetPorts || req.maxAmps || req.voltage);
 
-  const featureCount = product.features?.filter((f) => f.feature).length ?? 0;
+  const featureCount = product.features?.filter(f => f.feature).length ?? 0;
 
   const breadcrumbItems: BreadcrumbItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Products", href: "/products" },
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
     ...(categoryName
-      ? [{ label: categoryName, href: `/products?cat=${encodeURIComponent(categoryName)}` }]
+      ? [
+          {
+            label: categoryName,
+            href: `/products?cat=${encodeURIComponent(categoryName)}`,
+          },
+        ]
       : []),
     { label: product.name },
   ];
 
   return (
-    <main className="min-h-screen bg-neutral-900 text-white">
-      <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
+    <main className="min-h-screen bg-neutral-900 text-white flex flex-col">
+      <Navbar
+        ready={true}
+        products={products}
+        productCategories={productCategories}
+        content={content}
+        contentCategories={contentCategories}
+      />
 
-      {/* ============== Breadcrumb rail ============== */}
-      <div className="pt-14 border-b border-neutral-700">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-3 flex items-center justify-between">
-          <Breadcrumb items={breadcrumbItems} />
-          {product.code && (
-            <p className="hidden md:block font-mono text-[11px] uppercase tracking-[0.15em] text-neutral-500">
-              SKU <span className="text-neutral-200 ml-2">{product.code}</span>
-            </p>
-          )}
-        </div>
-      </div>
+      <Breadcrumb items={breadcrumbItems} />
 
       {/* ============== Hero ============== */}
       <section className="relative border-b border-neutral-800 overflow-hidden">
@@ -232,7 +261,9 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-2">
                   Series
                 </p>
-                <p className={`font-aller font-bold text-sm flex items-center gap-2 `}>
+                <p
+                  className={`font-aller font-bold text-sm flex items-center gap-2 `}
+                >
                   {categoryName}
                 </p>
               </div>
@@ -241,14 +272,18 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                   <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-2">
                     Type
                   </p>
-                  <p className="font-aller font-bold text-sm text-neutral-200">{subcategoryName}</p>
+                  <p className="font-aller font-bold text-sm text-neutral-200">
+                    {subcategoryName}
+                  </p>
                 </div>
               )}
               <div>
                 <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-2">
                   MODEL
                 </p>
-                <p className="font-aller font-bold text-sm text-neutral-200">{product.code}</p>
+                <p className="font-aller font-bold text-sm text-neutral-200">
+                  {product.code}
+                </p>
               </div>
             </div>
           </aside>
@@ -261,49 +296,51 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
             </h1>
 
             {/* Image card with corner brackets */}
-<BorderGlow
+            <BorderGlow
               backgroundColor="#171717"
               borderRadius={0}
-              colors={["#0b6fd3", "#1a7fe3", "#0958a8"]}
+              colors={['#0b6fd3', '#1a7fe3', '#0958a8']}
               glowColor="210 90 60"
               glowIntensity={1.2}
               glowRadius={50}
               edgeSensitivity={20}
               className="max-w-[1600px] mx-auto"
             >
-<div
-              className={`relative bg-neutral-800 aspect-[4/3] overflow-hidden`}
-            >
-              {/* Tick marks on top */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1 items-end h-2">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <span key={i} className={`w-px bg-neutral-600 ${i % 2 === 0 ? "h-2" : "h-1"}`} />
-                ))}
-              </div>
-              {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt={product.name}
-                  className="w-full h-full object-contain p-12"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="font-mono text-neutral-600 text-xs uppercase tracking-widest">
-                    No image available
-                  </span>
+              <div
+                className={`relative bg-neutral-800 aspect-[4/3] overflow-hidden`}
+              >
+                {/* Tick marks on top */}
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 flex gap-1 items-end h-2">
+                  {Array.from({ length: 9 }).map((_, i) => (
+                    <span
+                      key={i}
+                      className={`w-px bg-neutral-600 ${i % 2 === 0 ? 'h-2' : 'h-1'}`}
+                    />
+                  ))}
                 </div>
-              )}
-              {/* Bottom rule with label */}
-              <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
-                </span>
-                {product.code && (
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
-                    {product.code}
-                  </span>
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-12"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <span className="font-mono text-neutral-600 text-xs uppercase tracking-widest">
+                      No image available
+                    </span>
+                  </div>
                 )}
+                {/* Bottom rule with label */}
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600"></span>
+                  {product.code && (
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
+                      {product.code}
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
             </BorderGlow>
           </div>
 
@@ -311,29 +348,31 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           <aside className="col-span-12 lg:col-span-3 mt-[100px]">
             <div className="lg:sticky lg:top-24 flex flex-col gap-4 justify-between h-full">
               <div className="flex flex-col gap-4">
-<div className="relative bg-neutral-800 border border-neutral-700 p-5">
-                <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
-                  Pricing
-                </p>
-                <p className="font-aller font-bold text-white text-2xl mb-1">Enquire For Pricing</p>
-                <p className="font-satoshi text-sm text-neutral-400 mb-5 leading-relaxed">
-                  Site survey & engineering quote prepared per venue.
-                </p>
-                <div className="flex flex-col gap-2.5">
-                  <QuoteButton />
-                  {/* <a
+                <div className="relative bg-neutral-800 border border-neutral-700 p-5">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mb-3">
+                    Pricing
+                  </p>
+                  <p className="font-aller font-bold text-white text-2xl mb-1">
+                    Enquire For Pricing
+                  </p>
+                  <p className="font-satoshi text-sm text-neutral-400 mb-5 leading-relaxed">
+                    Site survey & engineering quote prepared per venue.
+                  </p>
+                  <div className="flex flex-col gap-2.5">
+                    <QuoteButton />
+                    {/* <a
                     href="mailto:info@precisionsigns.com.au"
                     className="group flex items-center justify-between font-satoshi text-sm font-semibold py-3 px-4 border border-neutral-700 text-neutral-200 hover:border-neutral-500 hover:bg-neutral-800/50 transition-colors"
                   >
                     Talk to engineering
                     <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </a> */}
+                  </div>
                 </div>
+
+                <RichText content={product.description} />
               </div>
 
-              <RichText content={product.description} />
-              </div>
-              
               {/* Quote CTA card */}
               {/* Trust strip */}
               <ul className="flex flex-col gap-2 mt-1">
@@ -356,7 +395,6 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
       </section>
 
       {/* ============== Section: Overview ============== */}
-      
 
       {/* ============== Section: Features ============== */}
       {product.features && product.features.length > 0 && (
@@ -383,10 +421,10 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                     >
                       <div className="flex flex-col items-center gap-1 shrink-0">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-600">
-                          {String(i + 1).padStart(2, "0")}
+                          {String(i + 1).padStart(2, '0')}
                         </span>
                         <span
-                          className={`w-7 h-7 ${accent.border} border flex items-center justify-center group-hover:${accent.dot.replace("bg-", "bg-")} transition-colors`}
+                          className={`w-7 h-7 ${accent.border} border flex items-center justify-center group-hover:${accent.dot.replace('bg-', 'bg-')} transition-colors`}
                         >
                           <Check className={`w-3.5 h-3.5 ${accent.text}`} />
                         </span>
@@ -395,7 +433,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                         {f.feature}
                       </span>
                     </li>
-                  ) : null,
+                  ) : null
                 )}
               </ul>
             </div>
@@ -415,7 +453,8 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
                 Power & connectivity
               </h2>
               <p className="font-satoshi text-sm text-neutral-400 mt-3 max-w-xs">
-                Site requirements for installation. Our engineers handle all on-site work.
+                Site requirements for installation. Our engineers handle all
+                on-site work.
               </p>
             </div>
             <div className="col-span-12 lg:col-span-9">
@@ -475,7 +514,8 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               </div>
               {product.code && (
                 <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-neutral-500">
-                  Drawing ref: <span className="text-neutral-200">{product.code}-DWG</span>
+                  Drawing ref:{' '}
+                  <span className="text-neutral-200">{product.code}-DWG</span>
                 </p>
               )}
             </div>
@@ -491,30 +531,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
         </section>
       )}
 
-      {/* ============== Final CTA strip ============== */}
-      <section className="border-b border-neutral-800">
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-14 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-500 mb-2">
-              Next step
-            </p>
-            <h2 className="font-aller font-bold text-white text-2xl lg:text-3xl leading-tight max-w-2xl">
-              Ready to spec {product.name} for your venue?
-            </h2>
-          </div>
-          <div className="flex gap-3">
-            <QuoteButton />
-            <a
-              href="mailto:info@precisionsigns.com.au"
-              className="group flex items-center gap-2 font-satoshi text-sm font-semibold py-3 px-5 border border-neutral-700 text-neutral-200 hover:border-neutral-500 hover:bg-neutral-900 transition-colors"
-            >
-              Contact us
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </section>
-
+      <CTASection tagNumber="01" />
       <Footer />
       <QuoteFormSection />
     </main>
@@ -548,7 +565,9 @@ function SpecBlock({
         <p className="font-aller font-bold text-white text-3xl lg:text-4xl leading-none">
           {value}
           {unit && (
-            <span className="text-base text-neutral-400 ml-1 font-satoshi font-normal">{unit}</span>
+            <span className="text-base text-neutral-400 ml-1 font-satoshi font-normal">
+              {unit}
+            </span>
           )}
         </p>
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-500 mt-2">

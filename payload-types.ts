@@ -387,7 +387,7 @@ export interface Project {
       }[]
     | null;
   videoUrl?: string | null;
-  description: {
+  description?: {
     root: {
       type: string;
       children: {
@@ -401,7 +401,7 @@ export interface Project {
       version: number;
     };
     [k: string]: unknown;
-  };
+  } | null;
   updatedAt: string;
   createdAt: string;
 }

@@ -1,49 +1,26 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ArrowRight } from "lucide-react";
-import Tag from "../Tag";
-import FlowingMenu, { MenuItemData } from "../FlowingMenu";
-import { Product, ProductCategory } from "@/payload-types";
-import { ProductCategories } from "@/collections/ProductCategories";
-
-const menuItems = [
-  {
-    link: "/products?cat=Overbank+Signage",
-    text: "Overbank Signage",
-    image: "/images/casino-overbank.png",
-  },
-  {
-    link: "/products?cat=Entry+Displays",
-    text: "Entry Displays",
-    image: "/images/gaming-floor.png",
-  },
-  {
-    link: "/products?cat=Screens",
-    text: "Screens",
-    image: "/images/crossroads-hotel.jpg",
-  },
-  {
-    link: "/products?cat=Infills",
-    text: "Infills",
-    image: "/images/casino-overbank.png",
-  },
-  {
-    link: "/products?cat=Jackpot+History",
-    text: "Jackpot History",
-    image: "/images/gaming-floor.png",
-  },
-];
+import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+import Tag from '../Tag';
+import FlowingMenu, { MenuItemData } from '../FlowingMenu';
+import { ProductCategory } from '@/payload-types';
+import Link from 'next/link';
+import { useQuoteStore } from '@/store/quoteStore';
 
 interface ProductsSectionProps {
   productCategories: ProductCategory[];
 }
 
-export default function ProductsSection({ productCategories }: ProductsSectionProps) {
+export default function ProductsSection({
+  productCategories,
+}: ProductsSectionProps) {
+  const { setOpen } = useQuoteStore();
   const [menuHovered, setMenuHovered] = useState(false);
-  const menuItems = productCategories.map((category) => {
+  const menuItems = productCategories.map(category => {
     const img = category.featuredImage.value;
-    const imageUrl = typeof img === "object" ? (img.url ?? undefined) : undefined;
+    const imageUrl =
+      typeof img === 'object' ? (img.url ?? undefined) : undefined;
     if (!imageUrl) {
       return;
     }
@@ -68,31 +45,37 @@ export default function ProductsSection({ productCategories }: ProductsSectionPr
             </h2>
           </div>
           <p className="font-satoshi text-neutral-400 text-sm leading-relaxed max-w-sm">
-            We design and manufacture the full range of gaming floor signage in-house, including overbank displays, entry signage, screens, infills, and fully custom builds. Every piece is built to last, and backed by 25+ years of work with Australia's leading clubs, hotels, and casinos.
+            We design and manufacture the full range of gaming floor signage
+            in-house, including overbank displays, entry signage, screens,
+            infills, and fully custom builds. Every piece is built to last, and
+            backed by 25+ years of work with Australia's leading clubs, hotels,
+            and casinos.
           </p>
           <div className="flex flex-row gap-300">
-            <a
+            <Link
               href="/products"
               className="font-satoshi text-sm text-white px-5 py-2.5 rounded-sm transition-colors"
-              style={{ border: "1px solid rgba(255,255,255,0.2)" }}
+              style={{ border: '1px solid rgba(255,255,255,0.2)' }}
+              prefetch
             >
               View Products
-            </a>
-            <button className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-200 transition-colors font-medium flex items-center gap-200">
+            </Link>
+            <button
+              className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-950 transition-colors font-medium flex items-center gap-200"
+              onClick={() => setOpen(true)}
+            >
               Get a Quote
               <ArrowRight size={14} strokeWidth={1.5} />
             </button>
           </div>
         </div>
-
-        {/* Right: Flowing product menu */}
         <div
           className="border-t border-t-neutral-700 lg:border-t-0 lg:border-l lg:border-l-neutral-700"
           style={{
             flexGrow: menuHovered ? 2 : 1,
             flexShrink: 1,
             flexBasis: 0,
-            transition: "flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)",
+            transition: 'flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)',
           }}
           onMouseEnter={() => setMenuHovered(true)}
           onMouseLeave={() => setMenuHovered(false)}

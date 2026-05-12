@@ -1,14 +1,15 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { payloadService } from "@/services/payloadService";
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { payloadService } from '@/services/payloadService';
 
 export default async function ContentPage() {
-  const [products, productCategories, content, contentCategories] = await Promise.all([
-    payloadService.getProducts(),
-    payloadService.getProductCategories(),
-    payloadService.getContent(),
-    payloadService.getContentCategories(),
-  ]);
+  const [products, productCategories, content, contentCategories] =
+    await Promise.all([
+      payloadService.getProducts(),
+      payloadService.getProductCategories(),
+      payloadService.getContent(),
+      payloadService.getContentCategories(),
+    ]);
 
   return (
     <>
@@ -20,8 +21,6 @@ export default async function ContentPage() {
           content={content}
           contentCategories={contentCategories}
         />
-
-        {/* Hero Section */}
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
           <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">
             <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-brand-primary">
@@ -40,21 +39,27 @@ export default async function ContentPage() {
         <div className="flex-1 px-2.5 md:px-5 lg:px-10">
           <div className="max-w-[1600px] mx-auto border-x border-neutral-700 bg-neutral-800/30">
             <div className="p-10">
-              {contentCategories.map((category) => {
-                const categoryContent = content.filter((c) => {
+              {contentCategories.map(category => {
+                const categoryContent = content.filter(c => {
                   const cat = c.category;
-                  return typeof cat === "object" ? cat.id === category.id : cat === category.id;
+                  return typeof cat === 'object'
+                    ? cat.id === category.id
+                    : cat === category.id;
                 });
 
                 if (categoryContent.length === 0) return null;
 
                 return (
                   <div key={category.id} className="mb-12">
-                    <h2 className="font-aller font-bold text-3xl mb-6">{category.name}</h2>
-                    <p className="font-satoshi text-neutral-400 text-sm mb-6">{category.description}</p>
+                    <h2 className="font-aller font-bold text-3xl mb-6">
+                      {category.name}
+                    </h2>
+                    <p className="font-satoshi text-neutral-400 text-sm mb-6">
+                      {category.description}
+                    </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {categoryContent.map((item) => (
+                      {categoryContent.map(item => (
                         <a
                           key={item.id}
                           href={`/content/${item.slug}`}

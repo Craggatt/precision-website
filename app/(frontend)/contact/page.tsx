@@ -1,42 +1,50 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { payloadService } from "@/services/payloadService";
-import ContactForm from "./ContactForm";
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { payloadService } from '@/services/payloadService';
+import ContactForm from './ContactForm';
+import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
+import Heading from '@/components/Heading';
 
 export default async function ContactPage() {
-  const [products, productCategories, content, contentCategories] = await Promise.all([
-    payloadService.getProducts(),
-    payloadService.getProductCategories(),
-    payloadService.getContent(),
-    payloadService.getContentCategories(),
-  ]);
+  const [products, productCategories, content, contentCategories] =
+    await Promise.all([
+      payloadService.getProducts(),
+      payloadService.getProductCategories(),
+      payloadService.getContent(),
+      payloadService.getContentCategories(),
+    ]);
+  const breadcrumbItems: BreadcrumbItem[] = [
+    { label: 'Home', href: '/' },
+    { label: 'Contact Us', href: '/contact' },
+  ];
 
   return (
     <>
       <main className="min-h-screen bg-neutral-900 flex flex-col">
-        <Navbar ready={true} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
-
-        {/* Hero Section */}
-        <div className="px-4 sm:px-6 md:px-10 border-b border-b-neutral-700 flex flex-col pt-20 sm:pt-24">
-          <div className="max-w-[1600px] mx-auto p-4 sm:p-6 md:p-10 w-full flex-1">
-            <h1 className="font-aller font-bold text-3xl sm:text-4xl md:text-5xl">Contact Us</h1>
-            <p className="font-satoshi text-neutral-400 text-xs sm:text-sm mt-2">
-              Get in touch with our team for quotes, support, or general inquiries
-            </p>
-          </div>
-        </div>
-
-        {/* Content Section */}
-        <div className="flex-1 px-2.5 md:px-5 lg:px-10">
+        <Navbar
+          ready={true}
+          products={products}
+          productCategories={productCategories}
+          content={content}
+          contentCategories={contentCategories}
+        />
+        <Breadcrumb items={breadcrumbItems} />
+        <Heading
+          headingText="Contact Us"
+          secondaryText="Get in touch with our team for quotes, support, or general inquiries"
+        />
+        <div className="flex-1 px-2.5 md:px-5 lg:px-10 border-b border-b-neutral-700">
           <div className="max-w-[1600px] mx-auto border-x border-neutral-700 bg-neutral-800/30">
             <div className="grid grid-cols-1 lg:grid-cols-2">
-              {/* Contact Information */}
-              <div className="p-6 sm:p-8 md:p-10 lg:border-r border-neutral-700 border-b lg:border-b-0">
-                <h2 className="font-aller font-bold text-2xl sm:text-3xl mb-4 sm:mb-6">Get in Touch</h2>
+              <div className="px-2.5 md:px-5 lg:px-10 py-10 lg:border-r border-neutral-700 border-b lg:border-b-0">
+                <h2 className="font-aller font-bold text-2xl sm:text-3xl mb-4 sm:mb-6">
+                  Get in Touch
+                </h2>
                 <p className="font-satoshi text-neutral-300 text-sm sm:text-base mb-6 sm:mb-8 leading-relaxed">
-                  Whether you need a quote for a new project, have questions about our products,
-                  or require support, we're here to help. Our team of experts is ready to assist
-                  you with all your gaming signage needs.
+                  Whether you need a quote for a new project, have questions
+                  about our products, or require support, we're here to help.
+                  Our team of experts is ready to assist you with all your
+                  gaming signage needs.
                 </p>
 
                 <div className="space-y-4 sm:space-y-6">
@@ -44,8 +52,10 @@ export default async function ContactPage() {
                   <div>
                     <h3 className="label-mono mb-2">ADDRESS</h3>
                     <p className="font-satoshi text-neutral-300 text-xs sm:text-sm">
-                      Precision Signs Pty Ltd<br />
-                      Wagga Wagga, NSW<br />
+                      Precision Signs Pty Ltd
+                      <br />
+                      Wagga Wagga, NSW
+                      <br />
                       Australia
                     </p>
                   </div>
@@ -76,7 +86,8 @@ export default async function ContactPage() {
                   <div>
                     <h3 className="label-mono mb-2">BUSINESS HOURS</h3>
                     <p className="font-satoshi text-neutral-300 text-xs sm:text-sm">
-                      Monday - Friday: 8:00 AM - 5:00 PM AEST<br />
+                      Monday - Friday: 8:00 AM - 5:00 PM AEST
+                      <br />
                       Saturday - Sunday: Closed
                     </p>
                   </div>
@@ -86,9 +97,9 @@ export default async function ContactPage() {
                 <div className="mt-6 sm:mt-10 p-4 sm:p-5 bg-neutral-900/50 border border-neutral-700 rounded-sm">
                   <h3 className="label-mono mb-2">AUSTRALIAN MADE</h3>
                   <p className="font-satoshi text-neutral-400 text-xs leading-relaxed">
-                    Proudly manufacturing LED signage solutions in Australia since 1999.
-                    We serve casinos, clubs, and hotels across the country with quality
-                    products and exceptional service.
+                    Proudly manufacturing LED signage solutions in Australia
+                    since 1999. We serve casinos, clubs, and hotels across the
+                    country with quality products and exceptional service.
                   </p>
                 </div>
               </div>

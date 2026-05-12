@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Input } from "@base-ui/react";
-import { ArrowRight } from "lucide-react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useState, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Turnstile } from "@marsidev/react-turnstile";
+import { Input } from '@base-ui/react';
+import { ArrowRight } from 'lucide-react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Turnstile } from '@marsidev/react-turnstile';
 
 interface ServiceSupportFormValues {
   venueName: string;
@@ -63,7 +63,7 @@ function Field({
 }
 
 const inputClasses =
-  "bg-neutral-800 border-b border-b-neutral-700 hover:border-b-neutral-500 focus:border-b-brand-primary focus:outline-none transition-colors text-[15px] px-2.5 py-2.5 font-mono text-neutral-100 placeholder:text-neutral-600 w-full";
+  'bg-neutral-800 border-b border-b-neutral-700 hover:border-b-neutral-500 focus:border-b-brand-primary focus:outline-none transition-colors text-[15px] px-2.5 py-2.5 font-mono text-neutral-100 placeholder:text-neutral-600 w-full';
 
 export default function ServiceSupportForm() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -77,17 +77,17 @@ export default function ServiceSupportForm() {
     reset,
   } = useForm<ServiceSupportFormValues>();
 
-  const onSubmit: SubmitHandler<ServiceSupportFormValues> = async (data) => {
+  const onSubmit: SubmitHandler<ServiceSupportFormValues> = async data => {
     try {
       if (!turnstileToken) {
-        console.error("Turnstile token not available");
+        console.error('Turnstile token not available');
         return;
       }
 
-      const response = await fetch("/api/support", {
-        method: "POST",
+      const response = await fetch('/api/support', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...data,
@@ -96,7 +96,7 @@ export default function ServiceSupportForm() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit support request");
+        throw new Error('Failed to submit support request');
       }
 
       setSubmitSuccess(true);
@@ -107,14 +107,14 @@ export default function ServiceSupportForm() {
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitSuccess(false), 5000);
     } catch (error) {
-      console.error("Support form submission error:", error);
+      console.error('Support form submission error:', error);
       turnstileRef.current?.reset();
       // You could add error state handling here if needed
     }
   };
 
   return (
-    <div className="p-10">
+    <div className="px-2.5 md:px-5 lg:px-10 py-10">
       <h3 className="font-mono uppercase text-[11px] text-neutral-500 tracking-[0.12em] mb-6">
         Submit Support Request
       </h3>
@@ -128,7 +128,8 @@ export default function ServiceSupportForm() {
             className="mb-6 p-4 bg-green-900/30 border border-green-700 rounded-sm"
           >
             <p className="font-mono text-green-400 text-xs">
-              Support request received! We'll get back to you within one business day.
+              Support request received! We'll get back to you within one
+              business day.
             </p>
           </motion.div>
         )}
@@ -143,8 +144,8 @@ export default function ServiceSupportForm() {
         >
           <Input
             id="venueName"
-            {...register("venueName", {
-              required: "Venue name is required",
+            {...register('venueName', {
+              required: 'Venue name is required',
             })}
             className={inputClasses}
             placeholder="e.g., Crown Casino"
@@ -161,26 +162,22 @@ export default function ServiceSupportForm() {
             <Input
               id="contactName"
               autoComplete="name"
-              {...register("contactName", {
-                required: "Contact name is required",
+              {...register('contactName', {
+                required: 'Contact name is required',
               })}
               className={inputClasses}
             />
           </Field>
-          <Field
-            label="Email"
-            htmlFor="email"
-            error={errors.email?.message}
-          >
+          <Field label="Email" htmlFor="email" error={errors.email?.message}>
             <Input
               id="email"
               type="email"
               autoComplete="email"
-              {...register("email", {
-                required: "Email is required",
+              {...register('email', {
+                required: 'Email is required',
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email",
+                  message: 'Invalid email',
                 },
               })}
               className={inputClasses}
@@ -194,8 +191,8 @@ export default function ServiceSupportForm() {
             id="phone"
             type="tel"
             autoComplete="tel"
-            {...register("phone", {
-              required: "Phone number is required",
+            {...register('phone', {
+              required: 'Phone number is required',
             })}
             className={inputClasses}
             placeholder="+61 2 1234 5678"
@@ -211,21 +208,17 @@ export default function ServiceSupportForm() {
           >
             <Input
               id="signDescription"
-              {...register("signDescription", {
-                required: "Sign description is required",
+              {...register('signDescription', {
+                required: 'Sign description is required',
               })}
               className={inputClasses}
               placeholder="e.g., Main entrance LED sign"
             />
           </Field>
-          <Field
-            label="Serial Number"
-            htmlFor="serialNumber"
-            hint="Optional"
-          >
+          <Field label="Serial Number" htmlFor="serialNumber" hint="Optional">
             <Input
               id="serialNumber"
-              {...register("serialNumber")}
+              {...register('serialNumber')}
               className={inputClasses}
               placeholder="Located on the sign label"
             />
@@ -240,11 +233,11 @@ export default function ServiceSupportForm() {
         >
           <textarea
             id="faultDescription"
-            {...register("faultDescription", {
-              required: "Fault description is required",
+            {...register('faultDescription', {
+              required: 'Fault description is required',
               minLength: {
                 value: 10,
-                message: "Please provide more details (at least 10 characters)",
+                message: 'Please provide more details (at least 10 characters)',
               },
             })}
             placeholder="Describe the issue you're experiencing..."
@@ -256,13 +249,13 @@ export default function ServiceSupportForm() {
         <div className="hidden">
           <Turnstile
             ref={turnstileRef}
-            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-            onSuccess={(token) => setTurnstileToken(token)}
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''}
+            onSuccess={token => setTurnstileToken(token)}
             onError={() => setTurnstileToken(null)}
             onExpire={() => setTurnstileToken(null)}
             options={{
-              theme: "dark",
-              size: "invisible",
+              theme: 'dark',
+              size: 'invisible',
             }}
           />
         </div>
@@ -275,7 +268,7 @@ export default function ServiceSupportForm() {
             className="group relative font-satoshi bg-brand-primary text-white px-4 py-2 rounded-sm font-medium flex items-center gap-2.5 justify-center sm:justify-between sm:w-auto w-full overflow-hidden transition-transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span className="relative z-10 tracking-wide">
-              {isSubmitting ? "Submitting…" : "Submit request"}
+              {isSubmitting ? 'Submitting…' : 'Submit request'}
             </span>
             <ArrowRight
               size={16}
