@@ -82,7 +82,10 @@ export async function generateMetadata({
     plainDescription ||
     `${product.name} - ${categoryName} gaming signage solution. Model: ${product.code}. Engineered for 24/7 operation in high-traffic gaming venues.`;
 
-  const features = product.features?.map((f) => f.feature).filter((f): f is string => Boolean(f)) || [];
+  const features =
+    product.features
+      ?.map(f => f.feature)
+      .filter((f): f is string => Boolean(f)) || [];
 
   return {
     title: `${product.name} - ${categoryName}`,
@@ -307,8 +310,6 @@ export default async function ProductDetailPage({
     req &&
     (req.powerOutlets || req.ethernetPorts || req.maxAmps || req.voltage);
 
-  const featureCount = product.features?.filter(f => f.feature).length ?? 0;
-
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Home', href: '/' },
     { label: 'Products', href: '/products' },
@@ -415,8 +416,12 @@ export default async function ProductDetailPage({
                   </div>
                 )}
                 {/* Bottom rule with label */}
-                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600"></span>
+                <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600 max-w-[200px]">
+                    {categoryName == 'Overbank Signage'
+                      ? 'HALO DS MINI does not come standard with the LED Infills shown here, but can be upgraded to include them on request.'
+                      : ''}
+                  </span>
                   {product.code && (
                     <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-neutral-600">
                       {product.code}
