@@ -3,14 +3,72 @@ import React from 'react';
 import { payloadService } from '@/services/payloadService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Content, ContentCategory, ContentSubcategory } from '@/payload-types';
+import { Content, ContentCategory, ContentSubcategory, Media } from '@/payload-types';
 import Tag from '@/components/Tag';
 import CTASection from '@/components/sections/CTASection';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 import Heading from '@/components/Heading';
 import QuoteFormSection from '@/components/sections/QuoteFormSection';
+import type { Metadata } from 'next';
 
 type Params = Promise<{ slug: string }>;
+
+/* ----------------------------- metadata ----------------------------- */
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const contentItem = await payloadService.getContentBySlug(slug);
+
+  if (!contentItem) {
+    return {
+      title: 'Content Not Found',
+    };
+  }
+
+  const categoryName =
+    typeof contentItem.category === 'object'
+      ? (contentItem.category as ContentCategory).name
+      : '';
+
+  const imageUrl =
+    contentItem.featureImage && typeof contentItem.featureImage === 'object'
+      ? (contentItem.featureImage as Media).url
+      : null;
+
+  const description =
+    contentItem.description ||
+    `Learn about ${contentItem.name} - ${categoryName} content from Precision Signs.`;
+
+  return {
+    title: contentItem.name,
+    description: description,
+    openGraph: {
+      title: contentItem.name,
+      description: description,
+      type: 'article',
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+              alt: contentItem.name,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: contentItem.name,
+      description: description,
+      images: imageUrl ? [imageUrl] : [],
+    },
+  };
+}
 
 /* ----------------------------- helpers ----------------------------- */
 

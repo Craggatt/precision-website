@@ -24,8 +24,100 @@ import {
 import BorderGlow from '@/components/BorderGlow';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 import CTASection from '@/components/sections/CTASection';
+import type { Metadata } from 'next';
 
 type Params = Promise<{ slug: string }>;
+
+/* ----------------------------- types ----------------------------- */
+
+type LexicalNode = {
+  type: string;
+  text?: string;
+  format?: number;
+  tag?: string;
+  listType?: string;
+  children?: LexicalNode[];
+};
+
+/* ----------------------------- metadata ----------------------------- */
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await payloadService.getProductBySlug(slug);
+
+  if (!product) {
+    return {
+      title: 'Product Not Found',
+    };
+  }
+
+  const categoryName =
+    typeof product.category === 'object'
+      ? (product.category as ProductCategory).name
+      : '';
+
+  const imageUrl = getImageUrl(product.featuredImage);
+
+  // Extract plain text description from rich text
+  let plainDescription = '';
+  if (product.description?.root?.children) {
+    const extractText = (node: LexicalNode): string => {
+      if (node.type === 'text') return node.text || '';
+      if (node.children) {
+        return node.children.map(extractText).join(' ');
+      }
+      return '';
+    };
+    plainDescription = product.description.root.children
+      .map(extractText)
+      .join(' ')
+      .slice(0, 160);
+  }
+
+  const description =
+    plainDescription ||
+    `${product.name} - ${categoryName} gaming signage solution. Model: ${product.code}. Engineered for 24/7 operation in high-traffic gaming venues.`;
+
+  const features = product.features?.map((f) => f.feature).filter((f): f is string => Boolean(f)) || [];
+
+  return {
+    title: `${product.name} - ${categoryName}`,
+    description: description,
+    keywords: [
+      product.name,
+      categoryName,
+      product.code,
+      'gaming signage',
+      'casino displays',
+      ...features,
+    ],
+    openGraph: {
+      title: `${product.name} - ${categoryName}`,
+      description: description,
+      type: 'website',
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+              alt: product.name,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${product.name} - ${categoryName}`,
+      description: description,
+      images: imageUrl ? [imageUrl] : [],
+    },
+  };
+}
 
 /* ----------------------------- helpers ----------------------------- */
 
@@ -50,15 +142,6 @@ function getSubcategoryName(product: Product): string | null {
 }
 
 /* ----------------------------- rich text ----------------------------- */
-
-type LexicalNode = {
-  type: string;
-  text?: string;
-  format?: number;
-  tag?: string;
-  listType?: string;
-  children?: LexicalNode[];
-};
 
 function renderNode(node: LexicalNode, key: number): React.ReactNode {
   if (node.type === 'text') {
