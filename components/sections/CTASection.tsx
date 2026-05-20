@@ -43,8 +43,10 @@ export default function CTASection({ tagNumber = null }: CTASectionProps) {
               your venue?
             </h2>
             <p className="font-satoshi text-neutral-200 text-base leading-relaxed mt-5 max-w-md">
-              Talk to our team about a custom LED signage solution designed
-              specifically for your gaming floor, club, or hotel.
+              Transform your venue with a free, tailored proposal from
+              Australia's gaming signage specialists. 30 years of experience,
+              locally designed and manufactured, with a money-back guarantee and
+              3-year onsite warranty.
             </p>
           </div>
 

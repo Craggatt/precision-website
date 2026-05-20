@@ -98,7 +98,7 @@ export default async function ContactPage() {
                   <h3 className="label-mono mb-2">AUSTRALIAN MADE</h3>
                   <p className="font-satoshi text-neutral-400 text-xs leading-relaxed">
                     Proudly manufacturing LED signage solutions in Australia
-                    since 1999. We serve casinos, clubs, and hotels across the
+                    since 1975. We serve casinos, clubs, and hotels across the
                     country with quality products and exceptional service.
                   </p>
                 </div>

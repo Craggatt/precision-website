@@ -82,7 +82,9 @@ export default function Footer() {
               <p className="font-satoshi text-[0.85rem] text-neutral-400 leading-relaxed max-w-[200px]">
                 Australian-made LED signage for casinos, clubs, and hotels.
               </p>
-              <p className="label-mono mt-6">Est. 1999 · Wagga Wagga, AU</p>
+              <p className="label-mono mt-6">
+                Established 1975 · Wagga Wagga, AU
+              </p>
             </div>
 
             {/* Link columns */}
