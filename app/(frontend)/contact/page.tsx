@@ -67,7 +67,7 @@ export default async function ContactPage() {
                       href="tel:+61269219999"
                       className="font-satoshi text-neutral-300 text-xs sm:text-sm hover:text-brand-primary transition-colors"
                     >
-                      +61 2 6921 9999
+                      02 6921 3591
                     </a>
                   </div>
 
