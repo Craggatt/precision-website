@@ -4,10 +4,18 @@ import { getPayload } from "payload";
 import config from "@/payload.config";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
   try {
+    // Validate API key is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not configured");
+      return NextResponse.json(
+        { error: "Email service not configured" },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const body = await request.json();
     const { firstName, lastName, email, phone, subject, message, turnstileToken } = body;
 
