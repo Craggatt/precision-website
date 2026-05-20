@@ -159,7 +159,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
       if (!video) return;
 
       const source = document.createElement('source');
-      source.src = 'https://dlpwfd6kwolf1.cloudfront.net/web_video.webm';
+      source.src = 'https://dlpwfd6kwolf1.cloudfront.net/web_video_2.webm';
       source.type = 'video/webm';
       video.appendChild(source);
       video.load();

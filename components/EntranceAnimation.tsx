@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
 import Image from 'next/image';
@@ -21,10 +21,11 @@ export default function EntranceAnimation({
   const path2Ref = useRef<SVGPathElement>(null);
   const [done, setDone] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.body.style.overflow = 'hidden';
 
     // Scale starts at 0, centred on the 5906×5906 viewBox
+    // Runs synchronously before paint, so users never see the unmasked initial state
     gsap.set(holeGroupRef.current, { svgOrigin: '2953 2953', scale: 0 });
 
     const tl = gsap.timeline({
@@ -107,7 +108,10 @@ export default function EntranceAnimation({
           <mask id="entrance-mask">
             {/* white = opaque white fill | black = transparent (shows image behind) */}
             <rect x="0" y="0" width="5906" height="5906" fill="white" />
-            <g ref={holeGroupRef}>
+            <g
+              ref={holeGroupRef}
+              transform="translate(2953 2953) scale(0) translate(-2953 -2953)"
+            >
               {/* Exact paths from mask.svg */}
               <path
                 ref={path1Ref}
