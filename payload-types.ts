@@ -280,6 +280,12 @@ export interface Product {
       value: number | Media;
     } | null;
   };
+  gallery?:
+    | {
+        relationTo: 'media';
+        value: number | Media;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -873,6 +879,7 @@ export interface ProductsSelect<T extends boolean = true> {
         voltage?: T;
         design?: T;
       };
+  gallery?: T;
   updatedAt?: T;
   createdAt?: T;
 }

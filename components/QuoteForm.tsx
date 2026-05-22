@@ -270,7 +270,21 @@ export default function QuoteForm() {
                   </AnimatePresence>
                 </div>
 
-                <div className="flex flex-col gap-1.5 max-h-[20rem] lg:max-h-[32rem] overflow-y-auto scrollbar-thin pr-1 -mr-1">
+                <div
+                  className="flex flex-col gap-1.5 max-h-[20rem] lg:max-h-[32rem] overflow-y-auto scrollbar-thin pr-1 -mr-1"
+                  onWheel={(e) => {
+                    const target = e.currentTarget;
+                    const isScrollable = target.scrollHeight > target.clientHeight;
+                    const isAtTop = target.scrollTop === 0;
+                    const isAtBottom = target.scrollTop + target.clientHeight >= target.scrollHeight;
+
+                    // Prevent scroll propagation when scrolling within bounds
+                    if (isScrollable &&
+                        ((e.deltaY < 0 && !isAtTop) || (e.deltaY > 0 && !isAtBottom))) {
+                      e.stopPropagation();
+                    }
+                  }}
+                >
                   {products.map((product, i) => (
                     <ProductRow key={product.slug} product={product} index={i} />
                   ))}

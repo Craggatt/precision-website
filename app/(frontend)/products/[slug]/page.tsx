@@ -25,6 +25,7 @@ import BorderGlow from '@/components/BorderGlow';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 import CTASection from '@/components/sections/CTASection';
 import type { Metadata } from 'next';
+import InfiniteImageScroll from '@/components/InfiniteImageScroll';
 
 type Params = Promise<{ slug: string }>;
 
@@ -303,6 +304,8 @@ export default async function ProductDetailPage({
   const categoryName = getCategoryName(product);
   const subcategoryName = getSubcategoryName(product);
   const accent = CATEGORY_ACCENT[categoryName] ?? DEFAULT_ACCENT;
+
+  console.log(product);
 
   const req = product.requirements;
   const designDiagramUrl = getImageUrl(req?.design ?? null);
@@ -615,6 +618,17 @@ export default async function ProductDetailPage({
                 className="max-w-full max-h-[720px] object-contain mx-auto"
               />
             </div>
+          </div>
+        </section>
+      )}
+      {product.gallery && product.gallery.length > 0 && (
+        <section className="border-b border-neutral-800 bg-neutral-900/30">
+          <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-16 lg:py-20">
+            <InfiniteImageScroll
+              images={product.gallery
+                .map(entry => getImageUrl(entry))
+                .filter((url): url is string => url !== null)}
+            />
           </div>
         </section>
       )}
