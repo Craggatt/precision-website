@@ -1,26 +1,26 @@
-import { postgresAdapter } from "@payloadcms/db-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
-import path from "path";
-import { buildConfig } from "payload";
-import { fileURLToPath } from "url";
-import sharp from "sharp";
-import { s3Storage } from "@payloadcms/storage-s3";
-import { importExportPlugin } from "@payloadcms/plugin-import-export";
+import { postgresAdapter } from '@payloadcms/db-postgres';
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
+import path from 'path';
+import { buildConfig } from 'payload';
+import { fileURLToPath } from 'url';
+import sharp from 'sharp';
+import { s3Storage } from '@payloadcms/storage-s3';
+import { importExportPlugin } from '@payloadcms/plugin-import-export';
 
-import { Users } from "./collections/Users";
-import { Media } from "./collections/Media";
-import { ProductCategories } from "./collections/ProductCategories";
-import { ProductSubCategories } from "./collections/ProductSubCategories";
-import { Products } from "./collections/Products";
-import { ContentCategories } from "./collections/ContentCategories";
-import { ContentSubCategories } from "./collections/ContentSubCategories";
-import { Content } from "./collections/Content";
-import { VenueLogos } from "./collections/VenueLogos";
-import { Projects } from "./collections/Projects";
-import { Testimonials } from "./collections/Testimonials";
-import { ContactSubmissions } from "./collections/ContactSubmissions";
-import { QuoteRequests } from "./collections/QuoteRequests";
-import { SupportRequests } from "./collections/SupportRequests";
+import { Users } from './collections/Users';
+import { Media } from './collections/Media';
+import { ProductCategories } from './collections/ProductCategories';
+import { ProductSubCategories } from './collections/ProductSubCategories';
+import { Products } from './collections/Products';
+import { ContentCategories } from './collections/ContentCategories';
+import { ContentSubCategories } from './collections/ContentSubCategories';
+import { Content } from './collections/Content';
+import { VenueLogos } from './collections/VenueLogos';
+import { Projects } from './collections/Projects';
+import { Testimonials } from './collections/Testimonials';
+import { ContactSubmissions } from './collections/ContactSubmissions';
+import { QuoteRequests } from './collections/QuoteRequests';
+import { SupportRequests } from './collections/SupportRequests';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -51,25 +51,25 @@ export default buildConfig({
   jobs: {
     autoRun: [
       {
-        cron: "*/5 * * * *",
-        queue: "default",
+        cron: '*/5 * * * *',
+        queue: 'default',
       },
     ],
   },
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || "",
+  secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
-    outputFile: path.resolve(dirname, "payload-types.ts"),
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URL || "",
+      connectionString: process.env.DATABASE_URL || '',
     },
   }),
   sharp,
   plugins: [
     s3Storage({
-      enabled: false, // Temporarily disabled for Vercel deployment
+      enabled: true,
       collections: {
         media: {
           generateFileURL: ({ filename }) => {
