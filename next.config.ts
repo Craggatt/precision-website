@@ -5,7 +5,24 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  serverExternalPackages: ['@aws-sdk/client-s3', '@aws-sdk/lib-storage', '@aws-sdk/s3-request-presigner'],
+  serverExternalPackages: [
+    '@aws-sdk/client-s3',
+    '@aws-sdk/lib-storage',
+    '@aws-sdk/s3-request-presigner',
+    '@aws-sdk/xml-builder',
+    '@nodable/entities',
+    'sharp',
+  ],
+  experimental: {
+    serverComponentsExternalPackages: [
+      '@aws-sdk/client-s3',
+      '@aws-sdk/lib-storage',
+      '@aws-sdk/s3-request-presigner',
+      '@aws-sdk/xml-builder',
+      '@nodable/entities',
+      'sharp',
+    ],
+  },
   images: {
     remotePatterns: [
       {
