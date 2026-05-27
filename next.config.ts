@@ -5,13 +5,8 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    esmExternals: 'loose',
-  },
-  serverExternalPackages: [
-    'sharp',
-    'drizzle-kit',
-  ],
+
+  serverExternalPackages: ['sharp', 'drizzle-kit'],
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals = config.externals || [];
