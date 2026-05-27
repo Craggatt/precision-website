@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
     '@aws-sdk/xml-builder',
     '@nodable/entities',
     'sharp',
+    'drizzle-kit',
+    'drizzle-orm',
+    '@payloadcms/db-postgres',
+    '@payloadcms/drizzle',
   ],
   experimental: {
     serverComponentsExternalPackages: [
@@ -21,7 +25,18 @@ const nextConfig: NextConfig = {
       '@aws-sdk/xml-builder',
       '@nodable/entities',
       'sharp',
+      'drizzle-kit',
+      'drizzle-orm',
+      '@payloadcms/db-postgres',
+      '@payloadcms/drizzle',
     ],
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push('drizzle-kit');
+    }
+    return config;
   },
   images: {
     remotePatterns: [
