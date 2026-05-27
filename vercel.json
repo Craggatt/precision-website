@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build --turbopack",
+  "buildCommand": "npm run build --webpack",
   "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["syd1"],
