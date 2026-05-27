@@ -69,7 +69,7 @@ export default buildConfig({
   sharp,
   plugins: [
     s3Storage({
-      enabled: true,
+      enabled: false, // Temporarily disabled for Vercel deployment
       collections: {
         media: {
           generateFileURL: ({ filename }) => {
