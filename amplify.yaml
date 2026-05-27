@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm install -g pnpm
+        - pnpm install --frozen-lockfile
+    build:
+      commands:
+        - env | grep -e PAYLOAD_SECRET -e DATABASE_URL -e S3_BUCKET -e S3_REGION -e S3_ACCESS_KEY_ID -e S3_SECRET_ACCESS_KEY -e RESEND_API_KEY -e NEXT_PUBLIC_TURNSTILE_SITE_KEY -e TURNSTILE_SECRET_KEY >> .env.production
+        - pnpm run build
+      artifacts:
+    baseDirectory: .next
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - $(pnpm store path)
+      - .next/cache/**/*

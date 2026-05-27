@@ -12,9 +12,15 @@ import { Media } from "./collections/Media";
 import { ProductCategories } from "./collections/ProductCategories";
 import { ProductSubCategories } from "./collections/ProductSubCategories";
 import { Products } from "./collections/Products";
+import { ContentCategories } from "./collections/ContentCategories";
+import { ContentSubCategories } from "./collections/ContentSubCategories";
+import { Content } from "./collections/Content";
 import { VenueLogos } from "./collections/VenueLogos";
 import { Projects } from "./collections/Projects";
 import { Testimonials } from "./collections/Testimonials";
+import { ContactSubmissions } from "./collections/ContactSubmissions";
+import { QuoteRequests } from "./collections/QuoteRequests";
+import { SupportRequests } from "./collections/SupportRequests";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -32,9 +38,15 @@ export default buildConfig({
     ProductCategories,
     ProductSubCategories,
     Products,
+    ContentCategories,
+    ContentSubCategories,
+    Content,
     Projects,
     Testimonials,
     VenueLogos,
+    ContactSubmissions,
+    QuoteRequests,
+    SupportRequests,
   ],
   jobs: {
     autoRun: [
@@ -59,7 +71,11 @@ export default buildConfig({
     s3Storage({
       enabled: true,
       collections: {
-        media: true,
+        media: {
+          generateFileURL: ({ filename }) => {
+            return `https://dlpwfd6kwolf1.cloudfront.net/${filename}`;
+          },
+        },
       },
       bucket: process.env.S3_BUCKET as string,
       config: {

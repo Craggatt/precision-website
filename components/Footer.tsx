@@ -1,17 +1,67 @@
-"use client";
+'use client';
 
-import CornerSquares from "./CornerSquares";
+import Link from 'next/link';
+import CornerSquares from './CornerSquares';
 
 const links = {
   Products: [
-    "Overbank Signage",
-    "Entry Displays",
-    "Screens",
-    "Infills",
-    "Custom",
+    {
+      name: 'Overbank Signage',
+      link: '/products?cat=Overbank%20Signage',
+    },
+    {
+      name: 'Entry Displays',
+      link: '/products?cat=Entry%20Displays',
+    },
+    {
+      name: 'Screens',
+      link: '/products?cat=Screens',
+    },
+    {
+      name: 'Infills',
+      link: '/products?cat=Infills',
+    },
+    {
+      name: 'Custom',
+      link: '/products?cat=Custom',
+    },
   ],
-  Company: ["About Us", "Blog", "Careers", "Partners"],
-  Support: ["Documentation", "Installation", "Warranty", "Contact"],
+  Content: [
+    {
+      name: 'Precision Pixel',
+      link: '/content/precision-pixel',
+    },
+    {
+      name: 'Jackpot Scoreboard',
+      link: '/content/jackpot-scoreboard',
+    },
+    {
+      name: 'Custom Animation',
+      link: '/content/custom-animation',
+    },
+    {
+      name: 'Attract Content',
+      link: '/content/attract-content',
+    },
+  ],
+  Support: [
+    {
+      name: 'Support & Service',
+      link: '/service-support',
+    },
+    {
+      name: 'Contact',
+      link: '/contact',
+    },
+    {
+      name: 'Precision Pixel Login',
+      link: 'https://pixel.precisionsigns.com.au/',
+    },
+    {
+      name: 'Precision Pulse Login',
+      link: 'https://pulse.precisionsigns.com.au/',
+    },
+  ],
 };
 
 export default function Footer() {
@@ -32,23 +82,29 @@ export default function Footer() {
               <p className="font-satoshi text-[0.85rem] text-neutral-400 leading-relaxed max-w-[200px]">
                 Australian-made LED signage for casinos, clubs, and hotels.
               </p>
-              <p className="label-mono mt-6">Est. 1999 · Wagga Wagga, AU</p>
+              <p className="label-mono mt-6">
+                Established 1975 · Wagga Wagga, AU
+              </p>
             </div>
 
             {/* Link columns */}
             {Object.entries(links).map(([heading, items], i) => (
               <div
                 key={heading}
-                className={`relative px-2.5 md:px-5 lg:px-10 py-10 border-[#2a2a2a] md:last:border-r-0 ${i === 1 ? "border-r-0 md:border-r" : "border-r"} ${i < 2 ? "border-b md:border-b-0" : ""}`}
+                className={`relative px-2.5 md:px-5 lg:px-10 py-10 border-[#2a2a2a] md:last:border-r-0 ${i === 1 ? 'border-r-0 md:border-r' : 'border-r'} ${i < 2 ? 'border-b md:border-b-0' : ''}`}
               >
                 <CornerSquares />
                 <p className="label-mono mb-5">{heading}</p>
                 <ul className="flex flex-col gap-2.5">
-                  {items.map((item) => (
-                    <li key={item}>
-                      <a className="font-satoshi text-[0.85rem] text-neutral-300 hover:text-[#f0f0f0] transition-colors cursor-pointer">
-                        {item}
-                      </a>
+                  {items.map(item => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.link}
+                        prefetch
+                        className="font-satoshi text-[0.85rem] text-neutral-300 hover:text-[#f0f0f0] transition-colors cursor-pointer"
+                      >
+                        {item.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>

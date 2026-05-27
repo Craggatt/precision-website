@@ -1,6 +1,6 @@
 import { getPayload } from "payload";
 import config from "@/payload.config";
-import { Product, Testimonial, Project, VenueLogo, ProductCategory } from "@/payload-types";
+import { Product, Testimonial, Project, VenueLogo, ProductCategory, Content, ContentCategory } from "@/payload-types";
 
 async function getPayloadInstance() {
   return getPayload({ config });
@@ -35,5 +35,39 @@ export const payloadService = {
     const payload = await getPayloadInstance();
     const result = await payload.find({ collection: "product-categories", depth: 2, limit: 100 });
     return result.docs as ProductCategory[];
+  },
+
+  getProductBySlug: async (slug: string): Promise<Product | null> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({
+      collection: "products",
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    });
+    return (result.docs[0] as Product) ?? null;
+  },
+
+  getContent: async (): Promise<Content[]> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({ collection: "content", depth: 2, limit: 100 });
+    return result.docs as Content[];
+  },
+
+  getContentCategories: async (): Promise<ContentCategory[]> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({ collection: "content-categories", depth: 2, limit: 100 });
+    return result.docs as ContentCategory[];
+  },
+
+  getContentBySlug: async (slug: string): Promise<Content | null> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({
+      collection: "content",
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    });
+    return (result.docs[0] as Content) ?? null;
   },
 };

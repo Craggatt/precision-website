@@ -1,42 +1,48 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import { gsap } from 'gsap'
-import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin'
+import { useLayoutEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { MorphSVGPlugin } from 'gsap/MorphSVGPlugin';
+import Image from 'next/image';
 
-gsap.registerPlugin(MorphSVGPlugin)
+gsap.registerPlugin(MorphSVGPlugin);
 
 // Full-screen rectangle in the same 5906×5906 coordinate space as mask.svg
-const FULL_RECT = 'M0,0 L5906,0 L5906,5906 L0,5906 Z'
+const FULL_RECT = 'M0,0 L5906,0 L5906,5906 L0,5906 Z';
 
-export default function EntranceAnimation({ onComplete }: { onComplete?: () => void }) {
-  const overlayRef = useRef<HTMLDivElement>(null)
-  const holeGroupRef = useRef<SVGGElement>(null)
-  const path1Ref = useRef<SVGPathElement>(null)
-  const path2Ref = useRef<SVGPathElement>(null)
-  const [done, setDone] = useState(false)
+export default function EntranceAnimation({
+  onComplete,
+}: {
+  onComplete?: () => void;
+}) {
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const holeGroupRef = useRef<SVGGElement>(null);
+  const path1Ref = useRef<SVGPathElement>(null);
+  const path2Ref = useRef<SVGPathElement>(null);
+  const [done, setDone] = useState(false);
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
+  useLayoutEffect(() => {
+    document.body.style.overflow = 'hidden';
 
     // Scale starts at 0, centred on the 5906×5906 viewBox
-    gsap.set(holeGroupRef.current, { svgOrigin: '2953 2953', scale: 0 })
+    // Runs synchronously before paint, so users never see the unmasked initial state
+    gsap.set(holeGroupRef.current, { svgOrigin: '2953 2953', scale: 0 });
 
     const tl = gsap.timeline({
       delay: 0.15,
       onComplete: () => {
-        document.body.style.overflow = ''
-        setDone(true)
-        onComplete?.()
+        document.body.style.overflow = '';
+        setDone(true);
+        onComplete?.();
       },
-    })
+    });
 
     // Phase 1 — logo holes grow to a small size in the centre
     tl.to(holeGroupRef.current, {
       scale: 0.28,
       duration: 1.1,
       ease: 'back.out(1.4)',
-    })
+    });
 
     // Phase 2 — holes morph to fill the screen; simultaneously scale up to 1
     //            so the expansion feels continuous
@@ -44,7 +50,7 @@ export default function EntranceAnimation({ onComplete }: { onComplete?: () => v
       holeGroupRef.current,
       { scale: 1, duration: 1.0, ease: 'power2.inOut' },
       '+=0.35'
-    )
+    );
     tl.to(
       [path1Ref.current, path2Ref.current],
       {
@@ -53,7 +59,7 @@ export default function EntranceAnimation({ onComplete }: { onComplete?: () => v
         ease: 'power2.inOut',
       },
       '<' // same time as the scale-up
-    )
+    );
 
     // Phase 3 — slide the overlay up, revealing the real page
     tl.to(
@@ -64,37 +70,37 @@ export default function EntranceAnimation({ onComplete }: { onComplete?: () => v
         ease: 'power2.inOut',
       },
       '+=0.1'
-    )
+    );
 
     return () => {
-      tl.kill()
-      document.body.style.overflow = ''
-    }
-  }, [])
+      tl.kill();
+      document.body.style.overflow = '';
+    };
+  }, []);
 
-  if (done) return null
+  if (done) return null;
 
   return (
     <div
       ref={overlayRef}
       style={{ position: 'fixed', inset: 0, zIndex: 9999, overflow: 'hidden' }}
     >
-      {/* gaming-floor.png sits beneath the white SVG overlay */}
-      <img
-        src="/images/gaming-floor.png"
-        alt=""
+      <Image
+        src="https://dlpwfd6kwolf1.cloudfront.net/vlcsnap-2025-11-26-11h59m45s630.webp"
+        priority
+        alt="" // Fill with descriptive text if possible for SEO/Accessibility
+        fill
+        style={{ objectFit: 'cover' }}
+      />
+
+      {/* White SVG overlay — the logo paths are black "holes" that let the image show through */}
+      <svg
         style={{
           position: 'absolute',
           inset: 0,
           width: '100%',
           height: '100%',
-          objectFit: 'cover',
         }}
-      />
-
-      {/* White SVG overlay — the logo paths are black "holes" that let the image show through */}
-      <svg
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
         viewBox="0 0 5906 5906"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -102,7 +108,10 @@ export default function EntranceAnimation({ onComplete }: { onComplete?: () => v
           <mask id="entrance-mask">
             {/* white = opaque white fill | black = transparent (shows image behind) */}
             <rect x="0" y="0" width="5906" height="5906" fill="white" />
-            <g ref={holeGroupRef}>
+            <g
+              ref={holeGroupRef}
+              transform="translate(2953 2953) scale(0) translate(-2953 -2953)"
+            >
               {/* Exact paths from mask.svg */}
               <path
                 ref={path1Ref}
@@ -119,8 +128,15 @@ export default function EntranceAnimation({ onComplete }: { onComplete?: () => v
         </defs>
 
         {/* White rectangle — the mask punches the logo holes through it */}
-        <rect x="0" y="0" width="5906" height="5906" fill="white" mask="url(#entrance-mask)" />
+        <rect
+          x="0"
+          y="0"
+          width="5906"
+          height="5906"
+          fill="white"
+          mask="url(#entrance-mask)"
+        />
       </svg>
     </div>
-  )
+  );
 }

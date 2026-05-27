@@ -72,9 +72,15 @@ export interface Config {
     'product-categories': ProductCategory;
     'product-subcategories': ProductSubcategory;
     products: Product;
+    'content-categories': ContentCategory;
+    'content-subcategories': ContentSubcategory;
+    content: Content;
     projects: Project;
     testimonials: Testimonial;
     'venue-logos': VenueLogo;
+    'contact-submissions': ContactSubmission;
+    'quote-requests': QuoteRequest;
+    'support-requests': SupportRequest;
     exports: Export;
     imports: Import;
     'payload-kv': PayloadKv;
@@ -90,9 +96,15 @@ export interface Config {
     'product-categories': ProductCategoriesSelect<false> | ProductCategoriesSelect<true>;
     'product-subcategories': ProductSubcategoriesSelect<false> | ProductSubcategoriesSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
+    'content-categories': ContentCategoriesSelect<false> | ContentCategoriesSelect<true>;
+    'content-subcategories': ContentSubcategoriesSelect<false> | ContentSubcategoriesSelect<true>;
+    content: ContentSelect<false> | ContentSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
     'venue-logos': VenueLogosSelect<false> | VenueLogosSelect<true>;
+    'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
+    'support-requests': SupportRequestsSelect<false> | SupportRequestsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -268,6 +280,97 @@ export interface Product {
       value: number | Media;
     } | null;
   };
+  gallery?:
+    | {
+        relationTo: 'media';
+        value: number | Media;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-categories".
+ */
+export interface ContentCategory {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  featuredImage: {
+    relationTo: 'media';
+    value: number | Media;
+  };
+  thumbnail: {
+    relationTo: 'media';
+    value: number | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-subcategories".
+ */
+export interface ContentSubcategory {
+  id: number;
+  name: string;
+  slug: string;
+  parentCategory?: (number | null) | ContentCategory;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content".
+ */
+export interface Content {
+  id: number;
+  name: string;
+  slug: string;
+  category: number | ContentCategory;
+  subcategory?: (number | ContentSubcategory)[] | null;
+  richText: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  featureImage?: (number | null) | Media;
+  description?: string | null;
+  contentSections?:
+    | {
+        name: string;
+        tag?: string | null;
+        shortDescription?: string | null;
+        longDescription?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -290,6 +393,21 @@ export interface Project {
       }[]
     | null;
   videoUrl?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -323,6 +441,61 @@ export interface VenueLogo {
     value: number | Media;
   };
   isFeatured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions".
+ */
+export interface ContactSubmission {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  subject: string;
+  message: string;
+  status: 'new' | 'in_progress' | 'resolved';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quote-requests".
+ */
+export interface QuoteRequest {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  products?:
+    | {
+        productSlug: string;
+        id?: string | null;
+      }[]
+    | null;
+  additionalInfo?: string | null;
+  status: 'new' | 'quote_sent' | 'in_progress' | 'completed' | 'declined';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-requests".
+ */
+export interface SupportRequest {
+  id: number;
+  venueName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  signDescription: string;
+  serialNumber?: string | null;
+  faultDescription: string;
+  status: 'new' | 'in_progress' | 'awaiting_parts' | 'resolved' | 'closed';
+  priority?: ('low' | 'normal' | 'high' | 'urgent') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -537,6 +710,18 @@ export interface PayloadLockedDocument {
         value: number | Product;
       } | null)
     | ({
+        relationTo: 'content-categories';
+        value: number | ContentCategory;
+      } | null)
+    | ({
+        relationTo: 'content-subcategories';
+        value: number | ContentSubcategory;
+      } | null)
+    | ({
+        relationTo: 'content';
+        value: number | Content;
+      } | null)
+    | ({
         relationTo: 'projects';
         value: number | Project;
       } | null)
@@ -547,6 +732,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'venue-logos';
         value: number | VenueLogo;
+      } | null)
+    | ({
+        relationTo: 'contact-submissions';
+        value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'quote-requests';
+        value: number | QuoteRequest;
+      } | null)
+    | ({
+        relationTo: 'support-requests';
+        value: number | SupportRequest;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -682,6 +879,55 @@ export interface ProductsSelect<T extends boolean = true> {
         voltage?: T;
         design?: T;
       };
+  gallery?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-categories_select".
+ */
+export interface ContentCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  featuredImage?: T;
+  thumbnail?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content-subcategories_select".
+ */
+export interface ContentSubcategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  parentCategory?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "content_select".
+ */
+export interface ContentSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  category?: T;
+  subcategory?: T;
+  richText?: T;
+  featureImage?: T;
+  description?: T;
+  contentSections?:
+    | T
+    | {
+        name?: T;
+        tag?: T;
+        shortDescription?: T;
+        longDescription?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -695,6 +941,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   featuredImage?: T;
   gallery?: T;
   videoUrl?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -720,6 +967,58 @@ export interface VenueLogosSelect<T extends boolean = true> {
   name?: T;
   image?: T;
   isFeatured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-submissions_select".
+ */
+export interface ContactSubmissionsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  subject?: T;
+  message?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "quote-requests_select".
+ */
+export interface QuoteRequestsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  email?: T;
+  phone?: T;
+  products?:
+    | T
+    | {
+        productSlug?: T;
+        id?: T;
+      };
+  additionalInfo?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "support-requests_select".
+ */
+export interface SupportRequestsSelect<T extends boolean = true> {
+  venueName?: T;
+  contactName?: T;
+  email?: T;
+  phone?: T;
+  signDescription?: T;
+  serialNumber?: T;
+  faultDescription?: T;
+  status?: T;
+  priority?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -877,9 +1176,15 @@ export interface TaskCreateCollectionExport {
       | 'product-categories'
       | 'product-subcategories'
       | 'products'
+      | 'content-categories'
+      | 'content-subcategories'
+      | 'content'
       | 'projects'
       | 'testimonials'
       | 'venue-logos'
+      | 'contact-submissions'
+      | 'quote-requests'
+      | 'support-requests'
       | 'exports'
       | 'imports';
     drafts?: ('yes' | 'no') | null;

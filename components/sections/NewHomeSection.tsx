@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { ArrowDown } from "lucide-react";
-import { motion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
-import CornerSquares from "../CornerSquares";
+import { ArrowDown } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useEffect, useRef, useState } from 'react';
+import CornerSquares from '../CornerSquares';
 
 function AnimatedHeading({ ready }: { ready: boolean }) {
   const wordVariants = {
-    hidden: { y: "100%", opacity: 0, rotateX: -40 },
+    hidden: { y: '100%', opacity: 0, rotateX: -40 },
     visible: (i: number) => ({
-      y: "0%",
+      y: '0%',
       opacity: 1,
       rotateX: 0,
       transition: {
@@ -21,9 +21,9 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
   };
 
   const boldVariants = {
-    hidden: { y: "120%", opacity: 0 },
+    hidden: { y: '120%', opacity: 0 },
     visible: (i: number) => ({
-      y: "0%",
+      y: '0%',
       opacity: 1,
       transition: {
         duration: 1,
@@ -33,21 +33,21 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
     }),
   };
 
-  const line1 = ["Transform", "your", "gaming", "floor", "into", "an"];
+  const line1 = ['Transform', 'your', 'gaming', 'floor', 'into', 'an'];
 
   const word = (text: string, i: number) => (
     <span
       key={`${i}-${text}`}
       className="overflow-hidden inline-block"
-      style={{ paddingBottom: "0.1em", marginBottom: "-0.1em" }}
+      style={{ paddingBottom: '0.1em', marginBottom: '-0.1em' }}
     >
       <motion.span
         custom={i}
         variants={wordVariants}
         initial="hidden"
-        animate={ready ? "visible" : "hidden"}
+        animate={ready ? 'visible' : 'hidden'}
         className="inline-block"
-        style={{ marginRight: "0.28em" }}
+        style={{ marginRight: '0.28em' }}
       >
         {text}
       </motion.span>
@@ -58,15 +58,15 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
     <span
       key={text}
       className="overflow-hidden inline-block"
-      style={{ paddingBottom: "0.1em", marginBottom: "-0.1em" }}
+      style={{ paddingBottom: '0.1em', marginBottom: '-0.1em' }}
     >
       <motion.span
         custom={i}
         variants={boldVariants}
         initial="hidden"
-        animate={ready ? "visible" : "hidden"}
+        animate={ready ? 'visible' : 'hidden'}
         className="inline-block text-white"
-        style={{ marginRight: "0.28em" }}
+        style={{ marginRight: '0.28em' }}
       >
         {text}
       </motion.span>
@@ -76,13 +76,13 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
   return (
     <h1
       className="font-aller text-white  leading-[1.06] tracking-tight "
-      style={{ perspective: "1000px" }}
+      style={{ perspective: '1000px' }}
     >
       <span className="block text-4xl sm:text-5xl md:text-[64px]">
         {line1.map((w, i) => word(w, i))}
       </span>
       <span className="block font-bold text-5xl sm:text-5xl md:text-[64px]">
-        {boldWord("unforgettable experience.", 0)}
+        {boldWord('unforgettable experience.', 0)}
       </span>
     </h1>
   );
@@ -94,21 +94,21 @@ function ProductWindow() {
       {/* Subtle glow beneath */}
       <div
         className="absolute -bottom-8 left-1/2 -translate-x-1/2 w-3/4 h-16 rounded-full blur-3xl pointer-events-none"
-        style={{ background: "rgba(11, 111, 211, 0.12)" }}
+        style={{ background: 'rgba(11, 111, 211, 0.12)' }}
       />
 
       {/* Frame */}
       <div
         className="relative overflow-hidden"
         style={{
-          border: "1px solid #e5e5e5",
-          boxShadow: "0 8px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06)",
+          border: '1px solid #e5e5e5',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.06)',
         }}
       >
         {/* Window chrome */}
         <div
           className="flex items-center gap-1.5 px-4 py-2.5"
-          style={{ borderBottom: "1px solid #e5e5e5", background: "#f9f9f9" }}
+          style={{ borderBottom: '1px solid #e5e5e5', background: '#f9f9f9' }}
         >
           <span className="w-2.5 h-2.5 rounded-full bg-[#e5e5e5]" />
           <span className="w-2.5 h-2.5 rounded-full bg-[#e5e5e5]" />
@@ -142,28 +142,75 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ['start end', 'end start'],
   });
-  const videoY = useTransform(scrollYProgress, [0, 1], ["-25%", "25%"]);
+  const videoY = useTransform(scrollYProgress, [0, 1], ['-25%', '25%']);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    // Defer video loading until after page is interactive
+    const loadVideo = () => {
+      // Skip on slow connections or data saver mode
+      const conn = (navigator as any).connection;
+      if (conn?.saveData || /2g/.test(conn?.effectiveType ?? '')) return;
+
+      const video = videoRef.current;
+      if (!video) return;
+
+      const source = document.createElement('source');
+      source.src = 'https://dlpwfd6kwolf1.cloudfront.net/web_video_2.webm';
+      source.type = 'video/webm';
+      video.appendChild(source);
+      video.load();
+
+      const onCanPlay = () => {
+        setVideoLoaded(true);
+        video.play().catch(() => {});
+      };
+      video.addEventListener('canplay', onCanPlay, { once: true });
+    };
+
+    // Use requestIdleCallback if available, otherwise setTimeout
+    if ('requestIdleCallback' in window) {
+      const id = (window as any).requestIdleCallback(loadVideo, {
+        timeout: 2000,
+      });
+      return () => (window as any).cancelIdleCallback?.(id);
+    } else {
+      const id = setTimeout(loadVideo, 1500);
+      return () => clearTimeout(id);
+    }
+  }, []);
   return (
     <section
       className="relative border-b border-[#2a2a2a] bg-[#0a0a0a] h-screen flex flex-col justify-between overflow-hidden"
       ref={ref}
     >
-      {/* Full-section video background */}
+      {/* Poster image — paints immediately, acts as LCP candidate */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('https://dlpwfd6kwolf1.cloudfront.net/web_video_poster.webp')",
+          backgroundColor: '#0a0a0a',
+        }}
+      />
+
+      {/* Video — fades in after load */}
       <motion.video
-        className="absolute inset-0 w-full h-full object-cover scale-125 z-0"
-        autoPlay
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover scale-125 z-0 transition-opacity duration-700"
         muted
         loop
         playsInline
-        style={{ translateY: videoY }}
-      >
-        <source
-          src="https://precisionsigns.com.au/wp-content/themes/Precision%200.0.1/img/video.mp4"
-          type="video/mp4"
-        />
-      </motion.video>
+        preload="none"
+        poster="https://dlpwfd6kwolf1.cloudfront.net/web_video_poster.webp"
+        style={{
+          translateY: videoY,
+          opacity: videoLoaded ? 1 : 0,
+        }}
+      />
 
       {/* Overlay */}
       <div className="absolute inset-0 z-1 bg-black/60" />
@@ -195,7 +242,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                 viewBox="0 0 100 100"
                 className="absolute inset-0 w-full h-full"
                 animate={{ rotate: 360 }}
-                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
               >
                 <defs>
                   <path
@@ -205,7 +252,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
                 </defs>
                 <text
                   className="fill-white/80 text-[11px]"
-                  style={{ fontSize: 11, letterSpacing: "0.18em" }}
+                  style={{ fontSize: 11, letterSpacing: '0.18em' }}
                 >
                   <textPath href="#circle" startOffset="0%">
                     SEE OUR WORK • SEE OUR WORK •

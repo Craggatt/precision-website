@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { motion, useInView } from "motion/react";
-import { useRef } from "react";
-import Tag from "../Tag";
-import { Media, Testimonial } from "@/payload-types";
+import { motion, useInView } from 'motion/react';
+import { useRef } from 'react';
+import Tag from '../Tag';
+import { Media, Testimonial } from '@/payload-types';
 
 function TestimonialCell({
   testimonial,
@@ -15,28 +15,29 @@ function TestimonialCell({
   isRightCol: boolean;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px 0px -5% 0px" });
+  const isInView = useInView(ref, { once: true, margin: '0px 0px -5% 0px' });
 
   const isLeftCol = !isRightCol;
   const isFirstRow = index < 2;
 
   const profileImg = testimonial.profilePicture?.value;
-  const profileUrl = typeof profileImg === "object" ? (profileImg as Media).url ?? null : null;
+  const profileUrl =
+    typeof profileImg === 'object' ? ((profileImg as Media).url ?? null) : null;
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08, ease: "easeOut" }}
+      transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
       className={[
-        "relative p-2.5 py-10 md:p-5 lg:p-10 overflow-hidden bg-neutral-800",
-        isLeftCol ? "md:border-r md:border-neutral-700" : "",
-        isFirstRow ? "border-b border-neutral-700" : "",
-        index === 2 ? "border-b border-neutral-700 md:border-b-0" : "",
+        'relative p-2.5 py-10 md:p-5 lg:p-10 overflow-hidden bg-neutral-800',
+        isLeftCol ? 'md:border-r md:border-neutral-700' : '',
+        isFirstRow ? 'border-b border-neutral-700' : '',
+        index === 2 ? 'border-b border-neutral-700 md:border-b-0' : '',
       ]
         .filter(Boolean)
-        .join(" ")}
+        .join(' ')}
     >
       <span
         className="block font-aller font-bold text-[3rem] leading-none lg:mb-4 text-neutral-600"
@@ -53,7 +54,7 @@ function TestimonialCell({
         {profileUrl ? (
           <img
             src={profileUrl}
-            alt={testimonial.name ?? ""}
+            alt={testimonial.name ?? ''}
             className="w-9 h-9 rounded-full shrink-0 object-cover"
           />
         ) : (
@@ -76,14 +77,16 @@ interface TestimonialSectionProps {
   testimonials: Testimonial[];
 }
 
-export default function TestimonialsSection({ testimonials }: TestimonialSectionProps) {
+export default function TestimonialsSection({
+  testimonials,
+}: TestimonialSectionProps) {
   const headingRef = useRef<HTMLDivElement>(null);
   const isHeadingInView = useInView(headingRef, {
     once: true,
-    margin: "0px 0px -10% 0px",
+    margin: '0px 0px -10% 0px',
   });
 
-  const featured = testimonials.filter((t) => t.isFeatured);
+  const featured = testimonials.filter(t => t.isFeatured);
   const display = featured.slice(0, 4);
   if (display.length < 4 && testimonials.length > 0) {
     const first = testimonials[0];
@@ -99,7 +102,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialSection
           ref={headingRef}
           initial={{ opacity: 0 }}
           animate={isHeadingInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           className="relative px-2.5 md:px-5 lg:px-10 py-10 md:py-12 border-b border-b-neutral-700 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
         >
           <div>
@@ -111,8 +114,8 @@ export default function TestimonialsSection({ testimonials }: TestimonialSection
             </h2>
           </div>
           <p className="font-satoshi text-neutral-400 text-[0.9rem] leading-relaxed max-w-sm">
-            From major casinos to regional clubs, our signage is installed across hundreds of gaming
-            venues nationwide.
+            Partnering with Venues demanding supported signage systems that
+            drive performance
           </p>
         </motion.div>
 
