@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "regions": ["syd1"],
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 60
+    },
+    "app/(payload)/**/*.ts": {
+      "maxDuration": 60
+    }
+  }
+}
