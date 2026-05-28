@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "generate:importmap": "node --import tsx/esm node_modules/payload/dist/bin/index.js generate:importmap",
-    "generate:types": "node --import tsx/esm node_modules/payload/dist/bin/index.js generate:types"
+    "generate:types": "node --import tsx/esm node_modules/payload/dist/bin/index.js generate:types",
+    "generate:sitemap": "node --import tsx/esm scripts/generate-sitemap.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
