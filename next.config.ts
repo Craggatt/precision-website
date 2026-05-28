@@ -32,7 +32,162 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // Old gaming subdomain pages
+      // Case studies
+      {
+        source: '/case-studies',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/case-studies/',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/casestudies/the-farmers-home-hotel',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/casestudies/the-farmers-home-hotel/',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/casestudies/hellenic-club-aquarium',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/casestudies/hellenic-club-aquarium/',
+        destination: '/',
+        permanent: true,
+      },
+      // Service/Support
+      {
+        source: '/precision-service-support-requests',
+        destination: '/service-support',
+        permanent: true,
+      },
+      {
+        source: '/precision-service-support-requests/',
+        destination: '/service-support',
+        permanent: true,
+      },
+      // Blog
+      {
+        source: '/blog',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blog/',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blog/testimonials',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/blog/testimonials/',
+        destination: '/',
+        permanent: true,
+      },
+      // Content pages
+      {
+        source: '/pixel-info',
+        destination: '/content/precision-pixel',
+        permanent: true,
+      },
+      {
+        source: '/pixel-info/',
+        destination: '/content/precision-pixel',
+        permanent: true,
+      },
+      {
+        source: '/jackpot-scoreboard-v3',
+        destination: '/content/jackpot-scoreboard',
+        permanent: true,
+      },
+      {
+        source: '/jackpot-scoreboard-v3/',
+        destination: '/content/jackpot-scoreboard',
+        permanent: true,
+      },
+      // Product pages - Halo range
+      {
+        source: '/halo-maxi-single-sided',
+        destination: '/products/maxi-halo-single-sided',
+        permanent: true,
+      },
+      {
+        source: '/halo-maxi-single-sided/',
+        destination: '/products/maxi-halo-single-sided',
+        permanent: true,
+      },
+      {
+        source: '/halo-mini-double-sided',
+        destination: '/products/mini-halo-double-sided',
+        permanent: true,
+      },
+      {
+        source: '/halo-mini-double-sided/',
+        destination: '/products/mini-halo-double-sided',
+        permanent: true,
+      },
+      // Product pages - Other products
+      {
+        source: '/gamerise',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/gamerise/',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/large-screen',
+        destination: '/products/sports-screen',
+        permanent: true,
+      },
+      {
+        source: '/large-screen/',
+        destination: '/products/sports-screen',
+        permanent: true,
+      },
+      {
+        source: '/bank-ends',
+        destination: '/products/premium-bankend',
+        permanent: true,
+      },
+      {
+        source: '/bank-ends/',
+        destination: '/products/premium-bankend',
+        permanent: true,
+      },
+      {
+        source: '/gong-1200',
+        destination: '/products/1200-gong',
+        permanent: true,
+      },
+      {
+        source: '/gong-1200/',
+        destination: '/products/1200-gong',
+        permanent: true,
+      },
+      {
+        source: '/lcd',
+        destination: '/products/neoglass-lcd',
+        permanent: true,
+      },
+      {
+        source: '/lcd/',
+        destination: '/products/neoglass-lcd',
+        permanent: true,
+      },
       {
         source: '/monolith',
         destination: '/products/monolith-infill',
@@ -43,6 +198,27 @@ const nextConfig: NextConfig = {
         destination: '/products/monolith-infill',
         permanent: true,
       },
+      {
+        source: '/neoglass-55',
+        destination: '/products/neoglass-lcd',
+        permanent: true,
+      },
+      {
+        source: '/neoglass-55/',
+        destination: '/products/neoglass-lcd',
+        permanent: true,
+      },
+      {
+        source: '/monolith-mini',
+        destination: '/products/monolith-mini-infill',
+        permanent: true,
+      },
+      {
+        source: '/monolith-mini/',
+        destination: '/products/monolith-mini-infill',
+        permanent: true,
+      },
+      // Old gaming subdomain pages
       {
         source: '/our-range/the-halo-range',
         destination: '/products',
@@ -104,26 +280,6 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        source: '/case-studies',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/case-studies/',
-        destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/contact',
-        destination: '/contact',
-        permanent: true,
-      },
-      {
-        source: '/contact/',
-        destination: '/contact',
-        permanent: true,
-      },
-      {
         source: '/shop',
         destination: '/products',
         permanent: true,
@@ -133,24 +289,15 @@ const nextConfig: NextConfig = {
         destination: '/products',
         permanent: true,
       },
+      // PDF redirects - redirect to homepage
       {
-        source: '/gamerise',
+        source: '/wp-content/uploads/:path*',
         destination: '/',
         permanent: true,
       },
       {
-        source: '/gamerise/',
+        source: '/wp-includes/:path*',
         destination: '/',
-        permanent: true,
-      },
-      {
-        source: '/pixel-info',
-        destination: '/content/precision-pixel',
-        permanent: true,
-      },
-      {
-        source: '/pixel-info/',
-        destination: '/content/precision-pixel',
         permanent: true,
       },
     ];
