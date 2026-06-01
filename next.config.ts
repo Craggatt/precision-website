@@ -32,6 +32,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // Jackpot subdomain redirect
+      {
+        source: '/jackpot/:path*',
+        destination: 'https://dev.precisionsigns.com.au/:path*',
+        permanent: false,
+      },
       // Case studies
       {
         source: '/case-studies',
