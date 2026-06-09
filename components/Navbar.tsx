@@ -14,6 +14,7 @@ import {
   ContentSubcategory,
 } from '@/payload-types';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navItems = ['Products', 'Content', 'Support', 'Customer Login'];
 
@@ -186,16 +187,21 @@ export default function Navbar({
       >
         <div className="max-w-[1600px] mx-auto  flex items-center justify-between h-14 relative">
           <Link href="/" prefetch>
-            <motion.img
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: ready ? 1 : 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              src="https://precisionsigns.com.au/wp-content/uploads/2018/11/logo.png"
-              alt="Precision Signs"
-              className={`h-9 object-contain transition-all duration-300 ${
-                scrolled ? '' : 'brightness-0 invert'
-              }`}
-            />
+            >
+              <Image
+                src="/logo.png"
+                alt="Precision Signs"
+                width={200}
+                height={36}
+                className={`h-9 w-auto object-contain transition-all duration-300 ${
+                  scrolled ? '' : 'brightness-0 invert'
+                }`}
+              />
+            </motion.div>
           </Link>
           <div className="hidden md:flex items-stretch gap-8">
             {navItems.map((item, i) => {
