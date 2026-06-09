@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import CornerSquares from './CornerSquares';
 
 const links = {
@@ -74,10 +75,12 @@ export default function Footer() {
             {/* Brand column */}
             <div className="relative p-2.5 md:p-5 lg:p-10 py-10 border-b md:border-b-0 md:border-r border-[#2a2a2a] col-span-2 md:col-span-1">
               <CornerSquares bg="" />
-              <img
-                src="https://precisionsigns.com.au/wp-content/uploads/2018/11/logo.png"
+              <Image
+                src="/logo.png"
                 alt="Precision Signs"
-                className="h-7 object-contain mb-5 brightness-0 invert"
+                width={200}
+                height={28}
+                className="h-7 w-auto object-contain mb-5 brightness-0 invert"
               />
               <p className="font-satoshi text-[0.85rem] text-neutral-400 leading-relaxed max-w-[200px]">
                 Australian-made LED signage for casinos, clubs, and hotels.

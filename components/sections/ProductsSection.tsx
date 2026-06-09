@@ -41,7 +41,7 @@ export default function ProductsSection({
             <Tag number="01" text="OUR PRODUCTS" />
             <h2 className="font-aller font-black text-4xl lg:text-5xl leading-tight">
               Gaming floor <br />
-              signage, engineered.
+              signage, engineered
             </h2>
           </div>
           <p className="font-satoshi text-neutral-400 text-sm leading-relaxed max-w-sm">
