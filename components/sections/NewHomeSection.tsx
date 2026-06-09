@@ -82,7 +82,7 @@ function AnimatedHeading({ ready }: { ready: boolean }) {
         {line1.map((w, i) => word(w, i))}
       </span>
       <span className="block font-bold text-5xl sm:text-5xl md:text-[64px]">
-        {boldWord('unforgettable experience.', 0)}
+        {boldWord('unforgettable experience', 0)}
       </span>
     </h1>
   );
