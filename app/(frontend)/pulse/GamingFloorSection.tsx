@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView } from 'motion/react';
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import Aurora from '@/components/Aurora';
 import CornerSquares from '@/components/CornerSquares';
 import Image from 'next/image';
@@ -57,12 +57,9 @@ export default function GamingFloorSection() {
               deployment faster than ever before.
             </p>
 
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 md:px-4 lg:px-12">
               {steps.map((step, index) => (
-                <div
-                  key={step.label}
-                  className="flex items-center gap-8 md:gap-16 lg:gap-24"
-                >
+                <Fragment key={step.label}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={
@@ -91,7 +88,7 @@ export default function GamingFloorSection() {
                     </span>
                   </motion.div>
                   {index < steps.length - 1 && (
-                    <div className="hidden md:flex items-center">
+                    <div className="hidden md:flex items-center flex-1 mx-6 lg:mx-12">
                       <motion.div
                         initial={{ scaleX: 0 }}
                         animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -100,7 +97,7 @@ export default function GamingFloorSection() {
                           delay: 0.55 + index * 0.25,
                           ease: 'easeOut',
                         }}
-                        className="w-16 lg:w-24 h-0.5 bg-linear-to-r from-white/50 to-white/20 origin-left"
+                        className="w-full h-0.5 bg-linear-to-r from-white/50 to-white/20 origin-left"
                       />
                       <motion.div
                         initial={{ opacity: 0 }}
@@ -109,11 +106,11 @@ export default function GamingFloorSection() {
                           duration: 0.3,
                           delay: 1 + index * 0.25,
                         }}
-                        className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-8 border-l-white/50"
+                        className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-8 border-l-white/50 shrink-0"
                       />
                     </div>
                   )}
-                </div>
+                </Fragment>
               ))}
             </div>
           </div>
