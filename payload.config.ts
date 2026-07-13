@@ -21,6 +21,7 @@ import { Testimonials } from './collections/Testimonials';
 import { ContactSubmissions } from './collections/ContactSubmissions';
 import { QuoteRequests } from './collections/QuoteRequests';
 import { SupportRequests } from './collections/SupportRequests';
+import { DemoBookings } from './collections/DemoBookings';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -47,6 +48,7 @@ export default buildConfig({
     ContactSubmissions,
     QuoteRequests,
     SupportRequests,
+    DemoBookings,
   ],
   jobs: {
     autoRun: [

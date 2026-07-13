@@ -81,6 +81,7 @@ export interface Config {
     'contact-submissions': ContactSubmission;
     'quote-requests': QuoteRequest;
     'support-requests': SupportRequest;
+    'demo-bookings': DemoBooking;
     exports: Export;
     imports: Import;
     'payload-kv': PayloadKv;
@@ -105,6 +106,7 @@ export interface Config {
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
     'support-requests': SupportRequestsSelect<false> | SupportRequestsSelect<true>;
+    'demo-bookings': DemoBookingsSelect<false> | DemoBookingsSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -501,6 +503,22 @@ export interface SupportRequest {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-bookings".
+ */
+export interface DemoBooking {
+  id: number;
+  firstName: string;
+  lastName: string;
+  venueName: string;
+  position: string;
+  email: string;
+  mobile?: string | null;
+  status: 'new' | 'contacted' | 'booked' | 'completed' | 'declined';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
@@ -744,6 +762,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'support-requests';
         value: number | SupportRequest;
+      } | null)
+    | ({
+        relationTo: 'demo-bookings';
+        value: number | DemoBooking;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1024,6 +1046,21 @@ export interface SupportRequestsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demo-bookings_select".
+ */
+export interface DemoBookingsSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  venueName?: T;
+  position?: T;
+  email?: T;
+  mobile?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports_select".
  */
 export interface ExportsSelect<T extends boolean = true> {
@@ -1185,6 +1222,7 @@ export interface TaskCreateCollectionExport {
       | 'contact-submissions'
       | 'quote-requests'
       | 'support-requests'
+      | 'demo-bookings'
       | 'exports'
       | 'imports';
     drafts?: ('yes' | 'no') | null;

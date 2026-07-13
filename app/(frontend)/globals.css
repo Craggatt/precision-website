@@ -294,6 +294,13 @@ code {
   background-size: 14px 14px;
 }
 
+.background-texture-faint {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
 .background-diagonal {
   background-color: var(--color-neutral-800);
   background-image: repeating-linear-gradient(
@@ -353,4 +360,24 @@ code {
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
   background-color: var(--color-neutral-500);
+}
+
+.animate-scroll {
+  animation: scroll-left 60s linear infinite;
+}
+
+.animate-scroll-right {
+  animation: scroll-right 60s linear infinite;
+}
+
+@keyframes draw-line {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-draw-line {
+  animation: draw-line 3s ease-out forwards;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -3s);
 }
