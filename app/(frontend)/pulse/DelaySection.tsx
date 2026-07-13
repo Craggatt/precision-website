@@ -6,11 +6,11 @@ import CornerSquares from '@/components/CornerSquares';
 
 const processSteps = [
   { number: '01', title: 'Decision Made', time: '30 Seconds' },
-  { number: '02', title: 'Design Requested', time: '30 Seconds' },
-  { number: '03', title: 'Supplier Engagement', time: '30 Seconds' },
-  { number: '04', title: 'Artwork Revisions', time: '30 Seconds' },
-  { number: '05', title: 'Approvals', time: '30 Seconds' },
-  { number: '06', title: 'Deployment', time: '30 Seconds' },
+  { number: '02', title: 'Design Requested', time: '5 Minutes' },
+  { number: '03', title: 'Supplier Engagement', time: '7 Days' },
+  { number: '04', title: 'Artwork Revisions', time: '5 Days' },
+  { number: '05', title: 'Approvals', time: '5 Minutes' },
+  { number: '06', title: 'Deployment', time: '30 Minutes' },
 ];
 
 const painPoints = [
