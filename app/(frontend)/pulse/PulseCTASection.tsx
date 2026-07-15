@@ -36,8 +36,8 @@ export default function PulseCTASection() {
               have to wait days to update a screen.
             </h2>
             <p className="font-satoshi text-neutral-200 text-base leading-relaxed mt-5 max-w-md">
-              See how gaming venues are reducing update times from days to
-              under 60 seconds.
+              Cut display update times from days to moments — no supplier
+              bottlenecks, no approval chains, no waiting.
             </p>
           </div>
 

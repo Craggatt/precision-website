@@ -4,7 +4,7 @@ import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import ParallaxImage from './ParallaxImage';
 
-export default function FoundingVenueSection() {
+export default function RealCostSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
 
@@ -19,15 +19,15 @@ export default function FoundingVenueSection() {
             className="flex flex-col justify-center px-5 md:px-10 py-16 md:py-24"
           >
             <h2 className="font-aller font-bold text-neutral-50 text-3xl md:text-4xl lg:text-5xl leading-tight">
-              Become A<br />
-              Founding Venue
+              The Real Cost Isn&apos;t The
+              <br />
+              Display. It&apos;s The Delay.
             </h2>
             <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-md mt-6">
-              Join a select group of operators helping shape the next standard
-              in gaming floor communications — priority deployment, founding
-              pricing, roadmap influence, and direct access to the Pulse team.
-              Places are limited to what our onboarding and engineering teams
-              can support.
+              A promotion, a jackpot milestone, a compliance update — the
+              decision takes minutes. Getting it live takes days: requests,
+              suppliers, artwork, approvals, while the opportunity disappears.
+              Most venues have accepted that as normal. We don&apos;t.
             </p>
           </motion.div>
 
@@ -38,9 +38,10 @@ export default function FoundingVenueSection() {
             className="relative min-h-72 lg:min-h-140 border-t lg:border-t-0 lg:border-l border-neutral-700"
           >
             <ParallaxImage
-              src="/images/pulse/venue.png"
-              alt="Gaming venue floor with digital displays"
+              src="/images/pulse/traffic.png"
+              alt="Traffic at a standstill"
               sizes="(max-width: 1024px) 100vw, 50vw"
+              overlayClassName="bg-neutral-900/30"
             />
           </motion.div>
         </div>
