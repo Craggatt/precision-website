@@ -1,5 +1,5 @@
 import { CalendarClock } from 'lucide-react';
-import AgeLogo from './AgeLogo';
+import Image from 'next/image';
 import BookDemoButton from './BookDemoButton';
 
 export default function AgeBanner() {
@@ -16,35 +16,38 @@ export default function AgeBanner() {
         }}
       />
 
-      <div className="relative max-w-[1600px] mx-auto px-2.5 md:px-5 lg:px-10 py-4 md:py-4.5 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
-        <div className="flex items-center gap-3">
-          <span className="font-aller font-bold text-white text-lg md:text-xl tracking-wide whitespace-nowrap">
-            SEE IT LIVE @
-          </span>
-          <AgeLogo className="h-5 md:h-6 w-auto text-white" />
-          <span className="font-aller font-bold text-white text-lg md:text-xl tracking-wide">
-            2026
-          </span>
+      <div className="relative max-w-6xl mx-auto px-5 lg:px-10 py-6 md:py-7 grid grid-cols-1 md:grid-cols-[1fr_1.4fr_auto] items-center gap-5 md:gap-8 text-center md:text-left">
+        <div>
+          <h2 className="font-aller font-bold text-white text-xl md:text-2xl">
+            See It Live at AGE 2026
+          </h2>
+          <p className="font-satoshi text-white/90 text-sm mt-1">
+            Stand 868 | ICC Sydney | 11-13 August
+          </p>
         </div>
 
-        <div aria-hidden className="hidden md:block h-8 w-px bg-white/25" />
+        <p className="font-satoshi text-white/90 text-sm md:text-base leading-relaxed">
+          Experience complete control of your digital signage network in real
+          time.
+        </p>
 
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex size-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-            <span className="relative inline-flex size-2 rounded-full bg-white" />
-          </span>
-          <span className="font-satoshi text-white/90 text-sm whitespace-nowrap">
-            Stand 868 · Live demonstrations every hour
-          </span>
-        </div>
-
-        <div aria-hidden className="hidden md:block h-8 w-px bg-white/25" />
-
-        <BookDemoButton className="inline-flex items-center gap-2.5 font-satoshi font-medium text-sm bg-white text-brand-primary px-6 py-2.5 rounded-sm shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-[transform,box-shadow] duration-200 cursor-pointer whitespace-nowrap">
+        <BookDemoButton className="inline-flex justify-self-center items-center gap-2.5 font-satoshi font-medium text-sm bg-white text-brand-primary px-6 py-2.5 rounded-sm shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-[transform,box-shadow] duration-200 cursor-pointer whitespace-nowrap">
           <CalendarClock size={16} strokeWidth={1.75} />
-          Book a live demonstration
+          BOOK A DEMO
         </BookDemoButton>
+
+        <div className="md:col-span-3 border-t border-white/20 pt-4 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3">
+          <Image
+            src="/images/pulse/pulse.png"
+            alt="Precision Pulse"
+            width={160}
+            height={90}
+            className="h-10 w-auto object-contain brightness-0 invert"
+          />
+          <p className="font-satoshi text-white/90 text-sm">
+            Decide. Deploy. Done.
+          </p>
+        </div>
       </div>
     </section>
   );

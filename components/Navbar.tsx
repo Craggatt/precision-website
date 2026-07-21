@@ -24,6 +24,7 @@ interface NavbarProps {
   productCategories: ProductCategory[];
   content: Content[];
   contentCategories: ContentCategory[];
+  logoVariant?: 'default' | 'pulse';
 }
 
 export default function Navbar({
@@ -32,6 +33,7 @@ export default function Navbar({
   productCategories,
   content,
   contentCategories,
+  logoVariant = 'default',
 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [productsHovered, setProductsHovered] = useState(false);
@@ -44,6 +46,7 @@ export default function Navbar({
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const customerLoginRef = useRef<HTMLParagraphElement | null>(null);
   const { setOpen } = useQuoteStore();
+  const isPulseLogo = logoVariant === 'pulse';
 
   const openMenu = (menuType: 'products' | 'content' | 'customerLogin') => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -193,11 +196,11 @@ export default function Navbar({
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <Image
-                src="/logo.png"
-                alt="Precision Signs"
-                width={200}
-                height={36}
-                className={`h-9 w-auto object-contain transition-all duration-300 ${
+                src={isPulseLogo ? '/images/pulse/pulse.png' : '/logo.png'}
+                alt={isPulseLogo ? 'Precision Pulse' : 'Precision Signs'}
+                width={isPulseLogo ? 160 : 200}
+                height={isPulseLogo ? 90 : 36}
+                className={`${isPulseLogo ? 'h-11' : 'h-9'} w-auto object-contain transition-all duration-300 ${
                   scrolled ? '' : 'brightness-0 invert'
                 }`}
               />
