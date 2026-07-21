@@ -15,7 +15,7 @@ const OLD_WAY_STEPS = [
   'Live',
 ];
 
-const PULSE_STEPS = ['Decision Made', 'You Deploy It', 'Every Screen Updates'];
+const PULSE_STEPS = ['Decide', 'Deploy', 'Done'];
 
 function HorizontalProcess({
   steps,
@@ -26,14 +26,14 @@ function HorizontalProcess({
 }) {
   return (
     <div className="mt-4 overflow-x-auto pb-2">
-      <ol className="mx-auto flex min-w-[58rem] items-stretch">
+      <ol className="grid min-w-[58rem] grid-cols-7 gap-8">
         {steps.map((step, i) => (
-          <li key={step} className="flex min-w-0 flex-1 items-center">
+          <li key={step} className="relative flex items-stretch">
             <div
-              className={`flex min-h-14 w-full items-center justify-center rounded-sm border px-3 py-2 text-center font-satoshi font-medium text-sm ${
+              className={`flex min-h-14 w-full items-center justify-start rounded-sm border px-3 py-2 text-left font-satoshi font-medium text-sm ${
                 active
                   ? 'border-brand-primary/45 bg-brand-primary/10 text-white shadow-[0_0_18px_rgba(11,111,211,0.12)]'
-                  : 'border-neutral-700 bg-neutral-900/35 text-neutral-300'
+                  : 'border-neutral-600 bg-neutral-900/35 text-white'
               }`}
             >
               {step}
@@ -43,7 +43,7 @@ function HorizontalProcess({
                 aria-hidden
                 size={16}
                 strokeWidth={1.5}
-                className={`mx-2 shrink-0 ${active ? 'text-brand-primary' : 'text-neutral-600'}`}
+                className={`absolute top-1/2 left-full ml-2 -translate-y-1/2 ${active ? 'text-brand-primary' : 'text-neutral-200'}`}
               />
             )}
           </li>
@@ -58,7 +58,7 @@ export default function ComparisonSection() {
   const isInView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
 
   return (
-    <div className="max-w-6xl mx-auto w-full px-2.5 md:px-5 lg:px-10">
+    <div className="mx-auto w-full max-w-[1600px]">
       <motion.div
         ref={ref}
         initial={{ opacity: 0, y: 24 }}
@@ -67,7 +67,7 @@ export default function ComparisonSection() {
         className="relative rounded-lg border border-neutral-700/80 bg-neutral-800/40 backdrop-blur-sm overflow-hidden"
       >
         <div className="p-5 md:p-6">
-          <h2 className="font-aller font-bold text-neutral-300 text-lg md:text-xl">
+          <h2 className="font-aller font-bold text-neutral-0 text-lg md:text-xl">
             THE OLD WAY
           </h2>
           <HorizontalProcess steps={OLD_WAY_STEPS} />

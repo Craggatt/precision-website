@@ -55,7 +55,7 @@ export default async function Pulse() {
             contentCategories={contentCategories}
             logoVariant="pulse"
           />
-          <div className="flex-1 flex flex-col justify-center gap-7 md:gap-8 pt-24 md:pt-28 pb-8 md:pb-10">
+          <div className="flex-1 flex flex-col justify-center gap-7 md:gap-8 pt-24 md:pt-18 pb-8 md:pb-10">
             <PulseHero />
             <ComparisonSection />
           </div>

@@ -16,7 +16,7 @@ export default function AgeBanner() {
         }}
       />
 
-      <div className="relative max-w-6xl mx-auto px-5 lg:px-10 py-6 md:py-7 grid grid-cols-1 md:grid-cols-[1fr_1.4fr_auto] items-center gap-5 md:gap-8 text-center md:text-left">
+      <div className="relative mx-auto grid max-w-[1600px] grid-cols-1 items-center gap-5 py-6 text-left md:grid-cols-[1fr_1.4fr_auto] md:gap-8 md:py-7">
         <div>
           <h2 className="font-aller font-bold text-white text-xl md:text-2xl">
             See It Live at AGE 2026
@@ -24,19 +24,18 @@ export default function AgeBanner() {
           <p className="font-satoshi text-white/90 text-sm mt-1">
             Stand 868 | ICC Sydney | 11-13 August
           </p>
+          <BookDemoButton className="inline-flex cursor-pointer items-center justify-self-start gap-2.5 whitespace-nowrap rounded-sm bg-white px-6 py-2.5 font-satoshi text-sm font-medium text-brand-primary shadow-md transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-lg mt-5">
+            <CalendarClock size={16} strokeWidth={1.75} />
+            BOOK A DEMO
+          </BookDemoButton>
         </div>
 
-        <p className="font-satoshi text-white/90 text-sm md:text-base leading-relaxed">
+        {/* <p className="font-satoshi text-white/90 text-sm md:text-base leading-relaxed">
           Experience complete control of your digital signage network in real
           time.
-        </p>
+        </p> */}
 
-        <BookDemoButton className="inline-flex justify-self-center items-center gap-2.5 font-satoshi font-medium text-sm bg-white text-brand-primary px-6 py-2.5 rounded-sm shadow-md hover:-translate-y-0.5 hover:shadow-lg transition-[transform,box-shadow] duration-200 cursor-pointer whitespace-nowrap">
-          <CalendarClock size={16} strokeWidth={1.75} />
-          BOOK A DEMO
-        </BookDemoButton>
-
-        <div className="md:col-span-3 border-t border-white/20 pt-4 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3">
+        {/* <div className="flex flex-col items-start justify-start gap-1 border-t border-white/20 pt-4 sm:flex-row sm:items-center sm:gap-3 md:col-span-3">
           <Image
             src="/images/pulse/pulse.png"
             alt="Precision Pulse"
@@ -47,7 +46,7 @@ export default function AgeBanner() {
           <p className="font-satoshi text-white/90 text-sm">
             Decide. Deploy. Done.
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   );
