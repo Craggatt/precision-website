@@ -9,15 +9,21 @@ import Image from 'next/image';
 const steps = [
   {
     icon: '/images/pulse/decision.svg',
-    label: 'Decision',
+    label: 'Decide',
+    description:
+      'Choose your promo, update a jackpot score, or change a link in the dashboard.',
   },
   {
     icon: '/images/pulse/pulse.svg',
-    label: 'Pulse',
+    label: 'Deploy',
+    description:
+      'Hit approve to instantly format the content for all your floor resolutions.',
   },
   {
     icon: '/images/pulse/Live.svg',
-    label: 'Live',
+    label: 'Done',
+    description:
+      'Watch your new content go live across every single display simultaneously.',
   },
 ];
 
@@ -46,15 +52,12 @@ export default function GamingFloorSection() {
           </div>
 
           <div className="relative z-10">
-            <p className="font-aller font-bold text-neutral-300 text-2xl md:text-3xl lg:text-4xl leading-tight mb-2">
-              Welcome To The
-            </p>
             <h2 className="font-aller font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-tight mb-4">
-              60-Second Gaming Floor
+              Go Live In 3 Simple Steps
             </h2>
             <p className="font-satoshi text-neutral-300 text-base md:text-lg max-w-md mb-16 md:mb-20">
-              Precision Pulse enables venue operators to move from decision to
-              deployment faster than ever before.
+              Precision Pulse streamlines your entire workflow down to three
+              fast actions.
             </p>
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0 md:px-4 lg:px-12">
@@ -85,6 +88,9 @@ export default function GamingFloorSection() {
                     </span>
                     <span className="font-aller font-bold text-white text-lg md:text-xl">
                       {step.label}
+                    </span>
+                    <span className="font-satoshi text-neutral-400 text-xs md:text-sm text-center max-w-52 mt-2">
+                      {step.description}
                     </span>
                   </motion.div>
                   {index < steps.length - 1 && (

@@ -24,10 +24,12 @@ export default function RealCostSection() {
               Display. It&apos;s The Delay.
             </h2>
             <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-md mt-6">
-              A promotion, a jackpot milestone, a compliance update — the
-              decision takes minutes. Getting it live takes days: requests,
-              suppliers, artwork, approvals, while the opportunity disappears.
-              Most venues have accepted that as normal. We don&apos;t.
+              Adding a new game, changing a link, updating a screen — the
+              operational decision takes minutes but getting it live takes
+              days. You&apos;re stuck in a loop of support tickets, external
+              suppliers, slow artwork revisions, and endless approvals — all
+              while the revenue opportunity disappears. Most venues have
+              accepted this bottleneck as normal. We don&apos;t.
             </p>
           </motion.div>
 

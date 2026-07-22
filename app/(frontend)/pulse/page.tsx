@@ -60,10 +60,8 @@ export default async function Pulse() {
             <ComparisonSection />
           </div>
         </div>
-
         <AgeBanner />
       </div>
-
       <Footer />
       <QuoteFormSection />
       <DemoFormSection />

@@ -4,6 +4,25 @@ import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import ParallaxImage from './ParallaxImage';
 
+const benefits = [
+  {
+    title: 'Faster execution',
+    description: 'Go from idea to display in an instant.',
+  },
+  {
+    title: 'Greater control',
+    description: 'Manage everything in-house from a single dashboard.',
+  },
+  {
+    title: 'Less admin',
+    description: 'Eliminate back-and-forth support emails.',
+  },
+  {
+    title: 'Consistent messaging',
+    description: 'Update multi-resolution displays simultaneously.',
+  },
+];
+
 export default function ChangesProcessSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
@@ -40,11 +59,22 @@ export default function ChangesProcessSection() {
                 Precision Pulse changes the process, not just the screen.
               </h2>
               <p className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed max-w-md mt-6">
-                Create, approve and deploy content yourself — no external
-                suppliers, no waiting. Faster execution, greater control, less
-                admin, more consistent messaging across every display. Built
-                for gaming venues, hotels, clubs and multi-venue groups.
+                Stop relying on external suppliers and waiting games. Create,
+                approve, and deploy content yourself in real time.
               </p>
+              <ul className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed max-w-md mt-6 space-y-3">
+                {benefits.map((benefit) => (
+                  <li key={benefit.title} className="flex gap-3">
+                    <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand-primary shrink-0" />
+                    <span>
+                      <span className="text-white font-medium">
+                        {benefit.title}
+                      </span>{' '}
+                      – {benefit.description}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </motion.div>
           </div>
         </div>
