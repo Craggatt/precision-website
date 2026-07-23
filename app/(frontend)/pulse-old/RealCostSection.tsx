@@ -11,7 +11,10 @@ export default function RealCostSection() {
   return (
     <section className="bg-neutral-900 px-2.5 md:px-5 lg:px-10">
       <div className="max-w-[1600px] mx-auto border-x border-neutral-700">
-        <div ref={ref} className="grid grid-cols-1 lg:grid-cols-2 border-b border-neutral-700">
+        <div
+          ref={ref}
+          className="grid grid-cols-1 lg:grid-cols-2 border-b border-neutral-700"
+        >
           <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
@@ -19,17 +22,17 @@ export default function RealCostSection() {
             className="flex flex-col justify-center px-5 md:px-10 py-16 md:py-24"
           >
             <h2 className="font-aller font-bold text-neutral-50 text-3xl md:text-4xl lg:text-5xl leading-tight">
-              The Real Cost Isn&apos;t The
+              The real cost isn&apos;t the
               <br />
-              Display. It&apos;s The Delay.
+              display. It&apos;s the delay.
             </h2>
             <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-md mt-6">
               Adding a new game, changing a link, updating a screen — the
-              operational decision takes minutes but getting it live takes
-              days. You&apos;re stuck in a loop of support tickets, external
+              operational decision takes minutes but getting it live takes days.
+              You&apos;re stuck in a loop of support tickets, external
               suppliers, slow artwork revisions, and endless approvals — all
               while the revenue opportunity disappears. Most venues have
-              accepted this bottleneck as normal. We don&apos;t.
+              accepted this bottleneck as normal. <b>We don&apos;t.</b>
             </p>
           </motion.div>
 

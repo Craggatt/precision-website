@@ -29,34 +29,25 @@ export default function PulseCTASection() {
               speed={0.4}
             />
           </div>
-          <div className="relative z-10 max-w-xl">
+          <div className="relative z-10 ">
             <h2 className="font-aller font-bold text-white text-3xl md:text-4xl leading-tight">
-              Venue operators should not
-              <br />
-              have to wait days to update a screen.
+              Experience Precision Pulse live at AGE 2026
             </h2>
             <p className="font-satoshi text-neutral-200 text-base leading-relaxed mt-5 max-w-md">
-              Cut display update times from days to moments — no supplier
-              bottlenecks, no approval chains, no waiting.
+              See the future screen control in action. Join us at the
+              Australasian Gaming Expo (AGE) from 11-13 August 2026 at the ICC
+              Sydney for a live demonstration of real-time floor updates.
             </p>
-          </div>
-
-          <div className="relative z-10 flex flex-col sm:flex-row gap-3 shrink-0">
             <button
-              className="inline-flex items-center justify-center gap-2 font-satoshi text-[0.85rem] text-white px-6 py-3 rounded-sm transition-colors font-medium border border-white/20 hover:bg-white/20 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 font-satoshi text-[0.85rem] bg-brand-primary text-white px-6 py-3 rounded-sm transition-colors hover:bg-neutral-950 cursor-pointer mt-6"
               onClick={() => setOpen(true)}
             >
-              Apply For Founding Venue Status
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-            <button
-              className="inline-flex items-center justify-center gap-2 font-satoshi text-[0.85rem] bg-brand-primary text-white px-6 py-3 rounded-sm transition-colors hover:bg-neutral-950 cursor-pointer"
-              onClick={() => setOpen(true)}
-            >
-              Book A Demonstration
+              Book a Demo
               <CalendarClock className="w-3.5 h-3.5" />
             </button>
           </div>
+
+          <div className="relative z-10 flex flex-col sm:flex-row gap-3 shrink-0"></div>
         </div>
       </motion.div>
     </section>

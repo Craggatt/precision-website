@@ -13,6 +13,7 @@ import WhySection from './WhySection';
 import FoundingVenueSection from './FoundingVenueSection';
 import FaqSection from './FaqSection';
 import PulseCTASection from './PulseCTASection';
+import { CalendarClock } from 'lucide-react';
 
 export default async function Pulse() {
   const [products, productCategories, content, contentCategories] =
@@ -38,6 +39,7 @@ export default async function Pulse() {
           productCategories={productCategories}
           content={content}
           contentCategories={contentCategories}
+          logoVariant="pulse"
         />
         <div className="flex-1 flex flex-col justify-between max-w-[1600px] mx-auto w-full px-2.5 md:px-5 lg:px-10 pt-28 md:pt-36 lg:pt-40 pb-10 md:pb-14">
           <div>
@@ -65,13 +67,11 @@ export default async function Pulse() {
               </span>
             </div>
             <p className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed mt-3">
-              Join us at the Australasian Gaming Expo (AGE), 11–13 August 2026
-              at ICC Sydney. Visit Stand 868 and watch a live demonstration,
-              every hour — content created, approved and deployed across
-              multiple displays in moments. No simulations. Just proof.
+              Stand 868 | ICC Sydney | 11-13 August
             </p>
-            <BookDemoButton className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-brand-primary-hover transition-colors font-medium mt-6 cursor-pointer">
-              Book Your AGE Demo
+            <BookDemoButton className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-brand-primary-hover transition-colors font-medium mt-6 cursor-pointer flex flex-row gap-3">
+              Book a Demo
+              <CalendarClock size={16} strokeWidth={1.75} />
             </BookDemoButton>
           </div>
         </div>
@@ -83,9 +83,9 @@ export default async function Pulse() {
       <ChangesProcessSection />
       <GamingFloorSection />
       <WhySection />
-      <FoundingVenueSection />
-      <FaqSection />
+      {/* <FoundingVenueSection /> */}
       <PulseCTASection />
+      <FaqSection />
       <Footer />
       <QuoteFormSection />
       <DemoFormSection />

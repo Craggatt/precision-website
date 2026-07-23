@@ -52,7 +52,7 @@ export default function GamingFloorSection() {
           </div>
 
           <div className="relative z-10">
-            <h2 className="font-aller font-bold text-white text-4xl md:text-5xl lg:text-6xl leading-tight mb-4">
+            <h2 className="font-aller font-bold text-white text-4xl md:text-5xl lg:text-5xl leading-tight mb-4">
               Go Live In 3 Simple Steps
             </h2>
             <p className="font-satoshi text-neutral-300 text-base md:text-lg max-w-md mb-16 md:mb-20">

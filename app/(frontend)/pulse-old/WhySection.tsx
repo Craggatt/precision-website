@@ -24,22 +24,22 @@ export default function WhySection() {
               transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
               className="text-center"
             >
-              <h2 className="font-aller font-bold text-neutral-50 text-3xl md:text-4xl leading-tight">
+              <h2 className="font-aller font-bold text-neutral-50 text-3xl md:text-5xl leading-tight">
                 The technology evolved.
                 <br />
                 The workflow never did.
               </h2>
               <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-xl mt-5">
-                For over 20 years, Precision Signs has been at the forefront of
-                digital gaming signage. Our displays evolved into stunning,
-                high-impact digital experiences — but updating them stayed
-                frustratingly manual.
+                &quot;For over 20 years, Precision Signs has been at the
+                forefront of digital gaming signage. Our displays evolved into
+                stunning, high-impact digital experiences — but updating them
+                stayed frustratingly manual.&quot;
               </p>
               <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-xl mt-4">
                 Every new game release or link change meant recreating custom
-                content for multiple display resolutions, forcing venues to
-                wait days or even weeks for a simple update. In an industry
-                that moves fast, the old process couldn&apos;t keep up.
+                content for multiple display resolutions, forcing venues to wait
+                days or even weeks for a simple update. In an industry that
+                moves fast, the old process couldn&apos;t keep up.
               </p>
               <p className="font-satoshi text-neutral-300 text-sm md:text-base italic mt-6">
                 — Trevor Holden, Managing Director, Precision Signs
