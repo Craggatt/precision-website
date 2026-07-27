@@ -3,9 +3,17 @@ import Footer from '@/components/Footer';
 import QuoteFormSection from '@/components/sections/QuoteFormSection';
 import DemoFormSection from '@/components/sections/DemoFormSection';
 import { payloadService } from '@/services/payloadService';
-import PulseHero from './PulseHero';
-import ComparisonSection from './ComparisonSection';
-import AgeBanner from './AgeBanner';
+import AgeLogo from './AgeLogo';
+import BookDemoButton from './BookDemoButton';
+import FloatingDemoButton from './FloatingDemoButton';
+import RealCostSection from './RealCostSection';
+import ChangesProcessSection from './ChangesProcessSection';
+import GamingFloorSection from './GamingFloorSection';
+import WhySection from './WhySection';
+import FoundingVenueSection from './FoundingVenueSection';
+import FaqSection from './FaqSection';
+import PulseCTASection from './PulseCTASection';
+import { CalendarClock } from 'lucide-react';
 
 export default async function Pulse() {
   const [products, productCategories, content, contentCategories] =
@@ -18,53 +26,70 @@ export default async function Pulse() {
 
   return (
     <main className="min-h-screen">
-      <div className="relative flex flex-col min-h-screen bg-neutral-900 overflow-hidden">
-        {/* Background: faint artwork top-right + brand glow + dot grid */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-cover bg-top-right opacity-10"
-          style={{
-            backgroundImage: "url('/images/pulse-bg.webp')",
-            maskImage:
-              'radial-gradient(70% 90% at 85% 10%, black 0%, transparent 100%)',
-          }}
+      <div
+        className="relative h-screen bg-cover bg-no-repeat flex flex-col"
+        style={{
+          backgroundImage: "url('/images/pulse-bg.webp')",
+          backgroundPosition: 'left bottom',
+        }}
+      >
+        <Navbar
+          ready={true}
+          products={products}
+          productCategories={productCategories}
+          content={content}
+          contentCategories={contentCategories}
+          logoVariant="pulse"
         />
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(60% 50% at 50% 35%, rgba(11,111,211,0.12) 0%, transparent 100%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 background-texture-faint"
-          style={{
-            maskImage:
-              'radial-gradient(80% 80% at 50% 0%, black 0%, transparent 100%)',
-          }}
-        />
+        <div className="flex-1 flex flex-col justify-between max-w-[1600px] mx-auto w-full px-2.5 md:px-5 lg:px-10 pt-28 md:pt-36 lg:pt-40 pb-10 md:pb-14">
+          <div>
+            <h1 className="font-aller font-bold text-4xl sm:text-5xl md:text-6xl leading-tight">
+              The new standard for gaming displays{' '}
+              <br className="hidden md:block"></br>
+              <span className="text-brand-primary">Decide. Deploy. Done.</span>
+            </h1>
+            <p className="font-satoshi max-w-md mt-5 text-neutral-300 text-sm md:text-base">
+              Why wait days to update a screen? Precision Pulse gives operators
+              the power to push live changes across the entire floor instantly.
+              Welcome to the future of display technology – take total control
+              forever.
+            </p>
+          </div>
 
-        <div className="relative flex-1 flex flex-col">
-          <Navbar
-            ready={true}
-            products={products}
-            productCategories={productCategories}
-            content={content}
-            contentCategories={contentCategories}
-            logoVariant="pulse"
-          />
-          <div className="flex-1 flex flex-col justify-center gap-7 md:gap-8 pt-24 md:pt-18 pb-8 md:pb-10">
-            <PulseHero />
-            <ComparisonSection />
+          <div className="max-w-md">
+            <div className="flex items-center gap-3">
+              <span className="font-aller font-bold text-white text-xl md:text-2xl tracking-wide">
+                SEE IT LIVE @
+              </span>
+              <AgeLogo className="h-5 md:h-6 w-auto text-white" />
+              <span className="font-aller font-bold text-white text-xl md:text-2xl tracking-wide">
+                2026
+              </span>
+            </div>
+            <p className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed mt-3">
+              Stand 868 | ICC Sydney | 11-13 August
+            </p>
+            <BookDemoButton className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-brand-primary-hover transition-colors font-medium mt-6 cursor-pointer flex flex-row gap-3">
+              Book a Demo
+              <CalendarClock size={16} strokeWidth={1.75} />
+            </BookDemoButton>
           </div>
         </div>
-        <AgeBanner />
+        {/* Full-width brand rule under the hero */}
+        <div className="h-1.5 bg-brand-primary" />
       </div>
+
+      <RealCostSection />
+      <ChangesProcessSection />
+      <GamingFloorSection />
+      <WhySection />
+      {/* <FoundingVenueSection /> */}
+      <PulseCTASection />
+      <FaqSection />
       <Footer />
       <QuoteFormSection />
       <DemoFormSection />
+      <FloatingDemoButton />
     </main>
   );
 }
