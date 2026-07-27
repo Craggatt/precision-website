@@ -33,13 +33,13 @@ export default function WhySection() {
                 &quot;For over 20 years, Precision Signs has been at the
                 forefront of digital gaming signage. Our displays evolved into
                 stunning, high-impact digital experiences — but updating them
-                stayed frustratingly manual.&quot;
+                stayed frustratingly manual.
               </p>
               <p className="font-satoshi text-neutral-400 text-sm md:text-base leading-relaxed max-w-xl mt-4">
                 Every new game release or link change meant recreating custom
                 content for multiple display resolutions, forcing venues to wait
                 days or even weeks for a simple update. In an industry that
-                moves fast, the old process couldn&apos;t keep up.
+                moves fast, the old process couldn&apos;t keep up.&quot;
               </p>
               <p className="font-satoshi text-neutral-300 text-sm md:text-base italic mt-6">
                 — Trevor Holden, Managing Director, Precision Signs

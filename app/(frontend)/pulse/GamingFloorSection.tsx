@@ -53,7 +53,7 @@ export default function GamingFloorSection() {
 
           <div className="relative z-10">
             <h2 className="font-aller font-bold text-white text-4xl md:text-5xl lg:text-5xl leading-tight mb-4">
-              Go Live In 3 Simple Steps
+              Go live in 3 simple steps
             </h2>
             <p className="font-satoshi text-neutral-300 text-base md:text-lg max-w-md mb-16 md:mb-20">
               Precision Pulse streamlines your entire workflow down to three

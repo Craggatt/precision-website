@@ -8,7 +8,7 @@ const faqs = [
   {
     question: 'Is Precision Pulse replacing our displays?',
     answer:
-      "No — it's designed to work with your existing display infrastructure wherever possible.",
+      "No. it's designed to work with your existing display infrastructure wherever possible.",
   },
   {
     question: 'Who is it designed for?',
@@ -22,7 +22,7 @@ const faqs = [
   {
     question: 'Can I manage multiple venues?',
     answer:
-      'Yes — multi-site operators manage all locations from one central platform.',
+      'Yes. multi-site operators manage all locations from one central platform.',
   },
   {
     question: 'How long does implementation take?',
@@ -37,7 +37,7 @@ const faqs = [
   {
     question: 'Is content compliant with gaming regulations?',
     answer:
-      "Pulse gives you direct control over what's published, so your existing compliance and approval processes apply — you decide what goes live and when.",
+      "Pulse gives you direct control over what's published, so your existing compliance and approval processes apply. you decide what goes live and when.",
   },
   {
     question: 'What happens to our current supplier relationship?',
@@ -76,11 +76,15 @@ function FaqItem({
     <motion.div
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.4, delay: 0.15 + index * 0.08, ease: 'easeOut' }}
+      transition={{
+        duration: 0.4,
+        delay: 0.15 + index * 0.08,
+        ease: 'easeOut',
+      }}
       className="border-b border-neutral-700"
     >
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => setOpen(o => !o)}
         aria-expanded={open}
         className="w-full flex items-center justify-between gap-6 py-6 text-left cursor-pointer group"
       >
@@ -148,7 +152,12 @@ export default function FaqSection() {
 
           <div className="border-t border-neutral-700">
             {faqs.map((faq, index) => (
-              <FaqItem key={faq.question} faq={faq} index={index} inView={isInView} />
+              <FaqItem
+                key={faq.question}
+                faq={faq}
+                index={index}
+                inView={isInView}
+              />
             ))}
           </div>
         </div>
