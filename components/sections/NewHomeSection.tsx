@@ -217,7 +217,7 @@ export default function NewHomeSection({ ready = false }: { ready?: boolean }) {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col justify-between h-full">
-        <div className="h-14" />
+        <div className="h-24" />
         <div className="px-2.5 md:px-5 lg:px-10">
           <div className="relative w-full max-w-[1600px] px-2.5 md:px-5 mx-auto lg:px-10 py-10 border-x border-white/20 h-fit">
             <div className="bg-white/20 h-1.25 w-1.25 absolute top-[-3px] left-[-3px] z-10"></div>

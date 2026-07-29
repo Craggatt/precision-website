@@ -26,6 +26,10 @@ const links = {
       name: 'Custom',
       link: '/products?cat=Custom',
     },
+    {
+      name: 'Pulse',
+      link: '/pulse',
+    },
   ],
   Content: [
     {

@@ -16,7 +16,7 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 
-const navItems = ['Products', 'Content', 'Support', 'Customer Login'];
+const navItems = ['Products', 'Pulse', 'Content', 'Support', 'Customer Login'];
 
 interface NavbarProps {
   ready: boolean;
@@ -209,15 +209,20 @@ export default function Navbar({
           <div className="hidden md:flex items-stretch gap-8">
             {navItems.map((item, i) => {
               const isLink =
-                item === 'Support' || item === 'Products' || item === 'Content';
+                item === 'Support' ||
+                item === 'Products' ||
+                item === 'Pulse' ||
+                item === 'Content';
               const href =
                 item === 'Support'
                   ? '/service-support'
                   : item === 'Products'
                     ? '/products'
-                    : item === 'Content'
-                      ? '/content'
-                      : undefined;
+                    : item === 'Pulse'
+                      ? '/pulse'
+                      : item === 'Content'
+                        ? '/content'
+                        : undefined;
 
               const menuContent = (
                 <motion.p
@@ -643,6 +648,15 @@ export default function Navbar({
                       )}
                     </AnimatePresence>
                   </div>
+
+                  {/* Pulse */}
+                  <a
+                    href="/pulse"
+                    className="font-satoshi font-semibold text-white py-3 hover:text-neutral-400 transition-colors border-t border-neutral-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Pulse
+                  </a>
 
                   {/* Content */}
                   <div className="flex flex-col border-t border-neutral-700">
