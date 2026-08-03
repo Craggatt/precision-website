@@ -6,7 +6,7 @@ import CornerSquares from '@/components/CornerSquares';
 
 const faqs = [
   {
-    question: 'Is Precision Pulse replacing our displays?',
+    question: 'Will Precision Pulse replacing our displays?',
     answer:
       "No. it's designed to work with your existing display infrastructure wherever possible.",
   },
@@ -16,36 +16,36 @@ const faqs = [
       'Gaming venues, clubs, hotels and hospitality groups looking to improve control and cut update delays.',
   },
   {
-    question: 'How quickly can content be updated?',
+    question: 'How quickly will content be updated?',
     answer: 'In moments, depending on your workflow and venue environment.',
   },
   {
-    question: 'Can I manage multiple venues?',
+    question: 'Will I be able to manage multiple venues?',
     answer:
       'Yes. multi-site operators manage all locations from one central platform.',
   },
   {
-    question: 'How long does implementation take?',
+    question: 'How long will implementation take?',
     answer:
       'Timelines vary by venue, but onboarding is guided end-to-end — venue assessment, network review, configuration and training are all handled as part of rollout.',
   },
   {
-    question: 'Do we need technical staff to run it?',
+    question: 'Will we need technical staff to run it?',
     answer:
       'No. Pulse is built for venue and operations teams to use directly, without needing IT or design skills.',
   },
   {
-    question: 'Is content compliant with gaming regulations?',
+    question: 'Will content be compliant with gaming regulations?',
     answer:
       "Pulse gives you direct control over what's published, so your existing compliance and approval processes apply. you decide what goes live and when.",
   },
   {
-    question: 'What happens to our current supplier relationship?',
+    question: 'What will happen to our current supplier relationship?',
     answer:
       "That's your call. Many venues keep suppliers for larger creative projects and use Pulse for the day-to-day updates that don't need to wait on anyone.",
   },
   {
-    question: 'Is our content and data secure?',
+    question: 'Will our content and data be secure?',
     answer:
       'Yes — access and publishing controls sit with your venue, with permissions managed at the operator level.',
   },

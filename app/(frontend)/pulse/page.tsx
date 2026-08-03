@@ -49,10 +49,10 @@ export default async function Pulse() {
               <span className="text-brand-primary">Decide. Deploy. Done.</span>
             </h1>
             <p className="font-satoshi max-w-md mt-5 text-neutral-300 text-sm md:text-base">
-              Why wait days to update a screen? Precision Pulse gives operators
-              the power to push live changes across the entire floor instantly.
-              Welcome to the future of display technology – take total control
-              forever.
+              Why wait days to update a screen? Precision Pulse will give
+              operators the power to push live changes across the entire floor
+              instantly. Welcome to the future of display technology – take
+              total control forever.
             </p>
           </div>
 

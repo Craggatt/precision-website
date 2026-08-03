@@ -56,7 +56,7 @@ export default function GamingFloorSection() {
               Go live in 3 simple steps
             </h2>
             <p className="font-satoshi text-neutral-300 text-base md:text-lg max-w-md mb-16 md:mb-20">
-              Precision Pulse streamlines your entire workflow down to three
+              Precision Pulse will streamline your entire workflow down to three
               fast actions.
             </p>
 

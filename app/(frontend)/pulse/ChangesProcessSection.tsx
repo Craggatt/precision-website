@@ -56,14 +56,14 @@ export default function ChangesProcessSection() {
               }}
             >
               <h2 className="font-aller font-bold text-white text-3xl md:text-4xl lg:text-5xl leading-tight">
-                Precision Pulse changes the process, not just the screen.
+                Precision Pulse will change the process, not just the screen.
               </h2>
               <p className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed max-w-md mt-6">
                 Stop relying on external suppliers and waiting games. Create,
                 approve, and deploy content yourself in real time.
               </p>
               <ul className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed max-w-md mt-6 space-y-3">
-                {benefits.map((benefit) => (
+                {benefits.map(benefit => (
                   <li key={benefit.title} className="flex gap-3">
                     <span className="mt-2 h-1.5 w-1.5 rounded-full bg-brand-primary shrink-0" />
                     <span>
