@@ -64,7 +64,7 @@ export default async function ContactPage() {
                   <div>
                     <h3 className="label-mono mb-2">PHONE</h3>
                     <a
-                      href="tel:+61269219999"
+                      href="tel:0269213591"
                       className="font-satoshi text-neutral-300 text-xs sm:text-sm hover:text-brand-primary transition-colors"
                     >
                       02 6921 3591
