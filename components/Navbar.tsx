@@ -16,7 +16,37 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 
-const navItems = ['Products', 'Pulse', 'Content', 'Support', 'Customer Login'];
+const navItems = ['Products', 'Pulse', 'Projects', 'Content', 'Support', 'Customer Login'];
+
+const projectVenues = [
+  {
+    name: 'Guildford Hotel',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/guildford-hotel/',
+  },
+  {
+    name: 'Wests Ashfield Leagues Club',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/wests-ashfield-leagues-club-phase-2/',
+  },
+  {
+    name: 'Tradies Gymea',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/tradies-gymea/',
+  },
+  {
+    name: 'The Vineyard',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/the-vineyard-sydney/',
+  },
+  {
+    name: 'Crossroads Hotel',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/crossroads-hotel-casula-nsw/',
+  },
+  {
+    name: 'The Hellenic Club Woden',
+    href: 'https://gaming.precisionsigns.com.au/casestudies/the-hellenic-club-woden/',
+  },
+].map(venue => ({
+  ...venue,
+  href: venue.href ?? `/projects?name=${encodeURIComponent(venue.name)}`,
+}));
 
 interface NavbarProps {
   ready: boolean;
@@ -38,37 +68,34 @@ export default function Navbar({
   const [scrolled, setScrolled] = useState(false);
   const [productsHovered, setProductsHovered] = useState(false);
   const [contentHovered, setContentHovered] = useState(false);
+  const [projectsHovered, setProjectsHovered] = useState(false);
   const [customerLoginHovered, setCustomerLoginHovered] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobileContentOpen, setMobileContentOpen] = useState(false);
+  const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false);
   const [mobileCustomerLoginOpen, setMobileCustomerLoginOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const projectsRef = useRef<HTMLParagraphElement | null>(null);
   const customerLoginRef = useRef<HTMLParagraphElement | null>(null);
   const { setOpen } = useQuoteStore();
   const isPulseLogo = logoVariant === 'pulse';
 
-  const openMenu = (menuType: 'products' | 'content' | 'customerLogin') => {
+  const openMenu = (
+    menuType: 'products' | 'content' | 'projects' | 'customerLogin'
+  ) => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    if (menuType === 'products') {
-      setProductsHovered(true);
-      setContentHovered(false);
-      setCustomerLoginHovered(false);
-    } else if (menuType === 'content') {
-      setContentHovered(true);
-      setProductsHovered(false);
-      setCustomerLoginHovered(false);
-    } else {
-      setCustomerLoginHovered(true);
-      setProductsHovered(false);
-      setContentHovered(false);
-    }
+    setProductsHovered(menuType === 'products');
+    setContentHovered(menuType === 'content');
+    setProjectsHovered(menuType === 'projects');
+    setCustomerLoginHovered(menuType === 'customerLogin');
   };
 
   const closeMenu = () => {
     closeTimer.current = setTimeout(() => {
       setProductsHovered(false);
       setContentHovered(false);
+      setProjectsHovered(false);
       setCustomerLoginHovered(false);
     }, 100);
   };
@@ -227,7 +254,13 @@ export default function Navbar({
               const menuContent = (
                 <motion.p
                   key={item}
-                  ref={item === 'Customer Login' ? customerLoginRef : null}
+                  ref={
+                    item === 'Customer Login'
+                      ? customerLoginRef
+                      : item === 'Projects'
+                        ? projectsRef
+                        : null
+                  }
                   initial={{ opacity: 0 }}
                   animate={{ opacity: ready ? 1 : 0 }}
                   transition={{
@@ -243,12 +276,14 @@ export default function Navbar({
                   onHoverStart={() => {
                     if (item === 'Products') openMenu('products');
                     if (item === 'Content') openMenu('content');
+                    if (item === 'Projects') openMenu('projects');
                     if (item === 'Customer Login') openMenu('customerLogin');
                   }}
                   onHoverEnd={() => {
                     if (
                       item === 'Products' ||
                       item === 'Content' ||
+                      item === 'Projects' ||
                       item === 'Customer Login'
                     )
                       closeMenu();
@@ -478,6 +513,43 @@ export default function Navbar({
             </BorderGlow>
           </motion.div>
         )}
+        {projectsHovered && projectsRef.current && (
+          <motion.div
+            className="fixed z-50"
+            style={{
+              top: projectsRef.current.getBoundingClientRect().bottom + 8,
+              left: projectsRef.current.getBoundingClientRect().left,
+            }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.15 }}
+            onMouseEnter={() => openMenu('projects')}
+            onMouseLeave={closeMenu}
+          >
+            <div
+              className={`flex flex-col min-w-[240px] rounded-sm shadow-lg overflow-hidden ${
+                scrolled
+                  ? 'bg-white border border-gray-200'
+                  : 'bg-neutral-900 border border-neutral-700'
+              }`}
+            >
+              {projectVenues.map((venue, idx) => (
+                <a
+                  key={venue.name}
+                  href={venue.href}
+                  className={`px-4 py-3 font-satoshi text-sm transition-colors ${
+                    scrolled
+                      ? `text-[#111111] hover:bg-gray-100 ${idx > 0 ? 'border-t border-gray-200' : ''}`
+                      : `text-white hover:bg-neutral-800 ${idx > 0 ? 'border-t border-neutral-700' : ''}`
+                  }`}
+                >
+                  {venue.name}
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
         {customerLoginHovered && customerLoginRef.current && (
           <motion.div
             className="fixed z-50"
@@ -657,6 +729,53 @@ export default function Navbar({
                   >
                     Pulse
                   </a>
+
+                  {/* Projects */}
+                  <div className="flex flex-col border-t border-neutral-700">
+                    <button
+                      onClick={() => setMobileProjectsOpen(!mobileProjectsOpen)}
+                      className="flex items-center justify-between font-satoshi font-semibold text-white py-3 hover:text-neutral-400 transition-colors"
+                    >
+                      <span>Projects</span>
+                      <svg
+                        className={`w-4 h-4 transition-transform ${mobileProjectsOpen ? 'rotate-180' : ''}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </button>
+                    <AnimatePresence>
+                      {mobileProjectsOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: 'auto', opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="flex flex-col pl-4 py-2">
+                            {projectVenues.map(venue => (
+                              <a
+                                key={venue.name}
+                                href={venue.href}
+                                className="font-aller text-neutral-400 text-sm py-2 hover:text-white transition-colors"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {venue.name}
+                              </a>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
                   {/* Content */}
                   <div className="flex flex-col border-t border-neutral-700">
