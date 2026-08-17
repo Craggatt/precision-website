@@ -82,6 +82,7 @@ export interface Config {
     'quote-requests': QuoteRequest;
     'support-requests': SupportRequest;
     'demo-bookings': DemoBooking;
+    'waiting-list': WaitingList;
     exports: Export;
     imports: Import;
     'payload-kv': PayloadKv;
@@ -107,6 +108,7 @@ export interface Config {
     'quote-requests': QuoteRequestsSelect<false> | QuoteRequestsSelect<true>;
     'support-requests': SupportRequestsSelect<false> | SupportRequestsSelect<true>;
     'demo-bookings': DemoBookingsSelect<false> | DemoBookingsSelect<true>;
+    'waiting-list': WaitingListSelect<false> | WaitingListSelect<true>;
     exports: ExportsSelect<false> | ExportsSelect<true>;
     imports: ImportsSelect<false> | ImportsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -519,6 +521,21 @@ export interface DemoBooking {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "waiting-list".
+ */
+export interface WaitingList {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string | null;
+  company?: string | null;
+  position?: string | null;
+  status: 'new' | 'contacted' | 'completed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports".
  */
 export interface Export {
@@ -766,6 +783,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'demo-bookings';
         value: number | DemoBooking;
+      } | null)
+    | ({
+        relationTo: 'waiting-list';
+        value: number | WaitingList;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1061,6 +1082,20 @@ export interface DemoBookingsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "waiting-list_select".
+ */
+export interface WaitingListSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  phone?: T;
+  company?: T;
+  position?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "exports_select".
  */
 export interface ExportsSelect<T extends boolean = true> {
@@ -1223,6 +1258,7 @@ export interface TaskCreateCollectionExport {
       | 'quote-requests'
       | 'support-requests'
       | 'demo-bookings'
+      | 'waiting-list'
       | 'exports'
       | 'imports';
     drafts?: ('yes' | 'no') | null;

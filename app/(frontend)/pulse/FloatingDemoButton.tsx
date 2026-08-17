@@ -8,10 +8,10 @@ import {
 } from 'motion/react';
 import { CalendarClock } from 'lucide-react';
 import { useState } from 'react';
-import { useDemoStore } from '@/store/demoStore';
+import { useWaitingListStore } from '@/store/waitingListStore';
 
 export default function FloatingDemoButton() {
-  const { setOpen } = useDemoStore();
+  const { setOpen } = useWaitingListStore();
   const [visible, setVisible] = useState(false);
   const { scrollY } = useScroll();
 
@@ -29,7 +29,7 @@ export default function FloatingDemoButton() {
           onClick={() => setOpen(true)}
           className="fixed bottom-5 right-5 md:bottom-8 md:right-8 z-10 flex items-center gap-2.5 font-satoshi font-medium! text-sm text-white bg-brand-primary hover:bg-brand-primary-hover px-5 py-3 rounded shadow transition-colors cursor-pointer"
         >
-          Book a Demo
+          Join Waiting List
           <CalendarClock size={16} strokeWidth={1.75} />
         </motion.button>
       )}

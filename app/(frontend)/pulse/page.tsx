@@ -1,18 +1,15 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import QuoteFormSection from '@/components/sections/QuoteFormSection';
-import DemoFormSection from '@/components/sections/DemoFormSection';
+import WaitingListFormSection from '@/components/sections/WaitingListFormSection';
 import { payloadService } from '@/services/payloadService';
-import AgeLogo from './AgeLogo';
 import BookDemoButton from './BookDemoButton';
 import FloatingDemoButton from './FloatingDemoButton';
 import RealCostSection from './RealCostSection';
 import ChangesProcessSection from './ChangesProcessSection';
 import GamingFloorSection from './GamingFloorSection';
 import WhySection from './WhySection';
-import FoundingVenueSection from './FoundingVenueSection';
 import FaqSection from './FaqSection';
-import PulseCTASection from './PulseCTASection';
 import { CalendarClock } from 'lucide-react';
 
 export default async function Pulse() {
@@ -57,20 +54,8 @@ export default async function Pulse() {
           </div>
 
           <div className="max-w-md">
-            <div className="flex items-center gap-3">
-              <span className="font-aller font-bold text-white text-xl md:text-2xl tracking-wide">
-                SEE IT LIVE @
-              </span>
-              <AgeLogo className="h-5 md:h-6 w-auto text-white" />
-              <span className="font-aller font-bold text-white text-xl md:text-2xl tracking-wide">
-                2026
-              </span>
-            </div>
-            <p className="font-satoshi text-neutral-300 text-sm md:text-base leading-relaxed mt-3">
-              Stand 868 | ICC Sydney | 11-13 August
-            </p>
             <BookDemoButton className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-brand-primary-hover transition-colors font-medium mt-6 cursor-pointer flex flex-row gap-3">
-              Book a Demo
+              Join Waiting List
               <CalendarClock size={16} strokeWidth={1.75} />
             </BookDemoButton>
           </div>
@@ -84,11 +69,10 @@ export default async function Pulse() {
       <GamingFloorSection />
       <WhySection />
       {/* <FoundingVenueSection /> */}
-      <PulseCTASection />
       <FaqSection />
       <Footer />
       <QuoteFormSection />
-      <DemoFormSection />
+      <WaitingListFormSection />
       <FloatingDemoButton />
     </main>
   );

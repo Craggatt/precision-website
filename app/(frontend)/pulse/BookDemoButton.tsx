@@ -1,6 +1,6 @@
 'use client';
 
-import { useDemoStore } from '@/store/demoStore';
+import { useWaitingListStore } from "@/store/waitingListStore";
 
 export default function BookDemoButton({
   children,
@@ -9,7 +9,7 @@ export default function BookDemoButton({
   children: React.ReactNode;
   className?: string;
 }) {
-  const { setOpen } = useDemoStore();
+  const { setOpen } = useWaitingListStore();
 
   return (
     <button onClick={() => setOpen(true)} className={className}>
