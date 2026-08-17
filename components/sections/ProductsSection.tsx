@@ -1,0 +1,95 @@
+'use client';
+
+import { useState } from 'react';
+import { ArrowRight } from 'lucide-react';
+import Tag from '../Tag';
+import FlowingMenu, { MenuItemData } from '../FlowingMenu';
+import { ProductCategory } from '@/payload-types';
+import Link from 'next/link';
+import { useQuoteStore } from '@/store/quoteStore';
+
+interface ProductsSectionProps {
+  productCategories: ProductCategory[];
+}
+
+export default function ProductsSection({
+  productCategories,
+}: ProductsSectionProps) {
+  const { setOpen } = useQuoteStore();
+  const [menuHovered, setMenuHovered] = useState(false);
+  const menuItems = productCategories.map(category => {
+    const img = category.featuredImage.value;
+    const imageUrl =
+      typeof img === 'object' ? (img.url ?? undefined) : undefined;
+    if (!imageUrl) {
+      return;
+    }
+    return {
+      link: `/products?cat=${category.name}`,
+      text: category.name,
+      image: imageUrl,
+    };
+  }) as MenuItemData[];
+  return (
+    <div className="lg:h-screen bg-neutral-900 px-2.5 md:px-5 lg:px-10">
+      <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row border-x border-neutral-700">
+        {/* Left: Gaming floor copy + buttons */}
+        <div
+          className={`flex flex-col justify-center py-10 px-2.5 md:px-5 lg:px-10 gap-500 overflow-hidden shrink lg:basis-0 grow transition-[flex-grow] duration-600 ease-[cubic-bezier(0.76,0,0.24,1)] min-h-[50vh]`}
+        >
+          <div className="flex flex-col gap-300">
+            <Tag number="01" text="OUR PRODUCTS" />
+            <h2 className="font-aller font-black text-4xl lg:text-5xl leading-tight">
+              Gaming floor <br />
+              signage, engineered
+            </h2>
+          </div>
+          <p className="font-satoshi text-neutral-400 text-sm leading-relaxed max-w-sm">
+            We design and manufacture the full range of gaming floor signage
+            in-house, including overbank displays, entry signage, screens,
+            infills, and fully custom builds. Every piece is built to last, and
+            backed by 25+ years of work with Australia's leading clubs, hotels,
+            and casinos.
+          </p>
+          <div className="flex flex-row gap-300">
+            <Link
+              href="/products"
+              className="font-satoshi text-sm text-white px-5 py-2.5 rounded-sm transition-colors"
+              style={{ border: '1px solid rgba(255,255,255,0.2)' }}
+              prefetch
+            >
+              View Products
+            </Link>
+            <button
+              className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-950 transition-colors font-medium flex items-center gap-200"
+              onClick={() => setOpen(true)}
+            >
+              Get a Quote
+              <ArrowRight size={14} strokeWidth={1.5} />
+            </button>
+          </div>
+        </div>
+        <div
+          className="border-t border-t-neutral-700 lg:border-t-0 lg:border-l lg:border-l-neutral-700"
+          style={{
+            flexGrow: menuHovered ? 2 : 1,
+            flexShrink: 1,
+            flexBasis: 0,
+            transition: 'flex-grow 0.6s cubic-bezier(0.76, 0, 0.24, 1)',
+          }}
+          onMouseEnter={() => setMenuHovered(true)}
+          onMouseLeave={() => setMenuHovered(false)}
+        >
+          <FlowingMenu
+            items={menuItems}
+            bgColor="#14171a"
+            marqueeBgColor="#0b6fd3"
+            marqueeTextColor="#ffffff"
+            borderColor="#404040"
+            textColor="#ffffff"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
