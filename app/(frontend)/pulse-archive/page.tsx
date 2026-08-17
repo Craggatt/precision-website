@@ -5,7 +5,6 @@ import DemoFormSection from '@/components/sections/DemoFormSection';
 import { payloadService } from '@/services/payloadService';
 import PulseHero from './PulseHero';
 import ComparisonSection from './ComparisonSection';
-import AgeBanner from './AgeBanner';
 
 export default async function Pulse() {
   const [products, productCategories, content, contentCategories] =
@@ -60,7 +59,6 @@ export default async function Pulse() {
             <ComparisonSection />
           </div>
         </div>
-        <AgeBanner />
       </div>
       <Footer />
       <QuoteFormSection />

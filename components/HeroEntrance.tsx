@@ -18,7 +18,6 @@ export default function HeroEntrance({ products, productCategories, content, con
   return (
     <>
       <Navbar ready={ready} products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
-      <AgeBanner ready={ready} />
       <EntranceAnimation onComplete={() => setReady(true)} />
       <NewHomeSection ready={ready} />
     </>
