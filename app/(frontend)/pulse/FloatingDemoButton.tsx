@@ -10,7 +10,7 @@ import { CalendarClock } from 'lucide-react';
 import { useState } from 'react';
 import { useWaitingListStore } from '@/store/waitingListStore';
 
-
+//default
 export default function FloatingDemoButton() {
   const { setOpen } = useWaitingListStore();
   const [visible, setVisible] = useState(false);
