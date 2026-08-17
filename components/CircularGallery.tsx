@@ -5,6 +5,8 @@ import { useEffect, useRef } from 'react';
 
 type GL = Renderer['gl'];
 
+const CLICK_HOLD_THRESHOLD_MS = 400;
+
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
   let timeout: number;
   return function (this: any, ...args: Parameters<T>) {
@@ -235,6 +237,19 @@ class Media {
     btn.className =
       'font-satoshi text-sm font-semibold text-white bg-brand-primary hover:bg-brand-primary-hover transition-colors px-5 py-2.5 rounded-sm';
     el.appendChild(btn);
+
+    let pointerDownAt: number | null = null;
+    el.addEventListener('pointerdown', () => {
+      pointerDownAt = performance.now();
+    });
+    el.addEventListener('click', e => {
+      const heldFor = pointerDownAt === null ? 0 : performance.now() - pointerDownAt;
+      pointerDownAt = null;
+      // Held longer than a quick tap/click — treat it as a gallery drag, not a link click.
+      if (heldFor >= CLICK_HOLD_THRESHOLD_MS) {
+        e.preventDefault();
+      }
+    });
 
     this.overlayContainer.appendChild(el);
     this.overlayEl = el;
