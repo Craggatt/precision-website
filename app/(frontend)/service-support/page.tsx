@@ -7,12 +7,13 @@ import Heading from '@/components/Heading';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 
 export default async function ServiceSupportPage() {
-  const [products, productCategories, content, contentCategories] =
+  const [products, productCategories, content, contentCategories, projects] =
     await Promise.all([
       payloadService.getProducts(),
       payloadService.getProductCategories(),
       payloadService.getContent(),
       payloadService.getContentCategories(),
+      payloadService.getProjects(),
     ]);
 
   const breadcrumbItems: BreadcrumbItem[] = [
@@ -29,6 +30,7 @@ export default async function ServiceSupportPage() {
           productCategories={productCategories}
           content={content}
           contentCategories={contentCategories}
+          projects={projects}
         />
         <Breadcrumb items={breadcrumbItems} />
         <Heading headingText="Support and Service" />

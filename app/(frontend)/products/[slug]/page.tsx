@@ -289,14 +289,21 @@ export default async function ProductDetailPage({
 }) {
   const { slug } = await params;
 
-  const [product, products, productCategories, content, contentCategories] =
-    await Promise.all([
-      payloadService.getProductBySlug(slug),
-      payloadService.getProducts(),
-      payloadService.getProductCategories(),
-      payloadService.getContent(),
-      payloadService.getContentCategories(),
-    ]);
+  const [
+    product,
+    products,
+    productCategories,
+    content,
+    contentCategories,
+    projects,
+  ] = await Promise.all([
+    payloadService.getProductBySlug(slug),
+    payloadService.getProducts(),
+    payloadService.getProductCategories(),
+    payloadService.getContent(),
+    payloadService.getContentCategories(),
+    payloadService.getProjects(),
+  ]);
 
   if (!product) notFound();
 
@@ -335,6 +342,7 @@ export default async function ProductDetailPage({
         productCategories={productCategories}
         content={content}
         contentCategories={contentCategories}
+        projects={projects}
       />
 
       <Breadcrumb items={breadcrumbItems} />

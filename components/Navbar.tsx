@@ -12,41 +12,12 @@ import {
   Content,
   ContentCategory,
   ContentSubcategory,
+  Project,
 } from '@/payload-types';
 import Link from 'next/link';
 import Image from 'next/image';
 
 const navItems = ['Products', 'Pulse', 'Projects', 'Content', 'Support', 'Customer Login'];
-
-const projectVenues = [
-  {
-    name: 'Guildford Hotel',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/guildford-hotel/',
-  },
-  {
-    name: 'Wests Ashfield Leagues Club',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/wests-ashfield-leagues-club-phase-2/',
-  },
-  {
-    name: 'Tradies Gymea',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/tradies-gymea/',
-  },
-  {
-    name: 'The Vineyard',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/the-vineyard-sydney/',
-  },
-  {
-    name: 'Crossroads Hotel',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/crossroads-hotel-casula-nsw/',
-  },
-  {
-    name: 'The Hellenic Club Woden',
-    href: 'https://gaming.precisionsigns.com.au/casestudies/the-hellenic-club-woden/',
-  },
-].map(venue => ({
-  ...venue,
-  href: venue.href ?? `/projects?name=${encodeURIComponent(venue.name)}`,
-}));
 
 interface NavbarProps {
   ready: boolean;
@@ -54,6 +25,7 @@ interface NavbarProps {
   productCategories: ProductCategory[];
   content: Content[];
   contentCategories: ContentCategory[];
+  projects: Project[];
   logoVariant?: 'default' | 'pulse';
 }
 
@@ -63,6 +35,7 @@ export default function Navbar({
   productCategories,
   content,
   contentCategories,
+  projects,
   logoVariant = 'default',
 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -207,6 +180,12 @@ export default function Navbar({
       subcategories,
     };
   });
+
+  const projectMenu = projects.map(project => ({
+    id: project.id,
+    name: project.name,
+    href: `/projects/${project.slug}`,
+  }));
 
   return (
     <>
@@ -534,17 +513,17 @@ export default function Navbar({
                   : 'bg-neutral-900 border border-neutral-700'
               }`}
             >
-              {projectVenues.map((venue, idx) => (
+              {projectMenu.map((project, idx) => (
                 <a
-                  key={venue.name}
-                  href={venue.href}
+                  key={project.id}
+                  href={project.href}
                   className={`px-4 py-3 font-satoshi text-sm transition-colors ${
                     scrolled
                       ? `text-[#111111] hover:bg-gray-100 ${idx > 0 ? 'border-t border-gray-200' : ''}`
                       : `text-white hover:bg-neutral-800 ${idx > 0 ? 'border-t border-neutral-700' : ''}`
                   }`}
                 >
-                  {venue.name}
+                  {project.name}
                 </a>
               ))}
             </div>
@@ -761,14 +740,14 @@ export default function Navbar({
                           className="overflow-hidden"
                         >
                           <div className="flex flex-col pl-4 py-2">
-                            {projectVenues.map(venue => (
+                            {projectMenu.map(project => (
                               <a
-                                key={venue.name}
-                                href={venue.href}
+                                key={project.id}
+                                href={project.href}
                                 className="font-aller text-neutral-400 text-sm py-2 hover:text-white transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
-                                {venue.name}
+                                {project.name}
                               </a>
                             ))}
                           </div>

@@ -22,7 +22,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen max-w-screen overlow-y-hidden">
-      <HeroEntrance products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} />
+      <HeroEntrance products={products} productCategories={productCategories} content={content} contentCategories={contentCategories} projects={projects} />
       <ProductsSection productCategories={productCategories} />
       <GallerySection projects={projects} />
       <VenueSection venueLogos={venueLogos} />

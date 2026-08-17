@@ -7,12 +7,13 @@ import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
 import QuoteFormSection from '@/components/sections/QuoteFormSection';
 
 export default async function Products() {
-  const [products, productCategories, content, contentCategories] =
+  const [products, productCategories, content, contentCategories, projects] =
     await Promise.all([
       payloadService.getProducts(),
       payloadService.getProductCategories(),
       payloadService.getContent(),
       payloadService.getContentCategories(),
+      payloadService.getProjects(),
     ]);
 
   const breadcrumbItems: BreadcrumbItem[] = [
@@ -29,6 +30,7 @@ export default async function Products() {
           productCategories={productCategories}
           content={content}
           contentCategories={contentCategories}
+          projects={projects}
         />
         <Breadcrumb items={breadcrumbItems} />
         <Heading

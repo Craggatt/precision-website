@@ -177,12 +177,14 @@ export default async function ContentDetailPage({
     productCategories,
     allContent,
     contentCategories,
+    projects,
   ] = await Promise.all([
     payloadService.getContentBySlug(slug),
     payloadService.getProducts(),
     payloadService.getProductCategories(),
     payloadService.getContent(),
     payloadService.getContentCategories(),
+    payloadService.getProjects(),
   ]);
 
   if (!contentItem) {
@@ -214,6 +216,7 @@ export default async function ContentDetailPage({
           productCategories={productCategories}
           content={allContent}
           contentCategories={contentCategories}
+          projects={projects}
         />
         {/* Hero Section */}
 
