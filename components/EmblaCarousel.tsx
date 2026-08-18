@@ -2,10 +2,11 @@
 
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 interface EmblaCarouselProps {
-  items: { image: string; text: string }[];
+  items: { image: string; text: string; link?: string }[];
 }
 
 export default function EmblaCarousel({ items }: EmblaCarouselProps) {
@@ -37,27 +38,44 @@ export default function EmblaCarousel({ items }: EmblaCarouselProps) {
       {/* Viewport */}
       <div className="overflow-hidden w-full flex-1" ref={emblaRef}>
         <div className="flex h-full touch-pan-y">
-          {items.map((item, i) => (
-            <div
-              key={i}
-              className="relative flex-[0_0_85%] min-w-0 mx-2 rounded-lg overflow-hidden"
-            >
-              <Image
-                src={item.image}
-                alt={item.text}
-                fill
-                className="object-cover"
-                sizes="85vw"
-                unoptimized={item.image.startsWith("/_next/image")}
-              />
-              {/* Caption */}
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3">
-                <p className="text-white font-aller font-bold text-xl">
-                  {item.text}
-                </p>
+          {items.map((item, i) => {
+            const slideClassName =
+              "relative flex-[0_0_85%] min-w-0 mx-2 rounded-lg overflow-hidden block";
+
+            const slideContent = (
+              <>
+                <Image
+                  src={item.image}
+                  alt={item.text}
+                  fill
+                  className="object-cover"
+                  sizes="85vw"
+                  unoptimized={item.image.startsWith("/_next/image")}
+                />
+                {/* Caption */}
+                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3 flex flex-col items-start gap-2">
+                  <p className="text-white font-aller font-bold text-xl">
+                    {item.text}
+                  </p>
+                  {item.link && (
+                    <span className="font-satoshi text-sm font-semibold text-white bg-brand-primary hover:bg-brand-primary-hover transition-colors px-5 py-2.5 rounded-sm">
+                      View project
+                    </span>
+                  )}
+                </div>
+              </>
+            );
+
+            return item.link ? (
+              <Link key={i} href={item.link} className={slideClassName}>
+                {slideContent}
+              </Link>
+            ) : (
+              <div key={i} className={slideClassName}>
+                {slideContent}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
