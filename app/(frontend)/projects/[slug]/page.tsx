@@ -206,7 +206,7 @@ export default async function ProjectDetailPage({
 
   const breadcrumbItems: BreadcrumbItem[] = [
     { label: 'Home', href: '/' },
-    { label: 'Projects' },
+    { label: 'Projects', href: '/projects' },
     { label: project.name },
   ];
 

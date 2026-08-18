@@ -226,6 +226,7 @@ export default function Navbar({
                 item === 'Support' ||
                 item === 'Products' ||
                 item === 'Pulse' ||
+                item === 'Projects' ||
                 item === 'Content';
               const href =
                 item === 'Support'
@@ -234,9 +235,11 @@ export default function Navbar({
                     ? '/products'
                     : item === 'Pulse'
                       ? '/pulse'
-                      : item === 'Content'
-                        ? '/content'
-                        : undefined;
+                      : item === 'Projects'
+                        ? '/projects'
+                        : item === 'Content'
+                          ? '/content'
+                          : undefined;
 
               const menuContent = (
                 <motion.p
