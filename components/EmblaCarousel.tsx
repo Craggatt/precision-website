@@ -53,7 +53,7 @@ export default function EmblaCarousel({ items }: EmblaCarouselProps) {
                   unoptimized={item.image.startsWith("/_next/image")}
                 />
                 {/* Caption */}
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-4 py-3 flex flex-col items-start gap-2">
+                <div className="absolute bottom-0 inset-x-0 h-2/3 bg-gradient-to-t from-black/95 via-black/60 to-transparent px-4 py-3 flex flex-col items-start justify-end gap-2">
                   <p className="text-white font-aller font-bold text-xl">
                     {item.text}
                   </p>
