@@ -230,6 +230,27 @@ export default async function ProjectDetailPage({
             {project.name}
           </h1>
 
+          {/* ============== Video ============== */}
+          {project.videoUrl && (
+            <div className="relative w-full aspect-video bg-black overflow-hidden rounded-sm mb-8">
+              {isDirectVideoFile(project.videoUrl) ? (
+                <video
+                  src={project.videoUrl}
+                  controls
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <iframe
+                  src={project.videoUrl}
+                  title={`${project.name} video`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              )}
+            </div>
+          )}
+
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
             <div className="lg:w-2/3">
               {imageUrl ? (
@@ -255,31 +276,6 @@ export default async function ProjectDetailPage({
           </div>
         </div>
       </section>
-
-      {/* ============== Video ============== */}
-      {project.videoUrl && (
-        <section className="border-b border-neutral-800 bg-neutral-900/30">
-          <div className="max-w-[1600px] mx-auto px-2.5 md:px-5 lg:px-10 py-16 lg:py-20">
-            <div className="relative w-full aspect-video bg-black overflow-hidden rounded-sm">
-              {isDirectVideoFile(project.videoUrl) ? (
-                <video
-                  src={project.videoUrl}
-                  controls
-                  className="w-full h-full object-contain"
-                />
-              ) : (
-                <iframe
-                  src={project.videoUrl}
-                  title={`${project.name} video`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              )}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ============== Gallery ============== */}
       {galleryUrls.length > 0 && (
