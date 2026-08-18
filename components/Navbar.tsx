@@ -49,7 +49,6 @@ export default function Navbar({
   const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false);
   const [mobileCustomerLoginOpen, setMobileCustomerLoginOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const projectsRef = useRef<HTMLParagraphElement | null>(null);
   const customerLoginRef = useRef<HTMLParagraphElement | null>(null);
   const { setOpen } = useQuoteStore();
   const isPulseLogo = logoVariant === 'pulse';
@@ -181,11 +180,20 @@ export default function Navbar({
     };
   });
 
-  const projectMenu = projects.map(project => ({
-    id: project.id,
-    name: project.name,
-    href: `/projects/${project.slug}`,
-  }));
+  const projectMenu = projects.map(project => {
+    const thumbnailImg = project.featuredImage?.value;
+    const thumbnailUrl =
+      typeof thumbnailImg === 'object'
+        ? ((thumbnailImg as Media).url ?? null)
+        : null;
+
+    return {
+      id: project.id,
+      name: project.name,
+      href: `/projects/${project.slug}`,
+      thumbnailUrl,
+    };
+  });
 
   return (
     <>
@@ -233,13 +241,7 @@ export default function Navbar({
               const menuContent = (
                 <motion.p
                   key={item}
-                  ref={
-                    item === 'Customer Login'
-                      ? customerLoginRef
-                      : item === 'Projects'
-                        ? projectsRef
-                        : null
-                  }
+                  ref={item === 'Customer Login' ? customerLoginRef : null}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: ready ? 1 : 0 }}
                   transition={{
@@ -492,41 +494,58 @@ export default function Navbar({
             </BorderGlow>
           </motion.div>
         )}
-        {projectsHovered && projectsRef.current && (
+        {projectsHovered && (
           <motion.div
-            className="fixed z-50"
-            style={{
-              top: projectsRef.current.getBoundingClientRect().bottom + 8,
-              left: projectsRef.current.getBoundingClientRect().left,
-            }}
-            initial={{ opacity: 0, y: -10 }}
+            className="w-full fixed top-14 left-0 z-50 px-10 h-screen backdrop-blur-lg"
+            initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.15 }}
-            onMouseEnter={() => openMenu('projects')}
-            onMouseLeave={closeMenu}
+            exit={{ opacity: 0, y: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
           >
-            <div
-              className={`flex flex-col min-w-[240px] rounded-sm shadow-lg overflow-hidden ${
-                scrolled
-                  ? 'bg-white border border-gray-200'
-                  : 'bg-neutral-900 border border-neutral-700'
-              }`}
+            <BorderGlow
+              backgroundColor="#171717"
+              borderRadius={0}
+              colors={['#0b6fd3', '#1a7fe3', '#0958a8']}
+              glowColor="210 90 60"
+              glowIntensity={1.2}
+              glowRadius={30}
+              edgeSensitivity={20}
+              className="max-w-[1600px] mx-auto"
             >
-              {projectMenu.map((project, idx) => (
-                <a
-                  key={project.id}
-                  href={project.href}
-                  className={`px-4 py-3 font-satoshi text-sm transition-colors ${
-                    scrolled
-                      ? `text-[#111111] hover:bg-gray-100 ${idx > 0 ? 'border-t border-gray-200' : ''}`
-                      : `text-white hover:bg-neutral-800 ${idx > 0 ? 'border-t border-neutral-700' : ''}`
-                  }`}
+              <div
+                onMouseEnter={() => openMenu('projects')}
+                onMouseLeave={closeMenu}
+              >
+                <motion.div
+                  className="flex flex-col w-full"
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 40 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
                 >
-                  {project.name}
-                </a>
-              ))}
-            </div>
+                  <div className="flex flex-row w-full flex-wrap">
+                    {[...projectMenu].reverse().map(project => (
+                      <a
+                        href={project.href}
+                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 min-w-[200px] hover:bg-neutral-800/50 transition-colors"
+                        key={project.id}
+                      >
+                        {project.thumbnailUrl && (
+                          <img
+                            src={project.thumbnailUrl}
+                            alt={project.name}
+                            className="w-28 h-20 object-contain"
+                          />
+                        )}
+                        <h3 className="font-aller text-xl mt-2">
+                          {project.name}
+                        </h3>
+                      </a>
+                    ))}
+                  </div>
+                </motion.div>
+              </div>
+            </BorderGlow>
           </motion.div>
         )}
         {customerLoginHovered && customerLoginRef.current && (
