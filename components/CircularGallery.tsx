@@ -5,6 +5,8 @@ import { useEffect, useRef } from 'react';
 
 type GL = Renderer['gl'];
 
+const CLICK_HOLD_THRESHOLD_MS = 400;
+
 function debounce<T extends (...args: any[]) => void>(func: T, wait: number) {
   let timeout: number;
   return function (this: any, ...args: Parameters<T>) {
@@ -154,6 +156,9 @@ interface MediaProps {
   textColor: string;
   borderRadius?: number;
   font?: string;
+  link?: string;
+  overlayContainer?: HTMLElement;
+  mouse: { x: number; y: number };
 }
 
 class Media {
@@ -183,8 +188,13 @@ class Media {
   speed: number = 0;
   isBefore: boolean = false;
   isAfter: boolean = false;
+  link?: string;
+  overlayContainer?: HTMLElement;
+  overlayEl?: HTMLAnchorElement;
+  mouse: { x: number; y: number };
+  hovered: boolean = false;
 
-  constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius = 0, font }: MediaProps) {
+  constructor({ geometry, gl, image, index, length, renderer, scene, screen, text, viewport, bend, textColor, borderRadius = 0, font, link, overlayContainer, mouse }: MediaProps) {
     this.geometry = geometry;
     this.gl = gl;
     this.image = image;
@@ -199,10 +209,83 @@ class Media {
     this.textColor = textColor;
     this.borderRadius = borderRadius;
     this.font = font;
+    this.link = link;
+    this.overlayContainer = overlayContainer;
+    this.mouse = mouse;
     this.createShader();
     this.createMesh();
     this.createTitle();
+    this.createOverlay();
     this.onResize();
+  }
+
+  createOverlay() {
+    if (!this.link || !this.overlayContainer) return;
+    const el = document.createElement('a');
+    el.href = this.link;
+    el.style.position = 'absolute';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.style.opacity = '0';
+    el.style.pointerEvents = 'none';
+    el.style.transition = 'opacity 0.25s ease';
+    el.style.willChange = 'transform, opacity';
+
+    const btn = document.createElement('span');
+    btn.textContent = 'View project';
+    btn.className =
+      'font-satoshi text-sm font-semibold text-white bg-brand-primary hover:bg-brand-primary-hover transition-colors px-5 py-2.5 rounded-sm';
+    el.appendChild(btn);
+
+    let pointerDownAt: number | null = null;
+    el.addEventListener('pointerdown', () => {
+      pointerDownAt = performance.now();
+    });
+    el.addEventListener('click', e => {
+      const heldFor = pointerDownAt === null ? 0 : performance.now() - pointerDownAt;
+      pointerDownAt = null;
+      // Held longer than a quick tap/click — treat it as a gallery drag, not a link click.
+      if (heldFor >= CLICK_HOLD_THRESHOLD_MS) {
+        e.preventDefault();
+      }
+    });
+
+    this.overlayContainer.appendChild(el);
+    this.overlayEl = el;
+  }
+
+  updateOverlay() {
+    if (!this.overlayEl) return;
+    const scaleX = this.screen.width / this.viewport.width;
+    const scaleY = this.screen.height / this.viewport.height;
+    const screenX = this.screen.width / 2 + this.plane.position.x * scaleX;
+    const screenY = this.screen.height / 2 - this.plane.position.y * scaleY;
+    const w = this.plane.scale.x * scaleX;
+    const h = this.plane.scale.y * scaleY;
+
+    this.overlayEl.style.left = `${screenX - w / 2}px`;
+    this.overlayEl.style.top = `${screenY - h / 2}px`;
+    this.overlayEl.style.width = `${w}px`;
+    this.overlayEl.style.height = `${h}px`;
+
+    const isHovered =
+      !this.isBefore &&
+      !this.isAfter &&
+      this.mouse.x >= screenX - w / 2 &&
+      this.mouse.x <= screenX + w / 2 &&
+      this.mouse.y >= screenY - h / 2 &&
+      this.mouse.y <= screenY + h / 2;
+
+    if (isHovered !== this.hovered) {
+      this.hovered = isHovered;
+      this.overlayEl.style.opacity = isHovered ? '1' : '0';
+      this.overlayEl.style.pointerEvents = isHovered ? 'auto' : 'none';
+    }
+  }
+
+  destroy() {
+    this.overlayEl?.parentNode?.removeChild(this.overlayEl);
   }
 
   createShader() {
@@ -318,6 +401,7 @@ class Media {
       this.extra += this.widthTotal;
       this.isBefore = this.isAfter = false;
     }
+    this.updateOverlay();
   }
 
   onResize({ screen, viewport }: { screen?: ScreenSize; viewport?: Viewport } = {}) {
@@ -340,7 +424,7 @@ class Media {
 }
 
 interface AppConfig {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
@@ -360,7 +444,7 @@ class App {
   scene!: Transform;
   planeGeometry!: Plane;
   medias: Media[] = [];
-  mediasImages: { image: string; text: string }[] = [];
+  mediasImages: { image: string; text: string; link?: string }[] = [];
   screen!: { width: number; height: number };
   viewport!: { width: number; height: number };
   raf: number = 0;
@@ -369,8 +453,11 @@ class App {
   boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
   boundOnTouchUp!: () => void;
+  boundOnPointerMove!: (e: MouseEvent) => void;
+  boundOnPointerLeave!: () => void;
   isDown: boolean = false;
   start: number = 0;
+  mouse: { x: number; y: number } = { x: -9999, y: -9999 };
 
   constructor(container: HTMLElement, { items, bend = 1, textColor = '#ffffff', borderRadius = 0, font = 'bold 30px Figtree', scrollSpeed = 2, scrollEase = 0.05 }: AppConfig) {
     document.documentElement.classList.remove('no-js');
@@ -409,7 +496,7 @@ class App {
     this.planeGeometry = new Plane(this.gl, { heightSegments: 50, widthSegments: 100 });
   }
 
-  createMedias(items: { image: string; text: string }[] | undefined, bend: number = 1, textColor: string, borderRadius: number, font: string) {
+  createMedias(items: { image: string; text: string; link?: string }[] | undefined, bend: number = 1, textColor: string, borderRadius: number, font: string) {
     const defaultItems = [
       { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: 'Bridge' },
       { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: 'Desk Setup' },
@@ -429,7 +516,8 @@ class App {
     this.medias = this.mediasImages.map((data, index) => new Media({
       geometry: this.planeGeometry, gl: this.gl, image: data.image, index, length: this.mediasImages.length,
       renderer: this.renderer, scene: this.scene, screen: this.screen, text: data.text,
-      viewport: this.viewport, bend, textColor, borderRadius, font
+      viewport: this.viewport, bend, textColor, borderRadius, font,
+      link: data.link, overlayContainer: this.container, mouse: this.mouse
     }));
   }
 
@@ -449,6 +537,17 @@ class App {
   onTouchUp() {
     this.isDown = false;
     this.onCheck();
+  }
+
+  onPointerMove(e: MouseEvent) {
+    const rect = this.container.getBoundingClientRect();
+    this.mouse.x = e.clientX - rect.left;
+    this.mouse.y = e.clientY - rect.top;
+  }
+
+  onPointerLeave() {
+    this.mouse.x = -9999;
+    this.mouse.y = -9999;
   }
 
   onWheel(e: Event) {
@@ -496,6 +595,8 @@ class App {
     this.boundOnTouchDown = this.onTouchDown.bind(this);
     this.boundOnTouchMove = this.onTouchMove.bind(this);
     this.boundOnTouchUp = this.onTouchUp.bind(this);
+    this.boundOnPointerMove = this.onPointerMove.bind(this);
+    this.boundOnPointerLeave = this.onPointerLeave.bind(this);
     window.addEventListener('resize', this.boundOnResize);
     window.addEventListener('mousewheel', this.boundOnWheel);
     window.addEventListener('wheel', this.boundOnWheel);
@@ -505,6 +606,8 @@ class App {
     window.addEventListener('touchstart', this.boundOnTouchDown);
     window.addEventListener('touchmove', this.boundOnTouchMove);
     window.addEventListener('touchend', this.boundOnTouchUp);
+    this.container.addEventListener('mousemove', this.boundOnPointerMove);
+    this.container.addEventListener('mouseleave', this.boundOnPointerLeave);
   }
 
   destroy() {
@@ -518,6 +621,9 @@ class App {
     window.removeEventListener('touchstart', this.boundOnTouchDown);
     window.removeEventListener('touchmove', this.boundOnTouchMove);
     window.removeEventListener('touchend', this.boundOnTouchUp);
+    this.container.removeEventListener('mousemove', this.boundOnPointerMove);
+    this.container.removeEventListener('mouseleave', this.boundOnPointerLeave);
+    this.medias.forEach(media => media.destroy());
     if (this.renderer?.gl?.canvas?.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas as HTMLCanvasElement);
     }
@@ -525,7 +631,7 @@ class App {
 }
 
 interface CircularGalleryProps {
-  items?: { image: string; text: string }[];
+  items?: { image: string; text: string; link?: string }[];
   bend?: number;
   textColor?: string;
   borderRadius?: number;
@@ -545,5 +651,5 @@ export default function CircularGallery({ items, bend = 3, textColor = '#ffffff'
     });
     return () => { app?.destroy(); };
   }, [items, bend, textColor, borderRadius, font, scrollSpeed, scrollEase]);
-  return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
+  return <div className="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
 }

@@ -3,12 +3,13 @@ import Footer from '@/components/Footer';
 import { payloadService } from '@/services/payloadService';
 
 export default async function ContentPage() {
-  const [products, productCategories, content, contentCategories] =
+  const [products, productCategories, content, contentCategories, projects] =
     await Promise.all([
       payloadService.getProducts(),
       payloadService.getProductCategories(),
       payloadService.getContent(),
       payloadService.getContentCategories(),
+      payloadService.getProjects(),
     ]);
 
   return (
@@ -20,6 +21,7 @@ export default async function ContentPage() {
           productCategories={productCategories}
           content={content}
           contentCategories={contentCategories}
+          projects={projects}
         />
         <div className="px-10 border-b border-b-neutral-700 flex flex-col">
           <div className="max-w-[1600px] mt-12.5 mx-auto p-10 w-full flex-1">

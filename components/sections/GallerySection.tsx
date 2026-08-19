@@ -19,6 +19,7 @@ export default function GallerySection({ projects }: GallerySectionProps) {
       return {
         image: `/_next/image?url=${encodeURIComponent(imageUrl)}&w=1920&q=75`,
         text: project.name,
+        link: `/projects/${project.slug}`,
       };
     })
     .filter(Boolean);
@@ -46,11 +47,11 @@ export default function GallerySection({ projects }: GallerySectionProps) {
           />
         </div>
         <div className="md:hidden absolute inset-0 z-10 flex flex-col justify-center px-2.5 pb-4">
-          <EmblaCarousel items={items as { image: string; text: string }[]} />
+          <EmblaCarousel items={items as { image: string; text: string; link: string }[]} />
         </div>
         <div className="hidden md:block absolute inset-0 z-10 bg-linear-to-b from-neutral-900/0 to-neutral-900 -top-10">
           <CircularGallery
-            items={items as { image: string; text: string }[]}
+            items={items as { image: string; text: string; link: string }[]}
             bend={0.5}
             textColor="rgba(255,255,255,0.8)"
             borderRadius={0}

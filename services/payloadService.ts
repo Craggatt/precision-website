@@ -25,6 +25,17 @@ export const payloadService = {
     return result.docs as Project[];
   },
 
+  getProjectBySlug: async (slug: string): Promise<Project | null> => {
+    const payload = await getPayloadInstance();
+    const result = await payload.find({
+      collection: "projects",
+      where: { slug: { equals: slug } },
+      depth: 2,
+      limit: 1,
+    });
+    return (result.docs[0] as Project) ?? null;
+  },
+
   getVenueLogos: async (): Promise<VenueLogo[]> => {
     const payload = await getPayloadInstance();
     const result = await payload.find({ collection: "venue-logos", depth: 2, limit: 100 });

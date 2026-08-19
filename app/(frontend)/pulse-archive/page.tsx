@@ -5,15 +5,15 @@ import DemoFormSection from '@/components/sections/DemoFormSection';
 import { payloadService } from '@/services/payloadService';
 import PulseHero from './PulseHero';
 import ComparisonSection from './ComparisonSection';
-import AgeBanner from './AgeBanner';
 
 export default async function Pulse() {
-  const [products, productCategories, content, contentCategories] =
+  const [products, productCategories, content, contentCategories, projects] =
     await Promise.all([
       payloadService.getProducts(),
       payloadService.getProductCategories(),
       payloadService.getContent(),
       payloadService.getContentCategories(),
+      payloadService.getProjects(),
     ]);
 
   return (
@@ -53,6 +53,7 @@ export default async function Pulse() {
             productCategories={productCategories}
             content={content}
             contentCategories={contentCategories}
+            projects={projects}
             logoVariant="pulse"
           />
           <div className="flex-1 flex flex-col justify-center gap-7 md:gap-8 pt-24 md:pt-18 pb-8 md:pb-10">
@@ -60,7 +61,6 @@ export default async function Pulse() {
             <ComparisonSection />
           </div>
         </div>
-        <AgeBanner />
       </div>
       <Footer />
       <QuoteFormSection />

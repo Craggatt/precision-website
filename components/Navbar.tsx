@@ -12,11 +12,12 @@ import {
   Content,
   ContentCategory,
   ContentSubcategory,
+  Project,
 } from '@/payload-types';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const navItems = ['Products', 'Pulse', 'Content', 'Support', 'Customer Login'];
+const navItems = ['Products', 'Pulse', 'Projects', 'Content', 'Support', 'Customer Login'];
 
 interface NavbarProps {
   ready: boolean;
@@ -24,6 +25,7 @@ interface NavbarProps {
   productCategories: ProductCategory[];
   content: Content[];
   contentCategories: ContentCategory[];
+  projects: Project[];
   logoVariant?: 'default' | 'pulse';
 }
 
@@ -33,6 +35,7 @@ export default function Navbar({
   productCategories,
   content,
   contentCategories,
+  projects,
   logoVariant = 'default',
 }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
@@ -50,19 +53,9 @@ export default function Navbar({
 
   const openMenu = (menuType: 'products' | 'content' | 'customerLogin') => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    if (menuType === 'products') {
-      setProductsHovered(true);
-      setContentHovered(false);
-      setCustomerLoginHovered(false);
-    } else if (menuType === 'content') {
-      setContentHovered(true);
-      setProductsHovered(false);
-      setCustomerLoginHovered(false);
-    } else {
-      setCustomerLoginHovered(true);
-      setProductsHovered(false);
-      setContentHovered(false);
-    }
+    setProductsHovered(menuType === 'products');
+    setContentHovered(menuType === 'content');
+    setCustomerLoginHovered(menuType === 'customerLogin');
   };
 
   const closeMenu = () => {
@@ -212,6 +205,7 @@ export default function Navbar({
                 item === 'Support' ||
                 item === 'Products' ||
                 item === 'Pulse' ||
+                item === 'Projects' ||
                 item === 'Content';
               const href =
                 item === 'Support'
@@ -220,9 +214,11 @@ export default function Navbar({
                     ? '/products'
                     : item === 'Pulse'
                       ? '/pulse'
-                      : item === 'Content'
-                        ? '/content'
-                        : undefined;
+                      : item === 'Projects'
+                        ? '/projects'
+                        : item === 'Content'
+                          ? '/content'
+                          : undefined;
 
               const menuContent = (
                 <motion.p
@@ -656,6 +652,15 @@ export default function Navbar({
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Pulse
+                  </a>
+
+                  {/* Projects */}
+                  <a
+                    href="/projects"
+                    className="font-satoshi font-semibold text-white py-3 hover:text-neutral-400 transition-colors border-t border-neutral-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Projects
                   </a>
 
                   {/* Content */}

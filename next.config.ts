@@ -27,8 +27,25 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'dlpwfd6kwolf1.cloudfront.net',
+      },{
+        protocol: 'https',
+        hostname: 'youtube.com',
       },
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value:
+              "frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com;",
+          },
+        ],
+      },
+    ];
   },
   async rewrites() {
     return [

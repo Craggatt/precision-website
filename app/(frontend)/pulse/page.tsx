@@ -13,12 +13,13 @@ import FaqSection from './FaqSection';
 import { CalendarClock } from 'lucide-react';
 
 export default async function Pulse() {
-  const [products, productCategories, content, contentCategories] =
+  const [products, productCategories, content, contentCategories, projects] =
     await Promise.all([
       payloadService.getProducts(),
       payloadService.getProductCategories(),
       payloadService.getContent(),
       payloadService.getContentCategories(),
+      payloadService.getProjects(),
     ]);
 
   return (
@@ -36,6 +37,7 @@ export default async function Pulse() {
           productCategories={productCategories}
           content={content}
           contentCategories={contentCategories}
+          projects={projects}
           logoVariant="pulse"
         />
         <div className="flex-1 flex flex-col justify-between max-w-[1600px] mx-auto w-full px-2.5 md:px-5 lg:px-10 pt-28 md:pt-36 lg:pt-40 pb-10 md:pb-14">
