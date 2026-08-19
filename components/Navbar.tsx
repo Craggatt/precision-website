@@ -41,25 +41,20 @@ export default function Navbar({
   const [scrolled, setScrolled] = useState(false);
   const [productsHovered, setProductsHovered] = useState(false);
   const [contentHovered, setContentHovered] = useState(false);
-  const [projectsHovered, setProjectsHovered] = useState(false);
   const [customerLoginHovered, setCustomerLoginHovered] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobileContentOpen, setMobileContentOpen] = useState(false);
-  const [mobileProjectsOpen, setMobileProjectsOpen] = useState(false);
   const [mobileCustomerLoginOpen, setMobileCustomerLoginOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const customerLoginRef = useRef<HTMLParagraphElement | null>(null);
   const { setOpen } = useQuoteStore();
   const isPulseLogo = logoVariant === 'pulse';
 
-  const openMenu = (
-    menuType: 'products' | 'content' | 'projects' | 'customerLogin'
-  ) => {
+  const openMenu = (menuType: 'products' | 'content' | 'customerLogin') => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
     setProductsHovered(menuType === 'products');
     setContentHovered(menuType === 'content');
-    setProjectsHovered(menuType === 'projects');
     setCustomerLoginHovered(menuType === 'customerLogin');
   };
 
@@ -67,7 +62,6 @@ export default function Navbar({
     closeTimer.current = setTimeout(() => {
       setProductsHovered(false);
       setContentHovered(false);
-      setProjectsHovered(false);
       setCustomerLoginHovered(false);
     }, 100);
   };
@@ -180,21 +174,6 @@ export default function Navbar({
     };
   });
 
-  const projectMenu = projects.map(project => {
-    const thumbnailImg = project.featuredImage?.value;
-    const thumbnailUrl =
-      typeof thumbnailImg === 'object'
-        ? ((thumbnailImg as Media).url ?? null)
-        : null;
-
-    return {
-      id: project.id,
-      name: project.name,
-      href: `/projects/${project.slug}`,
-      thumbnailUrl,
-    };
-  });
-
   return (
     <>
       <nav
@@ -260,14 +239,12 @@ export default function Navbar({
                   onHoverStart={() => {
                     if (item === 'Products') openMenu('products');
                     if (item === 'Content') openMenu('content');
-                    if (item === 'Projects') openMenu('projects');
                     if (item === 'Customer Login') openMenu('customerLogin');
                   }}
                   onHoverEnd={() => {
                     if (
                       item === 'Products' ||
                       item === 'Content' ||
-                      item === 'Projects' ||
                       item === 'Customer Login'
                     )
                       closeMenu();
@@ -497,60 +474,6 @@ export default function Navbar({
             </BorderGlow>
           </motion.div>
         )}
-        {projectsHovered && (
-          <motion.div
-            className="w-full fixed top-14 left-0 z-50 px-10 h-screen backdrop-blur-lg"
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            <BorderGlow
-              backgroundColor="#171717"
-              borderRadius={0}
-              colors={['#0b6fd3', '#1a7fe3', '#0958a8']}
-              glowColor="210 90 60"
-              glowIntensity={1.2}
-              glowRadius={30}
-              edgeSensitivity={20}
-              className="max-w-[1600px] mx-auto"
-            >
-              <div
-                onMouseEnter={() => openMenu('projects')}
-                onMouseLeave={closeMenu}
-              >
-                <motion.div
-                  className="flex flex-col w-full"
-                  initial={{ opacity: 0, y: 40 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 40 }}
-                  transition={{ duration: 0.25, ease: 'easeOut' }}
-                >
-                  <div className="flex flex-row w-full flex-wrap">
-                    {[...projectMenu].reverse().map(project => (
-                      <a
-                        href={project.href}
-                        className="flex flex-col p-5 border-l border-l-neutral-700 flex-1 min-w-[200px] hover:bg-neutral-800/50 transition-colors"
-                        key={project.id}
-                      >
-                        {project.thumbnailUrl && (
-                          <img
-                            src={project.thumbnailUrl}
-                            alt={project.name}
-                            className="w-28 h-20 object-contain"
-                          />
-                        )}
-                        <h3 className="font-aller text-xl mt-2">
-                          {project.name}
-                        </h3>
-                      </a>
-                    ))}
-                  </div>
-                </motion.div>
-              </div>
-            </BorderGlow>
-          </motion.div>
-        )}
         {customerLoginHovered && customerLoginRef.current && (
           <motion.div
             className="fixed z-50"
@@ -732,51 +655,13 @@ export default function Navbar({
                   </a>
 
                   {/* Projects */}
-                  <div className="flex flex-col border-t border-neutral-700">
-                    <button
-                      onClick={() => setMobileProjectsOpen(!mobileProjectsOpen)}
-                      className="flex items-center justify-between font-satoshi font-semibold text-white py-3 hover:text-neutral-400 transition-colors"
-                    >
-                      <span>Projects</span>
-                      <svg
-                        className={`w-4 h-4 transition-transform ${mobileProjectsOpen ? 'rotate-180' : ''}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </button>
-                    <AnimatePresence>
-                      {mobileProjectsOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="flex flex-col pl-4 py-2">
-                            {projectMenu.map(project => (
-                              <a
-                                key={project.id}
-                                href={project.href}
-                                className="font-aller text-neutral-400 text-sm py-2 hover:text-white transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                {project.name}
-                              </a>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                  <a
+                    href="/projects"
+                    className="font-satoshi font-semibold text-white py-3 hover:text-neutral-400 transition-colors border-t border-neutral-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Projects
+                  </a>
 
                   {/* Content */}
                   <div className="flex flex-col border-t border-neutral-700">
