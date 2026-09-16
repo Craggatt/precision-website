@@ -54,11 +54,6 @@ const faqs = [
     answer:
       'Founding Partners receive 12 months free as part of the program. Pricing beyond that is discussed as part of your demonstration.',
   },
-  {
-    question: "I can't make it to AGE — can I still see a demo?",
-    answer:
-      "Yes. Book a private demonstration and we'll organise a time that works for your venue.",
-  },
 ];
 
 function FaqItem({
