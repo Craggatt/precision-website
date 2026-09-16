@@ -21,7 +21,7 @@ export const payloadService = {
 
   getProjects: async (): Promise<Project[]> => {
     const payload = await getPayloadInstance();
-    const result = await payload.find({ collection: "projects", depth: 2, limit: 100 });
+    const result = await payload.find({ collection: "projects", depth: 2, limit: 100, sort: 'id' });
     return result.docs as Project[];
   },
 
