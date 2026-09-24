@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/next'
 import LenisProvider from "@/components/LenisProvider";
 import QueryProvider from "@/components/QueryProvider";
 
@@ -128,6 +129,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${ibmPlexMono.variable} antialiased`}
       >
+        <Analytics />
         <QueryProvider>
           <LenisProvider>{children}</LenisProvider>
         </QueryProvider>
