@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     const body = await request.json();
-    const { firstName, lastName, email, phone, products, additionalInfo, turnstileToken } = body;
+    const { firstName, lastName, email, phone, venue, products, additionalInfo, turnstileToken } = body;
 
     // Validate required fields
     if (!firstName || !lastName || !email) {
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: "Precision Signs Website <noreply@portal.precisionsigns.com.au>",
-      to: ["sales@precisionsigns.com.au"],
+      to: ["leads@proposals.precisionsigns.com.au"],
       replyTo: email,
       subject: `Quote Request from ${firstName} ${lastName}`,
       html: `
@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
         <p><strong>From:</strong> ${firstName} ${lastName}</p>
         <p><strong>Email:</strong> ${email}</p>
         ${phone ? `<p><strong>Phone:</strong> ${phone}</p>` : ""}
+        ${venue ? `<p><strong>Venue Name:</strong> ${venue}</p>` : ""}
         <hr />
         ${productsList}
         ${additionalInfo ? `

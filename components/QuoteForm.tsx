@@ -14,6 +14,7 @@ interface QuoteFormValues {
   lastName: string;
   email: string;
   phone: string;
+  venue: string;
   additionalInfo: string;
 }
 
@@ -354,6 +355,15 @@ export default function QuoteForm() {
                     type="tel"
                     autoComplete="tel"
                     {...register("phone")}
+                    className={inputClasses}
+                  />
+                </Field>
+
+                <Field label="Venue Name" htmlFor="venue" hint="Optional">
+                  <Input
+                    id="venue"
+                    type="text"
+                    {...register("venue")}
                     className={inputClasses}
                   />
                 </Field>
