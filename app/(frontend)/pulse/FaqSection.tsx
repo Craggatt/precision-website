@@ -2,11 +2,12 @@
 
 import { AnimatePresence, motion, useInView } from 'motion/react';
 import { useRef, useState } from 'react';
+import { track } from '@vercel/analytics';
 import CornerSquares from '@/components/CornerSquares';
 
 const faqs = [
   {
-    question: 'Will Precision Pulse replacing our displays?',
+    question: 'Will Precision Pulse replace our displays?',
     answer:
       "No. it's designed to work with your existing display infrastructure wherever possible.",
   },
@@ -79,7 +80,16 @@ function FaqItem({
       className="border-b border-neutral-700"
     >
       <button
-        onClick={() => setOpen(o => !o)}
+        onClick={() => {
+          setOpen(o => {
+            const next = !o;
+            track('Pulse FAQ Toggled', {
+              question: faq.question,
+              state: next ? 'open' : 'closed',
+            });
+            return next;
+          });
+        }}
         aria-expanded={open}
         className="w-full flex items-center justify-between gap-6 py-6 text-left cursor-pointer group"
       >

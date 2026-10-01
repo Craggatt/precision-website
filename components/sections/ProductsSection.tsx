@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import Tag from '../Tag';
 import FlowingMenu, { MenuItemData } from '../FlowingMenu';
 import { ProductCategory } from '@/payload-types';
@@ -62,7 +63,10 @@ export default function ProductsSection({
             </Link>
             <button
               className="font-satoshi text-sm bg-brand-primary text-white px-5 py-2.5 rounded-sm hover:bg-neutral-950 transition-colors font-medium flex items-center gap-200"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                track('Get a Quote Clicked', { page: window.location.pathname });
+                setOpen(true);
+              }}
             >
               Get a Quote
               <ArrowRight size={14} strokeWidth={1.5} />

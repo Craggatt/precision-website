@@ -3,6 +3,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { Search, X, SlidersHorizontal } from 'lucide-react';
+import { track } from '@vercel/analytics';
 import useProducts from '@/hooks/useProducts';
 import { Product, ProductCategory, Media } from '@/payload-types';
 import Link from 'next/link';
@@ -103,7 +104,10 @@ function ProductCard({ product }: { product: Product }) {
           </Link>
           <button
             className="flex-1 font-satoshi text-xs font-semibold py-2 bg-brand-primary text-white hover:bg-brand-primary-hover transition-colors"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              track('Get a Quote Clicked', { page: window.location.pathname });
+              setOpen(true);
+            }}
           >
             Get a Quote
           </button>

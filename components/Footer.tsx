@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { track } from '@vercel/analytics';
 import CornerSquares from './CornerSquares';
 
 const links = {
@@ -108,6 +109,13 @@ export default function Footer() {
                       <Link
                         href={item.link}
                         prefetch
+                        onClick={() =>
+                          track('Footer Link Clicked', {
+                            section: heading,
+                            name: item.name,
+                            link: item.link,
+                          })
+                        }
                         className="font-satoshi text-[0.85rem] text-neutral-300 hover:text-[#f0f0f0] transition-colors cursor-pointer"
                       >
                         {item.name}

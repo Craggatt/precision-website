@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import { track } from '@vercel/analytics';
 import BorderGlow from './BorderGlow';
 import { useQuoteStore } from '@/store/quoteStore';
 import {
@@ -282,7 +283,10 @@ export default function Navbar({
             </a>
             <button
               className="font-satoshi text-[0.8rem] bg-brand-primary text-white px-4 py-1.5 rounded-sm hover:bg-[#2a2a2a] transition-colors font-medium"
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                track('Get a Quote Clicked', { page: window.location.pathname });
+                setOpen(true);
+              }}
             >
               Get a Quote
             </button>
@@ -499,6 +503,7 @@ export default function Navbar({
                 href="https://pixel.precisionsigns.com.au"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track('Pixel Portal Clicked')}
                 className={`px-4 py-3 font-satoshi text-sm transition-colors ${
                   scrolled
                     ? 'text-[#111111] hover:bg-gray-100'
@@ -511,6 +516,7 @@ export default function Navbar({
                 href="https://pulse.precisionsigns.com.au"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => track('Pulse Portal Clicked')}
                 className={`px-4 py-3 font-satoshi text-sm transition-colors ${
                   scrolled
                     ? 'text-[#111111] hover:bg-gray-100 border-t border-gray-200'
@@ -790,7 +796,10 @@ export default function Navbar({
                               target="_blank"
                               rel="noopener noreferrer"
                               className="font-aller text-neutral-400 text-sm py-2 hover:text-white transition-colors"
-                              onClick={() => setMobileMenuOpen(false)}
+                              onClick={() => {
+                                track('Pixel Portal Clicked');
+                                setMobileMenuOpen(false);
+                              }}
                             >
                               Precision Pixel
                             </a>
@@ -799,7 +808,10 @@ export default function Navbar({
                               target="_blank"
                               rel="noopener noreferrer"
                               className="font-aller text-neutral-400 text-sm py-2 hover:text-white transition-colors"
-                              onClick={() => setMobileMenuOpen(false)}
+                              onClick={() => {
+                                track('Pulse Portal Clicked');
+                                setMobileMenuOpen(false);
+                              }}
                             >
                               Precision Pulse
                             </a>
@@ -822,6 +834,7 @@ export default function Navbar({
                   <button
                     className="font-satoshi text-sm bg-brand-primary text-white px-4 py-2.5 rounded-sm hover:bg-[#2a2a2a] transition-colors font-medium"
                     onClick={() => {
+                      track('Get a Quote Clicked', { page: window.location.pathname });
                       setOpen(true);
                       setMobileMenuOpen(false);
                     }}
