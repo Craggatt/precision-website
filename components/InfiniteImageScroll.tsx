@@ -35,6 +35,11 @@ interface InfiniteImageScrollProps {
    * Pause animation on hover (default: true)
    */
   pauseOnHover?: boolean;
+
+  /**
+   * Called the first time an image is clicked (not fired again after that)
+   */
+  onImageClick?: () => void;
 }
 
 function getTranslateX(el: HTMLElement): number {
@@ -53,6 +58,7 @@ export default function InfiniteImageScroll({
   imageHeight = 400,
   gap = 24,
   pauseOnHover = true,
+  onImageClick,
 }: InfiniteImageScrollProps) {
   // Duplicate images for seamless loop
   const duplicatedImages = [...images, ...images];
@@ -66,6 +72,7 @@ export default function InfiniteImageScroll({
   const halfWidthRef = useRef(0);
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
+  const hasTrackedClickRef = useRef(false);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -159,6 +166,11 @@ export default function InfiniteImageScroll({
   };
 
   const handleItemClick = (index: number) => {
+    if (!hasTrackedClickRef.current) {
+      hasTrackedClickRef.current = true;
+      onImageClick?.();
+    }
+
     const item = itemRefs.current[index];
     const viewport = viewportRef.current;
     if (!item || !viewport) return;

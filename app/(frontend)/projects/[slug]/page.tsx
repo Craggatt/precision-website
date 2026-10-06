@@ -6,7 +6,7 @@ import Footer from '@/components/Footer';
 import QuoteFormSection from '@/components/sections/QuoteFormSection';
 import CTASection from '@/components/sections/CTASection';
 import Breadcrumb, { BreadcrumbItem } from '@/components/Breadcrumb';
-import InfiniteImageScroll from '@/components/InfiniteImageScroll';
+import ProjectGallery from './ProjectGallery';
 import { Media } from '@/payload-types';
 import type { Metadata } from 'next';
 
@@ -281,7 +281,7 @@ export default async function ProjectDetailPage({
       {galleryUrls.length > 0 && (
         <section className="border-b border-neutral-800 bg-neutral-900/30">
           <div className="max-w-[1600px] mx-auto px-2.5 md:px-5 lg:px-10 py-16 lg:py-20">
-            <InfiniteImageScroll images={galleryUrls} />
+            <ProjectGallery images={galleryUrls} />
           </div>
         </section>
       )}
